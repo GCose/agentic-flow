@@ -56,7 +56,7 @@ const DashboardPage: NextPage = () => {
             </Card>
           </div>
           <div className="grid gap-4 md:grid-cols-1">
-            <Card className="col-span-1 border bg-transparent">
+            <Card className="col-span-1 backdrop-blur-sm border bg-transparent">
               <CardHeader className="border-b">
                 <CardTitle>Recent Activity</CardTitle>
                 <CardDescription>

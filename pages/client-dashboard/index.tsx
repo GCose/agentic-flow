@@ -25,7 +25,7 @@ const ClientDashboardPage: NextPage = () => {
             </h2>
           </div>
           <ClientOverview />
-          <div className="grid gap-4 md:grid-cols-7">
+          <div className="grid gap-4 md:grid-cols-7 pt-2">
             <div className="col-span-4">
               <ClientList />
             </div>

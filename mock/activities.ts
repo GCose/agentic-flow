@@ -48,3 +48,48 @@ export const activities = [
     status: "waiting",
   },
 ];
+
+export const clientActivities = [
+  {
+    id: 1,
+    client: "Acme Corp",
+    action: "Started new conversation with Customer Support Assistant",
+    time: "2 minutes ago",
+    color: "bg-blue-500",
+  },
+  {
+    id: 2,
+    client: "TechStart Inc",
+    action: "Requested quarterly report from Data Analysis Agent",
+    time: "15 minutes ago",
+    color: "bg-green-500",
+  },
+  {
+    id: 3,
+    client: "Marketing Team",
+    action: "Provided feedback on Content Generator output",
+    time: "32 minutes ago",
+    color: "bg-purple-500",
+  },
+  {
+    id: 4,
+    client: "Executive Office",
+    action: "Scheduled new meeting with Meeting Scheduler",
+    time: "1 hour ago",
+    color: "bg-orange-500",
+  },
+  {
+    id: 5,
+    client: "Dev Team",
+    action: "Submitted code review request to Code Assistant",
+    time: "2 hours ago",
+    color: "bg-red-500",
+  },
+  {
+    id: 6,
+    client: "Support Team",
+    action: "Escalated customer issue to human support",
+    time: "3 hours ago",
+    color: "bg-indigo-500",
+  },
+];

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import DashboardSidebar from "./dashboard-sidebar";
+import DashboardSidebar from "../dashboard/dashboard-sidebar";
 import BackgroundElements from "../ui/background-elements";
 
 interface DashboardLayoutProps {

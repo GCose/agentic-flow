@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
@@ -20,7 +18,7 @@ const ThemeToggle = () => {
 
   return (
     <Button
-    size="icon"
+      size="icon"
       variant="ghost"
       className="rounded-full"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}

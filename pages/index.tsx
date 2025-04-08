@@ -1,73 +1,83 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Brain } from "lucide-react";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
-import DashboardStats from "@/components/dashboard/dashboard-stats";
-import RecentActivity from "@/components/dashboard/recent-activity";
-import TopAgents from "@/components/dashboard/top-agents";
 import DashboardLayout from "@/components/layouts/dashboard-layout";
-import DashboardOverview from "@/components/dashboard/dashboard-overview";
+import DashboardStats from "@/components/dashboard/dashboard-stats";
+import { SystemCards } from "@/components/dashboard/system-cards";
 
 const DashboardPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Agentic Flow | Dashboard</title>
-        <meta name="description" content="Monitor and manage your AI agents" />
+        <title>Agentic Flow | Home</title>
+        <meta
+          name="description"
+          content="Welcome to the Agentic Flow AI agent management system"
+        />
       </Head>
       <DashboardLayout>
         <DashboardHeader />
-        <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-muted-foreground">
-                Last updated: Just now
-              </span>
+        <div className="flex-1 p-8 pt-6">
+          {/*==================== Welcome Section ====================*/}
+          <div className="relative mb-10 py-12 px-8 rounded-2xl overflow-hidden bg-slate-800/30 backdrop-blur-md">
+            <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
+              <div className="flex h-20 w-20 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600">
+                <Brain className="h-10 w-10 text-white" />
+              </div>
+              <div>
+                <h1 className="text-4xl font-bold tracking-tight mb-2">
+                  Welcome to Agentic Flow
+                </h1>
+                <p className="text-xl text-slate-300">
+                  Your AI-powered operational ecosystem
+                </p>
+              </div>
+            </div>
+
+            <p className="text-slate-300 max-w-3xl mb-6">
+              Agentic Flow streamlines, optimizes, and enhances every major
+              revenue-producing and client-facing process across your business —
+              from attracting attention and generating leads to converting
+              prospects and onboarding clients.
+            </p>
+
+            <div className="flex flex-wrap justify-center gap-3">
+              <div className="px-4 py-2 rounded-full bg-white/5 text-blue-200 text-sm font-medium">
+                44 Autonomous AI Agents
+              </div>
+              <div className="px-4 py-2 rounded-full bg-white/5 text-purple-200 text-sm font-medium">
+                4 Core Operational Pillars
+              </div>
+              <div className="px-4 py-2 rounded-full bg-white/5 text-green-200 text-sm font-medium">
+                Intelligent by Design
+              </div>
+              <div className="px-4 py-2 rounded-full bg-white/5 text-amber-200 text-sm font-medium">
+                Scalable by Nature
+              </div>
             </div>
           </div>
-          <DashboardStats />
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-            <Card className="col-span-4 border bg-transparent">
-              <CardHeader>
-                <CardTitle>Overview</CardTitle>
-                <CardDescription>Agent performance over time</CardDescription>
-              </CardHeader>
-              <CardContent className="pl-2">
-                <DashboardOverview />
-              </CardContent>
-            </Card>
-            <Card className="col-span-3 border bg-transparent">
-              <CardHeader>
-                <CardTitle>Top Performing Agents</CardTitle>
-                <CardDescription>
-                  Agents with highest success rates
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <TopAgents />
-              </CardContent>
-            </Card>
+          {/*==================== End of Welcome Section ====================*/}
+
+          {/*==================== Stats Overview ====================*/}
+          <div className="mb-10">
+            <h2 className="text-2xl font-bold tracking-tight mb-6">
+              System Overview
+            </h2>
+            <DashboardStats />
           </div>
-          <div className="grid gap-4 md:grid-cols-1">
-            <Card className="col-span-1 backdrop-blur-sm border bg-transparent">
-              <CardHeader className="border-b">
-                <CardTitle>Recent Activity</CardTitle>
-                <CardDescription>
-                  Latest agent interactions and events
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RecentActivity />
-              </CardContent>
-            </Card>
+          {/*==================== End of Stats Overview ====================*/}
+
+          {/*==================== Core Systems ====================*/}
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight mb-6">
+              Core Systems
+            </h2>
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <SystemCards />
+            </div>
           </div>
+          {/*==================== End of Core Systems ====================*/}
         </div>
       </DashboardLayout>
     </>

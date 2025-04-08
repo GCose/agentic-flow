@@ -10,6 +10,7 @@ import {
   Settings,
   LogOut,
   LayoutDashboard,
+  FileText,
 } from "lucide-react";
 
 import {
@@ -33,6 +34,11 @@ const mainNavItems = [
     title: "Dashboard",
     href: "/",
     icon: LayoutDashboard,
+  },
+  {
+    title: "Content System",
+    href: "/content-generation",
+    icon: FileText,
   },
   {
     title: "Agent Management",

@@ -1,4 +1,4 @@
-import { Brain, Users, BarChart3, Clock } from "lucide-react";
+import { Brain, Grid2X2, Zap, Clock } from "lucide-react";
 import StatCard from "../ui/stat-card";
 
 const DashboardStats = () => {
@@ -9,28 +9,28 @@ const DashboardStats = () => {
         icon={Brain}
         color="blue"
         title="Total Agents"
-        change="+20 from last month"
+        change="Autonomous AI agents across all systems"
       />
       <StatCard
-        value="573"
-        icon={Users}
+        value="4"
+        icon={Grid2X2}
         color="purple"
-        title="Active Clients"
-        change="+18 from last week"
+        title="Core Systems"
+        change="Content, Lead Gen, Sales, and Onboarding"
       />
       <StatCard
-        value="92.6%"
+        value="100%"
         color="green"
-        icon={BarChart3}
-        title="Success Rate"
-        change="+2.1% from last month"
+        icon={Zap}
+        title="AI-driven"
+        change="Intelligent by design, scalable by nature"
       />
       <StatCard
-        value="1.2s"
+        value="24/7"
         icon={Clock}
         color="cyan"
-        title="Avg. Response Time"
-        change="-0.1s from last week"
+        title="Operation"
+        change="Proactive monitoring and execution"
       />
     </div>
   );

@@ -43,16 +43,16 @@ const DashboardPage: NextPage = () => {
             </p>
 
             <div className="flex flex-wrap justify-center gap-3">
-              <div className="px-4 py-2 rounded-full bg-white/5 text-blue-200 text-sm font-medium">
+              <div className="px-4 py-2 rounded-full bg-white/5 text-white text-sm font-medium">
                 44 Autonomous AI Agents
               </div>
-              <div className="px-4 py-2 rounded-full bg-white/5 text-purple-200 text-sm font-medium">
+              <div className="px-4 py-2 rounded-full bg-white/5 text-white text-sm font-medium">
                 4 Core Operational Pillars
               </div>
-              <div className="px-4 py-2 rounded-full bg-white/5 text-green-200 text-sm font-medium">
+              <div className="px-4 py-2 rounded-full bg-white/5 text-white text-sm font-medium">
                 Intelligent by Design
               </div>
-              <div className="px-4 py-2 rounded-full bg-white/5 text-amber-200 text-sm font-medium">
+              <div className="px-4 py-2 rounded-full bg-white/5 text-white text-sm font-medium">
                 Scalable by Nature
               </div>
             </div>

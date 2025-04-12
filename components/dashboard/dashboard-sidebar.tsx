@@ -31,7 +31,7 @@ import {
 
 const mainNavItems = [
   {
-    title: "Dashboard",
+    title: "Overview",
     href: "/",
     icon: LayoutDashboard,
   },

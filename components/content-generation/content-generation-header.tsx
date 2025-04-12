@@ -1,12 +1,17 @@
-import { Download, Filter } from "lucide-react";
+import { Filter } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import ThemeToggle from "../theme-toggle";
+import ThemeToggle from "@/components/theme-toggle";
 
-const ContentGenerationHeader = () => {
+const ContentSystemHeader = () => {
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/80 backdrop-blur-md px-4 sm:px-6">
+    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent backdrop-blur-xs px-4 sm:px-6">
       <SidebarTrigger />
+
+      <div className="flex flex-1 items-center gap-4">
+        <Input placeholder="Search content..." className="max-w-sm" />
+      </div>
 
       <div className="ml-auto flex items-center gap-2">
         <ThemeToggle />
@@ -14,13 +19,9 @@ const ContentGenerationHeader = () => {
           <Filter className="mr-2 h-4 w-4" />
           Filter
         </Button>
-        <Button>
-          <Download className="mr-2 h-4 w-4" />
-          Export
-        </Button>
       </div>
     </header>
   );
 };
 
-export default ContentGenerationHeader;
+export default ContentSystemHeader;

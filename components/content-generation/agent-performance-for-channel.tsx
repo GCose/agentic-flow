@@ -1,0 +1,184 @@
+import { useTheme } from "next-themes";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+import ChartTooltip from "@/components/ui/chart-tooltip";
+import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "@/components/ui/card";
+
+// Mock data for agent performance
+const generateAgentPerformanceData = () => {
+  const agents = [
+    {
+      name: "Content Creator Agent",
+      contentCount: Math.floor(20 + Math.random() * 30),
+      avgViews: Math.floor(2000 + Math.random() * 5000),
+      avgEngagement: 3 + Math.random() * 8,
+      successRate: 90 + Math.random() * 9,
+      color: "#3B82F6",
+    },
+    {
+      name: "Content Optimizer Agent",
+      contentCount: Math.floor(15 + Math.random() * 25),
+      avgViews: Math.floor(2500 + Math.random() * 5000),
+      avgEngagement: 4 + Math.random() * 7,
+      successRate: 92 + Math.random() * 7,
+      color: "#10B981",
+    },
+    {
+      name: "Topic Selector Agent",
+      contentCount: Math.floor(10 + Math.random() * 20),
+      avgViews: Math.floor(3000 + Math.random() * 4000),
+      avgEngagement: 5 + Math.random() * 6,
+      successRate: 93 + Math.random() * 6,
+      color: "#F59E0B",
+    },
+    {
+      name: "Trend Selector Agent",
+      contentCount: Math.floor(8 + Math.random() * 18),
+      avgViews: Math.floor(3500 + Math.random() * 4500),
+      avgEngagement: 6 + Math.random() * 5,
+      successRate: 94 + Math.random() * 5,
+      color: "#8B5CF6",
+    },
+  ];
+
+  return agents;
+};
+
+// Mock data for content distribution
+const generateContentDistributionData = () => {
+  return agents.map((agent) => ({
+    name: agent.name,
+    value: agent.contentCount,
+    color: agent.color,
+  }));
+};
+
+const AgentPerformanceForChannel = () => {
+  const { theme } = useTheme();
+  const agentData = generateAgentPerformanceData();
+  const contentDistributionData = generateContentDistributionData(agentData);
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="h-80">
+          <h3 className="text-lg font-medium mb-4">
+            Content Production by Agent
+          </h3>
+          <ResponsiveContainer width="100%" height="85%">
+            <BarChart
+              data={agentData}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="name"
+                stroke={theme === "dark" ? "#9CA3AF" : "#6B7280"}
+                tick={{ fontSize: 12 }}
+                tickFormatter={(value) => value.replace(" Agent", "")}
+              />
+              <YAxis stroke={theme === "dark" ? "#9CA3AF" : "#6B7280"} />
+              <Tooltip content={<ChartTooltip />} />
+              <Bar dataKey="contentCount" name="Content Count" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="h-80">
+          <h3 className="text-lg font-medium mb-4">Content Distribution</h3>
+          <ResponsiveContainer width="100%" height="85%">
+            <PieChart>
+              <Pie
+                data={contentDistributionData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+                label={({ name, percent }) =>
+                  `${name.replace(" Agent", "")}: ${(percent * 100).toFixed(
+                    0
+                  )}%`
+                }
+              >
+                {contentDistributionData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip content={<ChartTooltip />} />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="border bg-transparent">
+          <CardContent className="p-6">
+            <h3 className="text-lg font-medium mb-4">Average Views by Agent</h3>
+            <div className="space-y-6">
+              {agentData.map((agent, index) => (
+                <div key={index} className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      {agent.name.replace(" Agent", "")}
+                    </span>
+                    <span className="text-sm">
+                      {agent.avgViews.toLocaleString()} views
+                    </span>
+                  </div>
+                  <Progress
+                    value={(agent.avgViews / 8000) * 100}
+                    indicatorClassName={`bg-[${agent.color}]`}
+                  />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="border bg-transparent">
+          <CardContent className="p-6">
+            <h3 className="text-lg font-medium mb-4">Success Rate by Agent</h3>
+            <div className="space-y-6">
+              {agentData.map((agent, index) => (
+                <div key={index} className="space-y-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium">
+                      {agent.name.replace(" Agent", "")}
+                    </span>
+                    <span className="text-sm">
+                      {agent.successRate.toFixed(1)}%
+                    </span>
+                  </div>
+                  <Progress
+                    value={agent.successRate}
+                    indicatorClassName={`bg-[${agent.color}]`}
+                  />
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default AgentPerformanceForChannel;

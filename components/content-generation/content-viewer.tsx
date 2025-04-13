@@ -59,8 +59,8 @@ const ContentViewer = ({ content, platformId }: ContentViewerProps) => {
         className="space-y-4"
       >
         <TabsList className="grid w-full max-w-md grid-cols-3 bg-slate-800/30">
-          <TabsTrigger value="preview">Ad Preview</TabsTrigger>
-          <TabsTrigger value="details">Ad Details</TabsTrigger>
+          <TabsTrigger value="preview">Content Preview</TabsTrigger>
+          <TabsTrigger value="details">Content Details</TabsTrigger>
           <TabsTrigger value="performance">Performance</TabsTrigger>
         </TabsList>
 
@@ -72,12 +72,12 @@ const ContentViewer = ({ content, platformId }: ContentViewerProps) => {
           <Card className="border-none bg-transparent">
             <CardContent className="space-y-4 pt-4">
               <div>
-                <h4 className="text-sm font-semibold mb-1">Ad Headline</h4>
+                <h4 className="text-sm font-semibold mb-1">Content Headline</h4>
                 <p>{content.headline || content.title}</p>
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold mb-1">Ad Copy</h4>
+                <h4 className="text-sm font-semibold mb-1">Content Copy</h4>
                 <p>
                   {content.copy ||
                     "This ad copy showcases the value proposition of our product, highlighting the key benefits and encouraging users to take action."}
@@ -98,7 +98,7 @@ const ContentViewer = ({ content, platformId }: ContentViewerProps) => {
               </div>
 
               <div>
-                <h4 className="text-sm font-semibold mb-1">Ad Format</h4>
+                <h4 className="text-sm font-semibold mb-1">Content Format</h4>
                 <p>{content.type}</p>
               </div>
 
@@ -173,12 +173,12 @@ const ContentViewer = ({ content, platformId }: ContentViewerProps) => {
             <CardHeader>
               <CardTitle className="text-lg">Performance Summary</CardTitle>
               <CardDescription>
-                AI-generated analysis of ad performance
+                AI-generated analysis of content performance
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p>
-                This ad is performing <strong>18% better</strong> than average
+                This post is performing <strong>18% better</strong> than average
                 for this audience and platform. The click-through rate is
                 particularly strong, suggesting the creative resonates well with
                 viewers. Based on current performance, we recommend continuing
@@ -200,7 +200,7 @@ const ContentViewer = ({ content, platformId }: ContentViewerProps) => {
 const FacebookPreview = ({ content }) => (
   <div className="border rounded-md overflow-hidden">
     <div className="bg-blue-500 text-white text-sm font-semibold px-4 py-2">
-      Facebook Ad Preview
+      Facebook Post Preview
     </div>
     <div className="p-4 bg-white text-black">
       <div className="flex items-center gap-2 mb-3">
@@ -215,7 +215,7 @@ const FacebookPreview = ({ content }) => (
       <p className="text-sm mb-3">{content.copy}</p>
       <div className="bg-gray-100 rounded-md overflow-hidden mb-3">
         <div className="h-48 bg-gray-300 flex items-center justify-center">
-          <span className="text-gray-600">Ad Creative Image</span>
+          <span className="text-gray-600">Creative Image</span>
         </div>
         <div className="p-3 border-t">
           <p className="font-bold text-sm">{content.headline}</p>
@@ -232,7 +232,7 @@ const FacebookPreview = ({ content }) => (
 const InstagramPreview = ({ content }) => (
   <div className="border rounded-md overflow-hidden">
     <div className="bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm font-semibold px-4 py-2">
-      Instagram Ad Preview
+      Instagram Post Preview
     </div>
     <div className="p-4 bg-white text-black">
       <div className="flex items-center justify-between mb-3">
@@ -245,7 +245,7 @@ const InstagramPreview = ({ content }) => (
         <span className="text-xs text-gray-500">Sponsored</span>
       </div>
       <div className="h-64 bg-gray-200 rounded mb-3 flex items-center justify-center">
-        <span className="text-gray-600">Ad Creative Image</span>
+        <span className="text-gray-600">Creative Image</span>
       </div>
       <div className="flex text-lg mb-2 gap-4">
         <span>❤️</span>
@@ -282,7 +282,7 @@ const TwitterPreview = ({ content }) => (
           <p className="text-sm mt-1">{content.copy}</p>
           <div className="mt-3 rounded-md overflow-hidden border">
             <div className="h-40 bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-600">Ad Creative Image</span>
+              <span className="text-gray-600">Creative Image</span>
             </div>
             <div className="p-3">
               <p className="font-semibold text-sm">{content.headline}</p>
@@ -319,7 +319,7 @@ const LinkedInPreview = ({ content }) => (
       <p className="text-sm mb-3">{content.copy}</p>
       <div className="rounded-md overflow-hidden border mb-3">
         <div className="h-48 bg-gray-200 flex items-center justify-center">
-          <span className="text-gray-600">Ad Creative Image</span>
+          <span className="text-gray-600">Creative Image</span>
         </div>
         <div className="p-3 bg-gray-50">
           <p className="font-bold text-sm">{content.headline}</p>
@@ -346,7 +346,7 @@ const YouTubePreview = ({ content }) => (
     <div className="p-4 bg-white text-black">
       <div className="bg-black h-56 rounded-md flex items-center justify-center mb-4">
         <div className="text-white text-center">
-          <p className="font-semibold mb-2">Video Ad Preview</p>
+          <p className="font-semibold mb-2">Video Preview</p>
           <p className="text-sm text-gray-400">5 seconds until skip</p>
         </div>
       </div>
@@ -360,7 +360,7 @@ const YouTubePreview = ({ content }) => (
             {content.copy}
           </p>
           <p className="text-xs text-gray-500 mt-1">
-            Company Name · Ad · company-website.com
+            Company Name · Post · company-website.com
           </p>
           <button className="mt-2 px-3 py-1 bg-blue-500 text-white rounded-sm text-sm">
             {content.callToAction}
@@ -420,7 +420,7 @@ const GenericPreview = ({ content }) => (
     <CardContent>
       <div className="space-y-4">
         <div className="h-48 bg-muted rounded-md flex items-center justify-center">
-          <span className="text-muted-foreground">Ad Creative Preview</span>
+          <span className="text-muted-foreground">Post Creative Preview</span>
         </div>
         <div>
           <h4 className="font-semibold">{content.headline}</h4>

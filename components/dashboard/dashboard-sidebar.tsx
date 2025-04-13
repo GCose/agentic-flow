@@ -37,7 +37,7 @@ const mainNavItems = [
   },
   {
     title: "Content System",
-    href: "/content-generation",
+    href: "/content-system",
     icon: FileText,
   },
   {

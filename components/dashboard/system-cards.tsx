@@ -51,7 +51,7 @@ export const SystemCards = () => {
       title: "Content Generation",
       description: "Generate and manage content with AI agents",
       icon: <FileText className="h-6 w-6" />,
-      href: "/content-generation",
+      href: "/content-system",
       color: "bg-transparent from-blue-500/10 to-blue-500/5",
       iconBg: "bg-blue-500/10",
       iconColor: "text-blue-500",

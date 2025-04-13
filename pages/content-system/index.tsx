@@ -7,7 +7,6 @@ import {
   Instagram,
   Linkedin,
   Youtube,
-  FileText,
   Music2Icon,
 } from "lucide-react";
 import DashboardLayout from "@/components/layouts/dashboard-layout";
@@ -18,7 +17,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ContentCalendar from "@/components/content-generation/content-calendar";
 import ContentChannelCard from "@/components/content-generation/content-channel";
@@ -29,7 +27,6 @@ import ContentAgentPerformance from "@/components/content-generation/content-age
 const ContentSystemPage = () => {
   const [activeTab, setActiveTab] = useState("channels");
   const [searchQuery] = useState("");
-  const [filterApplied, setFilterApplied] = useState(false);
 
   // Social media ad platforms data
   const adPlatforms = [
@@ -109,28 +106,7 @@ const ContentSystemPage = () => {
             <h2 className="text-3xl font-bold tracking-tight">
               Content System
             </h2>
-            <div className="flex items-center gap-2">
-              <Button>
-                <FileText className="mr-2 h-4 w-4" />
-                View Agent Reports
-              </Button>
-            </div>
           </div>
-
-          {filterApplied && (
-            <div className="bg-muted/30 p-3 rounded-md flex justify-between items-center">
-              <span className="text-sm">
-                Filter applied: Showing high-performing content only
-              </span>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setFilterApplied(false)}
-              >
-                Clear Filter
-              </Button>
-            </div>
-          )}
 
           <Tabs
             value={activeTab}
@@ -138,7 +114,7 @@ const ContentSystemPage = () => {
             defaultValue="channels"
             onValueChange={setActiveTab}
           >
-            <TabsList className="grid w-full max-w-md grid-cols-3 bg-slate-800/30">
+            <TabsList className="grid w-full max-w-md grid-cols-3 bg-slate-800/30 mt-6">
               <TabsTrigger value="channels">Channels</TabsTrigger>
               <TabsTrigger value="agents">Agents</TabsTrigger>
               <TabsTrigger value="calendar">Calendar</TabsTrigger>

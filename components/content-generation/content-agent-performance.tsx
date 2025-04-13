@@ -212,13 +212,13 @@ const ContentAgentPerformance = () => {
           <ResponsiveContainer width="100%" height="85%">
             <PieChart>
               <Pie
-                data={contentProductionData}
                 cx="50%"
                 cy="50%"
-                labelLine={false}
-                outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
+                outerRadius={80}
+                labelLine={false}
+                data={contentProductionData}
                 label={({ name, percent }) =>
                   `${name}: ${(percent * 100).toFixed(0)}%`
                 }
@@ -253,13 +253,13 @@ const ContentAgentPerformance = () => {
                     </span>
                   </div>
                   <Progress
-                    value={agent.performanceScore}
                     className="h-1"
+                    value={agent.performanceScore}
                     indicatorClassName={`bg-[${agent.color}]`}
                   />
                   <div className="flex justify-between text-xs text-muted-foreground">
                     <Link
-                      href="/content-generation/prompt"
+                      href="/content-system/prompt"
                       className="bg-white p-2 text-black rounded-md text-md"
                     >
                       Edit

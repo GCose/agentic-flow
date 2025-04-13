@@ -1,21 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import {
   ArrowLeft,
-  FileText,
-  TrendingUp,
-  Eye,
-  MousePointer,
-  Clock,
-  Filter,
-  Download,
-  Share2,
   Facebook,
+  Twitter,
   Instagram,
   Linkedin,
-  Twitter,
   Youtube,
+  LucideIcon,
+  Filter,
+  Download,
+  Eye,
+  MousePointer,
+  FileText,
+  Clock,
+  TrendingUp,
+  Share2,
   Music2Icon,
 } from "lucide-react";
 import DashboardLayout from "@/components/layouts/dashboard-layout";
@@ -29,39 +30,91 @@ import {
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import AgentPerformanceForChannel from "./agent-performance-for-channel";
-import ChannelAnalytics from "./channel-analytics";
-import ChannelContentList from "./channel-content-list";
-import ContentViewer from "./content-viewer";
+import AgentPerformanceForChannel from "@/components/content-generation/agent-performance-for-channel";
+import ChannelAnalytics from "@/components/content-generation/channel-analytics";
+import ChannelContentList from "@/components/content-generation/channel-content-list";
+import ContentViewer from "@/components/content-generation/content-viewer";
 
-// Mock data for social media ad platforms
-const platformData = {
-  facebook: { name: "Facebook Ads", icon: Facebook, color: "blue" },
-  instagram: { name: "Instagram Ads", icon: Instagram, color: "pink" },
-  twitter: { name: "Twitter / X Ads", icon: Twitter, color: "cyan" },
-  linkedin: { name: "LinkedIn Ads", icon: Linkedin, color: "indigo" },
-  youtube: { name: "YouTube Ads", icon: Youtube, color: "red" },
-  tiktok: { name: "TikTok Ads", icon: Music2Icon, color: "purple" },
+// Define the valid channel IDs as a type
+export type ChannelId =
+  | "facebook"
+  | "instagram"
+  | "twitter"
+  | "linkedin"
+  | "youtube"
+  | "tiktok";
+
+// Define the content data interface - MUST match exactly in channel-content-list.tsx
+export interface ContentData {
+  id: string;
+  title: string;
+  type: string;
+  platform: string; // Keep this as string to match what the mock data generator produces
+  headline: string;
+  copy: string;
+  callToAction: string;
+  targetAudience: string;
+  imageUrl: string;
+  stats: {
+    impressions: number;
+    ctr: string;
+    conversions: number;
+  };
+}
+
+// Create a type for the platform data structure
+interface PlatformInfo {
+  name: string;
+  icon: LucideIcon;
+  color: string;
+}
+
+// Mock data for social media ad platforms with proper typing
+const platformData: Record<ChannelId, PlatformInfo> = {
+  facebook: { name: "Facebook Channel Content", icon: Facebook, color: "blue" },
+  instagram: {
+    name: "Instagram Channel Content",
+    icon: Instagram,
+    color: "pink",
+  },
+  twitter: {
+    name: "Twitter / X Channel Content",
+    icon: Twitter,
+    color: "cyan",
+  },
+  linkedin: {
+    name: "LinkedIn Channel Content",
+    icon: Linkedin,
+    color: "indigo",
+  },
+  youtube: { name: "YouTube Channel Contents", icon: Youtube, color: "red" },
+  tiktok: {
+    name: "TikTok Channel Contents",
+    icon: Music2Icon,
+    color: "purple",
+  },
 };
+
+// Function to check if a string is a valid channel ID
+function isValidChannelId(id: string | string[] | undefined): id is ChannelId {
+  if (typeof id !== "string") return false;
+  return Object.keys(platformData).includes(id as ChannelId);
+}
 
 const ChannelDetailPage = () => {
   const router = useRouter();
   const { channelId } = router.query;
   const [activeTab, setActiveTab] = useState("analytics");
-  const [selectedContent, setSelectedContent] = useState(null);
+  const [selectedContent, setSelectedContent] = useState<ContentData | null>(
+    null
+  );
   const [isApproving, setIsApproving] = useState(false);
   const [isFiltering, setIsFiltering] = useState(false);
 
-  // Simulate loading content when component mounts
-  useEffect(() => {
-    // In a real implementation, this would fetch content from an API
-    console.log("Fetching content for channel:", channelId);
-
-    // Simulate filter functionality
-    if (isFiltering) {
-      console.log("Applying filters to content");
-    }
-  }, [channelId, isFiltering]);
+  // Handle filtering
+  const handleFilter = () => {
+    setIsFiltering(!isFiltering);
+  };
 
   // Reset content viewer when closing
   const handleCloseViewer = () => {
@@ -77,34 +130,31 @@ const ChannelDetailPage = () => {
       console.log("Content approved:", selectedContent);
       setIsApproving(false);
       setSelectedContent(null);
-
-      // Show success toast or notification in a real implementation
     }, 1000);
   };
 
-  // Handle filtering
-  const handleFilter = () => {
-    setIsFiltering(!isFiltering);
+  // Simple helper function to fix the type issue
+  const handleViewContent = (content: ContentData) => {
+    setSelectedContent(content);
   };
 
   // If the page is still loading or channelId isn't available
-  if (!channelId || typeof channelId !== "string") {
+  if (!isValidChannelId(channelId)) {
     return (
       <DashboardLayout>
         <div className="flex-1 p-8 flex items-center justify-center">
-          <p>Loading platform data...</p>
+          <p>
+            {!channelId
+              ? "Loading platform data..."
+              : `Invalid platform: ${channelId}`}
+          </p>
         </div>
       </DashboardLayout>
     );
   }
 
-  // Get platform info from our mock data
-  const platform = platformData[channelId] || {
-    name: "Unknown Platform",
-    icon: FileText,
-    color: "blue",
-  };
-
+  // Now TypeScript knows channelId is a valid key
+  const platform = platformData[channelId];
   const PlatformIcon = platform.icon;
 
   return (
@@ -113,14 +163,14 @@ const ChannelDetailPage = () => {
         <title>Agentic Flow | {platform.name}</title>
         <meta
           name="description"
-          content={`Ad performance and analytics for ${platform.name}`}
+          content={`Performance and analytics for ${platform.name}`}
         />
       </Head>
       <DashboardLayout>
         <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent backdrop-blur-xs px-4 sm:px-6">
           <Button
-            variant="ghost"
             size="icon"
+            variant="ghost"
             onClick={() => router.push("/content-system")}
           >
             <ArrowLeft className="h-5 w-5" />
@@ -147,12 +197,12 @@ const ChannelDetailPage = () => {
           </div>
         </header>
 
-        <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="flex-1 space-y-4 p-8">
           {selectedContent ? (
             <Card className="border bg-transparent">
               <CardHeader className="flex flex-row items-center justify-between">
                 <div>
-                  <CardTitle>Ad Content Viewer</CardTitle>
+                  <CardTitle>Content Viewer</CardTitle>
                   <CardDescription>
                     Reviewing agent-generated content for {platform.name}
                   </CardDescription>
@@ -194,7 +244,7 @@ const ChannelDetailPage = () => {
           ) : (
             <>
               <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                <Card className="border bg-transparent">
+                <Card className="border bg-transparent backdrop-blur-sm">
                   <CardContent className="p-6">
                     <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <p className="text-sm font-medium text-muted-foreground">
@@ -202,7 +252,7 @@ const ChannelDetailPage = () => {
                       </p>
                       <Eye className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <div className="flex items-baseline gap-2">
+                    <div className="flex items-baseline gap-2 mt-4">
                       <h3 className="text-2xl font-bold">412,789</h3>
                       <Badge
                         variant="outline"
@@ -215,15 +265,15 @@ const ChannelDetailPage = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="border bg-transparent">
+                <Card className="border bg-transparent backdrop-blur-sm">
                   <CardContent className="p-6">
                     <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <p className="text-sm font-medium text-muted-foreground">
-                        Click-Through Rate
+                        Engagement Rate
                       </p>
                       <MousePointer className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <div className="flex items-baseline gap-2">
+                    <div className="flex items-baseline gap-2 mt-4">
                       <h3 className="text-2xl font-bold">3.8%</h3>
                       <Badge
                         variant="outline"
@@ -236,15 +286,15 @@ const ChannelDetailPage = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="border bg-transparent">
+                <Card className="border bg-transparent backdrop-blur-sm">
                   <CardContent className="p-6">
                     <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <p className="text-sm font-medium text-muted-foreground">
-                        Active Ads
+                        Active Posts
                       </p>
                       <FileText className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <div className="flex items-baseline gap-2">
+                    <div className="flex items-baseline gap-2 mt-4">
                       <h3 className="text-2xl font-bold">37</h3>
                       <Badge
                         variant="outline"
@@ -256,7 +306,7 @@ const ChannelDetailPage = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="border bg-transparent">
+                <Card className="border bg-transparent backdrop-blur-sm">
                   <CardContent className="p-6">
                     <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <p className="text-sm font-medium text-muted-foreground">
@@ -264,10 +314,10 @@ const ChannelDetailPage = () => {
                       </p>
                       <Clock className="h-4 w-4 text-muted-foreground" />
                     </div>
-                    <div className="flex flex-col">
+                    <div className="flex flex-col mt-2">
                       <h3 className="text-xl font-bold">3 hours ago</h3>
                       <p className="text-sm text-muted-foreground">
-                        by Ad Intelligence Agent
+                        by Content Creator Agent
                       </p>
                     </div>
                   </CardContent>
@@ -275,35 +325,38 @@ const ChannelDetailPage = () => {
               </div>
 
               <Tabs
-                defaultValue="analytics"
                 value={activeTab}
-                onValueChange={setActiveTab}
                 className="space-y-4"
+                defaultValue="analytics"
+                onValueChange={setActiveTab}
               >
-                <TabsList className="grid w-full max-w-md grid-cols-3 bg-slate-800/30">
+                <TabsList className="grid w-full mt-8 max-w-md grid-cols-3 bg-slate-800/30">
                   <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                  <TabsTrigger value="content">Ad Content</TabsTrigger>
+                  <TabsTrigger value="content">Content</TabsTrigger>
                   <TabsTrigger value="agents">Agent Performance</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="analytics" className="space-y-4">
+                <TabsContent
+                  value="analytics"
+                  className="space-y-4 backdrop-blur-sm"
+                >
                   <Card className="border bg-transparent">
                     <CardHeader>
-                      <CardTitle>Ad Performance</CardTitle>
+                      <CardTitle>Content Performance</CardTitle>
                       <CardDescription>
                         Performance metrics for {platform.name}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <ChannelAnalytics channelId={channelId} />
+                      <ChannelAnalytics />
                     </CardContent>
                   </Card>
                 </TabsContent>
 
                 <TabsContent value="content" className="space-y-4">
-                  <Card className="border bg-transparent">
+                  <Card className="border bg-transparent backdrop-blur-sm">
                     <CardHeader>
-                      <CardTitle>Ad Content Library</CardTitle>
+                      <CardTitle>Content Library</CardTitle>
                       <CardDescription>
                         Agent-generated content for {platform.name}
                       </CardDescription>
@@ -311,15 +364,15 @@ const ChannelDetailPage = () => {
                     <CardContent>
                       <ChannelContentList
                         channelId={channelId}
-                        onViewContent={setSelectedContent}
                         isFiltered={isFiltering}
+                        onViewContent={handleViewContent}
                       />
                     </CardContent>
                   </Card>
                 </TabsContent>
 
                 <TabsContent value="agents" className="space-y-4">
-                  <Card className="border bg-transparent">
+                  <Card className="border bg-transparent backdrop-blur-sm">
                     <CardHeader>
                       <CardTitle>Agent Performance</CardTitle>
                       <CardDescription>
@@ -327,7 +380,7 @@ const ChannelDetailPage = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <AgentPerformanceForChannel channelId={channelId} />
+                      <AgentPerformanceForChannel />
                     </CardContent>
                   </Card>
                 </TabsContent>

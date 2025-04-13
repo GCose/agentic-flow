@@ -7,9 +7,6 @@ import {
   Eye,
   MousePointer,
   ThumbsUp,
-  AlertCircle,
-  CheckCircle,
-  Clock,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -31,50 +28,101 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+// Define the channel ID type
+type ChannelId =
+  | "facebook"
+  | "instagram"
+  | "twitter"
+  | "linkedin"
+  | "youtube"
+  | "tiktok";
+
+// Define the content data interface
+interface ContentData {
+  id: string;
+  title: string;
+  type: string;
+  platform: string;
+  headline: string;
+  copy: string;
+  callToAction: string;
+  targetAudience: string;
+  imageUrl: string;
+  stats: {
+    impressions: number;
+    ctr: string;
+    conversions: number;
+  };
+}
+
+// Define the content item interface for the table
+interface ContentItem {
+  id: string;
+  title: string;
+  type: string;
+  agent: string;
+  date: string;
+  status: string;
+  content: ContentData;
+  performance: {
+    impressions: number;
+    ctr: number;
+    conversions: number;
+  };
+}
+
 interface ChannelContentListProps {
-  channelId: string;
-  onViewContent: (content: any) => void;
+  channelId: ChannelId;
+  onViewContent: (content: ContentData) => void;
   isFiltered?: boolean;
 }
 
-// Mock data generator for ad content
-const generateMockAdContent = (channelId: string) => {
-  // Different content types based on platform
-  const contentTypes = {
-    facebook: ["Image Ad", "Video Ad", "Carousel Ad", "Story Ad"],
-    instagram: ["Image Ad", "Reel Ad", "Carousel Ad", "Story Ad"],
-    twitter: ["Image Ad", "Video Ad", "Text Ad", "Carousel Ad"],
-    linkedin: ["Single Image Ad", "Video Ad", "Carousel Ad", "Text Ad"],
-    youtube: ["Skippable Ad", "Non-skippable Ad", "Bumper Ad", "Overlay Ad"],
-    tiktok: ["In-Feed Ad", "TopView Ad", "Branded Effect", "Branded Hashtag"],
-  };
+// Type-safe content types
+const contentTypes: Record<ChannelId, string[]> = {
+  facebook: ["Image Post", "Video Post", "Carousel Post", "Story Post"],
+  instagram: ["Image Post", "Reel Post", "Carousel Post", "Story Post"],
+  twitter: ["Image Post", "Video Post", "Text Post", "Carousel Post"],
+  linkedin: ["Single Image Post", "Video Post", "Carousel Post", "Text Post"],
+  youtube: ["Short Video", "Standard Video", "Live Stream", "Community Post"],
+  tiktok: ["TikTok Video", "Duet", "Stitch", "Trending Challenge"],
+};
+
+// Function to check if a string is a valid channel ID
+function isValidChannelId(id: string): id is ChannelId {
+  return Object.keys(contentTypes).includes(id as ChannelId);
+}
+
+// Mock data generator for content
+const generateMockContentData = (channelId: string): ContentItem[] => {
+  // Use the channel ID safely by first checking if it's valid
+  const validChannelId = isValidChannelId(channelId) ? channelId : "facebook";
 
   const agents = [
-    "Ad Intelligence Agent",
     "Content Creator Agent",
-    "Counter Strategy Agent",
+    "Content Optimizer Agent",
+    "Topic Selector Agent",
     "Trend Selector Agent",
   ];
 
-  const statuses = ["Active", "Pending Review", "Draft", "Paused"];
+  const statuses = ["Published", "Pending Review", "Draft", "Paused"];
 
-  // Generate ad titles based on platform
-  const getTitlePrefix = (channel: string) => {
+  // Generate post titles based on platform
+  const getTitlePrefix = (channel: ChannelId): string => {
     switch (channel) {
       case "facebook":
-        return "Facebook Ad: ";
+        return "Facebook Post: ";
       case "instagram":
-        return "Instagram Ad: ";
+        return "Instagram Post: ";
       case "twitter":
-        return "Twitter Ad: ";
+        return "Twitter Post: ";
       case "linkedin":
-        return "LinkedIn Ad: ";
+        return "LinkedIn Post: ";
       case "youtube":
-        return "YouTube Ad: ";
+        return "YouTube Post: ";
       case "tiktok":
-        return "TikTok Ad: ";
+        return "TikTok Post: ";
       default:
-        return "Ad: ";
+        return "Post: ";
     }
   };
 
@@ -96,37 +144,39 @@ const generateMockAdContent = (channelId: string) => {
     "The Smart Choice for Modern Businesses",
   ];
 
+  // Get the appropriate content types for this channel
+  const types = contentTypes[validChannelId];
+
   // Generate content items
-  return Array.from({ length: 20 }, (_, i) => {
+  return Array.from({ length: 20 }, (_, i): ContentItem => {
     const currentDate = new Date();
     const daysAgo = Math.floor(Math.random() * 14);
     const dateCreated = new Date(currentDate);
     dateCreated.setDate(currentDate.getDate() - daysAgo);
 
     const impressions = Math.floor(5000 + Math.random() * 45000);
-    const ctr = (1 + Math.random() * 7).toFixed(2);
+    const ctr = Number((1 + Math.random() * 7).toFixed(2));
     const conversions = Math.floor(
-      impressions * (Number(ctr) / 100) * (0.1 + Math.random() * 0.2)
+      impressions * (ctr / 100) * (0.1 + Math.random() * 0.2)
     );
 
-    const titlePrefix = getTitlePrefix(channelId);
+    const titlePrefix = getTitlePrefix(validChannelId);
     const titleSuffix =
       titleSuffixes[Math.floor(Math.random() * titleSuffixes.length)];
 
-    const types = contentTypes[channelId] || contentTypes.facebook;
     const contentType = types[Math.floor(Math.random() * types.length)];
 
-    // Mock content payload to simulate actual ad content
-    const contentPayload = {
-      id: `ad-${i}`,
+    // Mock content payload
+    const contentPayload: ContentData = {
+      id: `post-${i}`,
       title: `${titlePrefix}${titleSuffix}`,
       type: contentType,
-      platform: channelId,
+      platform: validChannelId,
       headline: titleSuffix,
       copy: `Discover how our platform helps businesses like yours ${titleSuffix.toLowerCase()}. With our proven solution, you'll see results in days, not months.`,
       callToAction: "Get Started Today",
       targetAudience: "Business Professionals 25-54",
-      imageUrl: `/api/placeholder/800/600?text=Ad+Creative+${i}`,
+      imageUrl: `/api/placeholder/800/600?text=Post+Creative+${i}`,
       stats: {
         impressions,
         ctr: `${ctr}%`,
@@ -135,7 +185,7 @@ const generateMockAdContent = (channelId: string) => {
     };
 
     return {
-      id: `ad-${i}`,
+      id: `post-${i}`,
       title: `${titlePrefix}${titleSuffix}`,
       type: contentType,
       agent: agents[Math.floor(Math.random() * agents.length)],
@@ -144,7 +194,7 @@ const generateMockAdContent = (channelId: string) => {
       content: contentPayload,
       performance: {
         impressions,
-        ctr: Number(ctr),
+        ctr,
         conversions,
       },
     };
@@ -159,7 +209,7 @@ const ChannelContentList = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState("date");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
-  const [contentData, setContentData] = useState([]);
+  const [contentData, setContentData] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Simulate data loading with useEffect
@@ -167,7 +217,7 @@ const ChannelContentList = ({
     // Simulate API call
     setLoading(true);
     setTimeout(() => {
-      const data = generateMockAdContent(channelId);
+      const data = generateMockContentData(channelId);
       setContentData(data);
       setLoading(false);
     }, 500);
@@ -220,25 +270,9 @@ const ChannelContentList = ({
   };
 
   // View content details
-  const handleViewContent = (content) => {
+  const handleViewContent = (content: ContentData) => {
     // Call the parent component's handler
     onViewContent(content);
-  };
-
-  // Status icon component
-  const StatusIcon = ({ status }) => {
-    switch (status) {
-      case "Active":
-        return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case "Pending Review":
-        return <Clock className="h-4 w-4 text-amber-500" />;
-      case "Draft":
-        return <AlertCircle className="h-4 w-4 text-blue-500" />;
-      case "Paused":
-        return <AlertCircle className="h-4 w-4 text-muted-foreground" />;
-      default:
-        return null;
-    }
   };
 
   return (
@@ -248,7 +282,7 @@ const ChannelContentList = ({
           <div className="relative max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search ads..."
+              placeholder="Search posts..."
               className="pl-8"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -267,7 +301,7 @@ const ChannelContentList = ({
 
       {loading ? (
         <div className="flex justify-center items-center py-12">
-          <p>Loading ad content...</p>
+          <p>Loading content...</p>
         </div>
       ) : (
         <div className="rounded-md border">
@@ -280,7 +314,7 @@ const ChannelContentList = ({
                     className="p-0 font-medium"
                     onClick={() => handleSort("title")}
                   >
-                    Ad Title
+                    Post Title
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
@@ -296,7 +330,6 @@ const ChannelContentList = ({
                   </Button>
                 </TableHead>
                 <TableHead>Agent</TableHead>
-                <TableHead>Status</TableHead>
                 <TableHead>
                   <Button
                     variant="ghost"
@@ -323,22 +356,6 @@ const ChannelContentList = ({
                         className="bg-blue-500/10 text-blue-500"
                       >
                         {content.agent.replace(" Agent", "")}
-                      </Badge>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      <StatusIcon status={content.status} />
-                      <Badge
-                        variant={
-                          content.status === "Active"
-                            ? "default"
-                            : content.status === "Pending Review"
-                            ? "secondary"
-                            : "outline"
-                        }
-                      >
-                        {content.status}
                       </Badge>
                     </div>
                   </TableCell>
@@ -370,20 +387,12 @@ const ChannelContentList = ({
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => handleViewContent(content.content)}
                         >
-                          View Ad Content
+                          Edit Content
                         </DropdownMenuItem>
-                        <DropdownMenuItem>View Analytics</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Approve</DropdownMenuItem>
-                        <DropdownMenuItem>Request Changes</DropdownMenuItem>
-                        {content.status === "Active" ? (
-                          <DropdownMenuItem>Pause Ad</DropdownMenuItem>
-                        ) : (
-                          <DropdownMenuItem>Activate Ad</DropdownMenuItem>
-                        )}
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

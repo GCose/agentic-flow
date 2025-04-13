@@ -12,12 +12,19 @@ import {
   Cell,
 } from "recharts";
 import ChartTooltip from "@/components/ui/chart-tooltip";
-import { Progress } from "@/components/ui/progress";
 import { Card, CardContent } from "@/components/ui/card";
 
-// Mock data for agent performance
-const generateAgentPerformanceData = () => {
-  const agents = [
+type AgentData = {
+  name: string;
+  contentCount: number;
+  avgViews: number;
+  avgEngagement: number;
+  successRate: number;
+  color: string;
+};
+
+const generateAgentPerformanceData = (): AgentData[] => {
+  return [
     {
       name: "Content Creator Agent",
       contentCount: Math.floor(20 + Math.random() * 30),
@@ -51,12 +58,17 @@ const generateAgentPerformanceData = () => {
       color: "#8B5CF6",
     },
   ];
-
-  return agents;
 };
 
-// Mock data for content distribution
-const generateContentDistributionData = () => {
+type DistributionData = {
+  name: string;
+  value: number;
+  color: string;
+};
+
+const generateContentDistributionData = (
+  agents: AgentData[]
+): DistributionData[] => {
   return agents.map((agent) => ({
     name: agent.name,
     value: agent.contentCount,
@@ -69,6 +81,8 @@ const AgentPerformanceForChannel = () => {
   const agentData = generateAgentPerformanceData();
   const contentDistributionData = generateContentDistributionData(agentData);
 
+  const maxViews = Math.max(...agentData.map((agent) => agent.avgViews));
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -79,12 +93,7 @@ const AgentPerformanceForChannel = () => {
           <ResponsiveContainer width="100%" height="85%">
             <BarChart
               data={agentData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
+              margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
@@ -112,7 +121,7 @@ const AgentPerformanceForChannel = () => {
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="value"
-                label={({ name, percent }) =>
+                label={({ name, percent }: { name: string; percent: number }) =>
                   `${name.replace(" Agent", "")}: ${(percent * 100).toFixed(
                     0
                   )}%`
@@ -129,50 +138,72 @@ const AgentPerformanceForChannel = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Average Views by Agent */}
         <Card className="border bg-transparent">
           <CardContent className="p-6">
             <h3 className="text-lg font-medium mb-4">Average Views by Agent</h3>
-            <div className="space-y-6">
-              {agentData.map((agent, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">
-                      {agent.name.replace(" Agent", "")}
-                    </span>
-                    <span className="text-sm">
-                      {agent.avgViews.toLocaleString()} views
-                    </span>
+            <div className="space-y-4">
+              {agentData.map((agent) => {
+                const widthPercent = (agent.avgViews / maxViews) * 100;
+
+                return (
+                  <div key={agent.name}>
+                    <div className="flex justify-between mb-1">
+                      <span className="text-sm font-medium">
+                        {agent.name.replace(" Agent", "")}
+                      </span>
+                      <span className="text-sm">
+                        {agent.avgViews.toLocaleString()} views
+                      </span>
+                    </div>
+                    <div className="w-full h-2 bg-gray-200 rounded-full">
+                      <div
+                        className="h-2 rounded-full"
+                        style={{
+                          width: `${widthPercent}%`,
+                          backgroundColor: agent.color,
+                        }}
+                      />
+                    </div>
                   </div>
-                  <Progress
-                    value={(agent.avgViews / 8000) * 100}
-                    indicatorClassName={`bg-[${agent.color}]`}
-                  />
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>
 
+        {/* Success Rate by Agent */}
         <Card className="border bg-transparent">
           <CardContent className="p-6">
             <h3 className="text-lg font-medium mb-4">Success Rate by Agent</h3>
-            <div className="space-y-6">
-              {agentData.map((agent, index) => (
-                <div key={index} className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium">
-                      {agent.name.replace(" Agent", "")}
-                    </span>
-                    <span className="text-sm">
-                      {agent.successRate.toFixed(1)}%
-                    </span>
+            <div className="space-y-4">
+              {agentData.map((agent) => {
+                const successColor =
+                  agent.successRate >= 90
+                    ? "bg-green-500"
+                    : agent.successRate >= 80
+                    ? "bg-yellow-500"
+                    : "bg-red-500";
+
+                return (
+                  <div key={agent.name}>
+                    <div className="flex justify-between items-center mb-1">
+                      <span className="text-sm font-medium">
+                        {agent.name.replace(" Agent", "")}
+                      </span>
+                      <span className="text-sm font-medium">
+                        {agent.successRate.toFixed(1)}%
+                      </span>
+                    </div>
+                    <div className="w-full h-2 bg-gray-200 rounded-full">
+                      <div
+                        className={`h-2 rounded-full ${successColor}`}
+                        style={{ width: `${agent.successRate}%` }}
+                      />
+                    </div>
                   </div>
-                  <Progress
-                    value={agent.successRate}
-                    indicatorClassName={`bg-[${agent.color}]`}
-                  />
-                </div>
-              ))}
+                );
+              })}
             </div>
           </CardContent>
         </Card>

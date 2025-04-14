@@ -28,6 +28,7 @@ import {
   SidebarSeparator,
   SidebarInput,
 } from "@/components/ui/sidebar";
+import Image from "next/image";
 
 const mainNavItems = [
   {
@@ -84,11 +85,17 @@ const DashboardSidebar = () => {
   const pathname = usePathname();
 
   return (
-    <Sidebar>
+    <Sidebar className="backdrop-blur-sm border-none border-slate-800">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary">
-            <Brain className="h-5 w-5 text-primary-foreground" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-transparent">
+            <Image
+              width={150}
+              height={150}
+              alt="ITCA Logo"
+              className="mr-2"
+              src="/images/Icon.png"
+            />
           </div>
           <span className="text-xl font-bold">Agentic Flow</span>
         </div>

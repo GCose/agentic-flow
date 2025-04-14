@@ -73,23 +73,6 @@ const ContentSystemPage = () => {
     platform.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Handle search from header
-  //   const handleSearch = (query: string) => {
-  //     setSearchQuery(query);
-  //   };
-
-  //   // Handle filter button clicks
-  //   const handleFilter = () => {
-  //     // Toggle filter state to demonstrate functionality
-  //     setFilterApplied(!filterApplied);
-
-  //     // In a real implementation, this would open a filter modal/dropdown
-  //     // with options like: performance range, date range, etc.
-  //     console.log(
-  //       "Filter button clicked - would show filter options in real implementation"
-  //     );
-  //   };
-
   return (
     <>
       <Head>
@@ -168,7 +151,7 @@ const ContentSystemPage = () => {
           </Tabs>
 
           {activeTab === "channels" && (
-            <Card className="border  bg-transparent backdrop-blur-sm">
+            <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Recent Agent-Generated Content</CardTitle>
                 <CardDescription>

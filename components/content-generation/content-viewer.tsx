@@ -10,8 +10,26 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Eye, MousePointer, ThumbsUp, DollarSign, Clock } from "lucide-react";
 
+// Define the content type structure
+interface ContentStats {
+  impressions?: number;
+  ctr?: string;
+  conversions?: number;
+}
+
+interface Content {
+  title: string;
+  agent?: string;
+  type: string;
+  headline?: string;
+  copy?: string;
+  callToAction?: string;
+  targetAudience?: string;
+  stats?: ContentStats;
+}
+
 interface ContentViewerProps {
-  content: any;
+  content: Content;
   platformId: string;
 }
 
@@ -197,7 +215,11 @@ const ContentViewer = ({ content, platformId }: ContentViewerProps) => {
 };
 
 // Platform-specific preview components
-const FacebookPreview = ({ content }) => (
+interface PlatformPreviewProps {
+  content: Content;
+}
+
+const FacebookPreview = ({ content }: PlatformPreviewProps) => (
   <div className="border rounded-md overflow-hidden">
     <div className="bg-blue-500 text-white text-sm font-semibold px-4 py-2">
       Facebook Post Preview
@@ -229,7 +251,7 @@ const FacebookPreview = ({ content }) => (
   </div>
 );
 
-const InstagramPreview = ({ content }) => (
+const InstagramPreview = ({ content }: PlatformPreviewProps) => (
   <div className="border rounded-md overflow-hidden">
     <div className="bg-gradient-to-r from-pink-500 to-purple-500 text-white text-sm font-semibold px-4 py-2">
       Instagram Post Preview
@@ -262,7 +284,7 @@ const InstagramPreview = ({ content }) => (
   </div>
 );
 
-const TwitterPreview = ({ content }) => (
+const TwitterPreview = ({ content }: PlatformPreviewProps) => (
   <div className="border rounded-md overflow-hidden">
     <div className="bg-blue-400 text-white text-sm font-semibold px-4 py-2">
       Twitter / X Ad Preview
@@ -301,7 +323,7 @@ const TwitterPreview = ({ content }) => (
   </div>
 );
 
-const LinkedInPreview = ({ content }) => (
+const LinkedInPreview = ({ content }: PlatformPreviewProps) => (
   <div className="border rounded-md overflow-hidden">
     <div className="bg-blue-700 text-white text-sm font-semibold px-4 py-2">
       LinkedIn Ad Preview
@@ -338,7 +360,7 @@ const LinkedInPreview = ({ content }) => (
   </div>
 );
 
-const YouTubePreview = ({ content }) => (
+const YouTubePreview = ({ content }: PlatformPreviewProps) => (
   <div className="border rounded-md overflow-hidden">
     <div className="bg-red-600 text-white text-sm font-semibold px-4 py-2">
       YouTube Ad Preview
@@ -371,7 +393,7 @@ const YouTubePreview = ({ content }) => (
   </div>
 );
 
-const TikTokPreview = ({ content }) => (
+const TikTokPreview = ({ content }: PlatformPreviewProps) => (
   <div className="border rounded-md overflow-hidden">
     <div className="bg-black text-white text-sm font-semibold px-4 py-2">
       TikTok Ad Preview
@@ -411,7 +433,7 @@ const TikTokPreview = ({ content }) => (
   </div>
 );
 
-const GenericPreview = ({ content }) => (
+const GenericPreview = ({ content }: PlatformPreviewProps) => (
   <Card className="border-none">
     <CardHeader>
       <CardTitle>{content.title}</CardTitle>

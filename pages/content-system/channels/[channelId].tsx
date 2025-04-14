@@ -104,7 +104,7 @@ function isValidChannelId(id: string | string[] | undefined): id is ChannelId {
 const ChannelDetailPage = () => {
   const router = useRouter();
   const { channelId } = router.query;
-  const [activeTab, setActiveTab] = useState("analytics");
+  const [activeTab, setActiveTab] = useState("content");
   const [selectedContent, setSelectedContent] = useState<ContentData | null>(
     null
   );
@@ -327,31 +327,14 @@ const ChannelDetailPage = () => {
               <Tabs
                 value={activeTab}
                 className="space-y-4"
-                defaultValue="analytics"
+                defaultValue="content"
                 onValueChange={setActiveTab}
               >
                 <TabsList className="grid w-full mt-8 max-w-md grid-cols-3 bg-slate-800/30">
-                  <TabsTrigger value="analytics">Analytics</TabsTrigger>
                   <TabsTrigger value="content">Content</TabsTrigger>
+                  <TabsTrigger value="analytics">Content Analytics</TabsTrigger>
                   <TabsTrigger value="agents">Agent Performance</TabsTrigger>
                 </TabsList>
-
-                <TabsContent
-                  value="analytics"
-                  className="space-y-4 backdrop-blur-sm"
-                >
-                  <Card className="border bg-transparent">
-                    <CardHeader>
-                      <CardTitle>Content Performance</CardTitle>
-                      <CardDescription>
-                        Performance metrics for {platform.name}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <ChannelAnalytics />
-                    </CardContent>
-                  </Card>
-                </TabsContent>
 
                 <TabsContent value="content" className="space-y-4">
                   <Card className="border bg-transparent backdrop-blur-sm">
@@ -367,6 +350,23 @@ const ChannelDetailPage = () => {
                         isFiltered={isFiltering}
                         onViewContent={handleViewContent}
                       />
+                    </CardContent>
+                  </Card>
+                </TabsContent>
+
+                <TabsContent
+                  value="analytics"
+                  className="space-y-4 backdrop-blur-sm"
+                >
+                  <Card className="border bg-transparent">
+                    <CardHeader>
+                      <CardTitle>Content Performance</CardTitle>
+                      <CardDescription>
+                        Performance metrics for {platform.name}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <ChannelAnalytics />
                     </CardContent>
                   </Card>
                 </TabsContent>

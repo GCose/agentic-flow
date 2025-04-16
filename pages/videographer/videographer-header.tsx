@@ -1,9 +1,9 @@
 import { Bell, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import ThemeToggle from "../theme-toggle";
+import ThemeToggle from "@/components/theme-toggle";
 
-const DashboardHeader = () => {
+const VideographerHeader = () => {
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent backdrop-blur-xs px-4 sm:px-6 border-slate-800">
       <SidebarTrigger />
@@ -27,4 +27,4 @@ const DashboardHeader = () => {
   );
 };
 
-export default DashboardHeader;
+export default VideographerHeader;

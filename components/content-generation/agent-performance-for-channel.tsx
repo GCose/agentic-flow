@@ -184,7 +184,7 @@ const AgentPerformanceForChannel = () => {
                     : agent.successRate >= 80
                     ? "bg-yellow-500"
                     : "bg-red-500";
-
+                
                 return (
                   <div key={agent.name}>
                     <div className="flex justify-between items-center mb-1">

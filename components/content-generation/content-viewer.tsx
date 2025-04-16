@@ -71,10 +71,10 @@ const ContentViewer = ({ content, platformId }: ContentViewerProps) => {
       </div>
 
       <Tabs
-        defaultValue="preview"
         value={activeTab}
-        onValueChange={setActiveTab}
+        defaultValue="preview"
         className="space-y-4"
+        onValueChange={setActiveTab}
       >
         <TabsList className="grid w-full max-w-md grid-cols-3 bg-slate-800/30">
           <TabsTrigger value="preview">Content Preview</TabsTrigger>

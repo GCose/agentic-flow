@@ -8,8 +8,8 @@
  ================*/
 :root {
   /*=== Colors ===*/
+  --hover-color: #0030ff;
   --color-body: #cacaca8f;
-  --hover-color: rgb(0, 157, 255);
   --white-alpha-8: hsla(0, 0%, 100%, 0.11);
 }
 

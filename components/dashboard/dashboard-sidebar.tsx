@@ -185,8 +185,8 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
-                    isActive={pathname === item.href}
                     tooltip={item.title}
+                    isActive={pathname === item.href}
                   >
                     <Link href={item.href} className="group">
                       <div
@@ -216,10 +216,10 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
               {secondaryNavItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
-                    asChild={!item.onClick}
                     tooltip={item.title}
-                    isActive={pathname === item.href}
                     onClick={item.onClick}
+                    asChild={!item.onClick}
+                    isActive={pathname === item.href}
                   >
                     {item.onClick ? (
                       <div className="group flex h-8 w-full cursor-pointer items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden">

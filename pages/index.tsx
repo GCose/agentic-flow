@@ -27,7 +27,7 @@ const DashboardPage: NextPage = () => {
               </div>
               <div>
                 <h1 className="text-4xl font-bold tracking-tight mb-2">
-                  Welcome to Agentic Flow
+                  Agentic Flow
                 </h1>
                 <p className="text-xl text-slate-300">
                   Your AI-powered operational ecosystem

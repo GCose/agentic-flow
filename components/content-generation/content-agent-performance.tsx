@@ -15,7 +15,6 @@ import {
 import { Progress } from "@/components/ui/progress";
 import ChartTooltip from "@/components/ui/chart-tooltip";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import Link from "next/link";
 
 // Mock data for agent performance
 const agentPerformanceData = [
@@ -258,12 +257,6 @@ const ContentAgentPerformance = () => {
                     indicatorClassName={`bg-[${agent.color}]`}
                   />
                   <div className="flex justify-between text-xs text-muted-foreground">
-                    <Link
-                      href="/content-system/prompt"
-                      className="bg-white p-2 text-black rounded-md text-md"
-                    >
-                      Edit
-                    </Link>
                     <span>Content: {agent.contentCreated}</span>
                     <span>Success Rate: {agent.avgSuccess}%</span>
                     <span className="text-green-500">{agent.trend}</span>

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
   FileText,
   Users,
@@ -23,25 +22,22 @@ const SystemCard = ({
   title,
   description,
   icon,
-  href,
   color,
   iconBg,
   iconColor,
 }: SystemCardProps) => {
   return (
-    <Link href={href} className="block">
-      <Card
-        className={`border-white-400 ${color} hover:translate-y-2 transition-all duration-500 h-full backdrop-blur-sm`}
-      >
-        <CardContent className="p-6 flex flex-col items-center text-center">
-          <div className={`rounded-full ${iconBg} p-4 mb-4`}>
-            <div className={`${iconColor}`}>{icon}</div>
-          </div>
-          <h3 className="font-medium text-lg mb-2">{title}</h3>
-          <p className="text-sm text-muted-foreground">{description}</p>
-        </CardContent>
-      </Card>
-    </Link>
+    <Card
+      className={`border-white-400 ${color} hover:translate-y-2 cursor-pointer transition-all duration-500 h-full backdrop-blur-sm`}
+    >
+      <CardContent className="p-6 flex flex-col items-center text-center">
+        <div className={`rounded-full ${iconBg} p-4 mb-4`}>
+          <div className={`${iconColor}`}>{icon}</div>
+        </div>
+        <h3 className="font-medium text-lg mb-2">{title}</h3>
+        <p className="text-sm text-muted-foreground">{description}</p>
+      </CardContent>
+    </Card>
   );
 };
 

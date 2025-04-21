@@ -53,6 +53,11 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           icon: LayoutDashboard,
         },
         {
+          title: "Clients",
+          href: "/client-dashboard",
+          icon: Users,
+        },
+        {
           title: "Content System",
           href: "/content-system",
           icon: FileText,
@@ -61,11 +66,6 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           title: "Agent Management",
           href: "/agent-management",
           icon: Brain,
-        },
-        {
-          title: "Client Dashboard",
-          href: "/client-dashboard",
-          icon: Users,
         },
         {
           title: "Reporting & Output",

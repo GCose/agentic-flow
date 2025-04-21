@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Brain,
+  // Brain,
   Users,
-  BarChart,
-  FileInput,
-  RefreshCw,
+  // BarChart,
+  // FileInput,
+  // RefreshCw,
   Search,
   Settings,
   LogOut,
@@ -57,31 +57,31 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           href: "/client-dashboard",
           icon: Users,
         },
-        {
-          title: "Content System",
-          href: "/content-system",
-          icon: FileText,
-        },
-        {
-          title: "Agent Management",
-          href: "/agent-management",
-          icon: Brain,
-        },
-        {
-          title: "Reporting & Output",
-          href: "/reporting",
-          icon: BarChart,
-        },
-        {
-          title: "Onboarding & Prompts",
-          href: "/onboarding",
-          icon: FileInput,
-        },
-        {
-          title: "Feedback & Optimization",
-          href: "/feedback",
-          icon: RefreshCw,
-        },
+        // {
+        //   title: "Content System",
+        //   href: "/content-system",
+        //   icon: FileText,
+        // },
+        // {
+        //   title: "Agent Management",
+        //   href: "/agent-management",
+        //   icon: Brain,
+        // },
+        // {
+        //   title: "Reporting & Output",
+        //   href: "/reporting",
+        //   icon: BarChart,
+        // },
+        // {
+        //   title: "Onboarding & Prompts",
+        //   href: "/onboarding",
+        //   icon: FileInput,
+        // },
+        // {
+        //   title: "Feedback & Optimization",
+        //   href: "/feedback",
+        //   icon: RefreshCw,
+        // },
       ];
     }
 

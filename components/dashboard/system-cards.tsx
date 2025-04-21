@@ -41,7 +41,7 @@ const SystemCard = ({
   );
 };
 
-export const SystemCards = () => {
+const SystemCards = () => {
   const systems = [
     {
       title: "Content Generation",
@@ -107,3 +107,5 @@ export const SystemCards = () => {
     </>
   );
 };
+
+export default SystemCards;

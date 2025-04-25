@@ -171,7 +171,14 @@ const ChannelDetailPage = () => {
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => router.push("/admin/content-system")}
+            onClick={() => {
+              const { clientId } = router.query;
+              if (clientId) {
+                router.push(`/admin/content-system?clientId=${clientId}`);
+              } else {
+                router.push("/admin/content-system");
+              }
+            }}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>

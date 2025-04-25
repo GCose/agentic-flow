@@ -109,7 +109,7 @@ const ContentSystemPage = () => {
                 {filteredPlatforms.map((platform) => (
                   <Link
                     key={platform.id}
-                    href={`/admin/content-system/channels/${platform.id}`}
+                    href={`/client/content-system/channels/${platform.id}`}
                   >
                     <ContentChannelCard
                       name={platform.name}

@@ -76,7 +76,8 @@ const ContentSystemPage = () => {
   return (
     <>
       <Head>
-        <title>Agentic Flow | Content System</title>
+        <title>Aftermath Marketing | Content System</title>
+        <link rel="icon" href="/images/logo.jpg" />
         <meta
           name="description"
           content="Manage and monitor your social media ad campaigns"
@@ -108,7 +109,7 @@ const ContentSystemPage = () => {
                 {filteredPlatforms.map((platform) => (
                   <Link
                     key={platform.id}
-                    href={`/content-system/channels/${platform.id}`}
+                    href={`/admin/content-system/channels/${platform.id}`}
                   >
                     <ContentChannelCard
                       name={platform.name}

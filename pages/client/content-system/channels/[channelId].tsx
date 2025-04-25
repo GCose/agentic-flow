@@ -35,7 +35,7 @@ import ChannelAnalytics from "@/components/content-system/channel-analytics";
 import ChannelContentList from "@/components/content-system/channel-content-list";
 import ContentViewer from "@/components/content-system/content-viewer";
 
-// Define the valid channel IDs as a type
+// Valid channel IDs as a type
 export type ChannelId =
   | "facebook"
   | "instagram"

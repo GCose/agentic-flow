@@ -44,16 +44,28 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
 
   // Function to determine if a menu item is active
   const isMenuItemActive = (href: string) => {
-    // For client dashboard pages
-    if (href !== "/admin" && pathname?.startsWith(href)) {
-      return true;
+    // Client role navigation highlighting
+    if (role === "client") {
+      if (href === "/client") return pathname === "/client";
+      if (href === "/client/content-system")
+        return pathname?.startsWith("/client/content-system");
+      return pathname === href;
     }
 
-    // Exact match for other pages
-    return pathname === href;
+    // Admin client dashboard highlighting (handles content system with clientId)
+    if (href === "/admin/client-dashboard")
+      return (
+        pathname?.startsWith(href) ||
+        (pathname?.includes("/admin/content-system") &&
+          window.location.search.includes("clientId="))
+      );
+
+    // Standard path-based highlighting
+    return (
+      (href !== "/admin" && pathname?.startsWith(href)) || pathname === href
+    );
   };
 
-  // Navigation items based on role
   const getNavItems = (role: UserRole) => {
     // Client role navigation items
     if (role === "client") {

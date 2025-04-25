@@ -166,12 +166,12 @@ const ChannelDetailPage = () => {
           content={`Performance and analytics for ${platform.name}`}
         />
       </Head>
-      <DashboardLayout>
+      <DashboardLayout role="client">
         <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent backdrop-blur-xs px-4 sm:px-6">
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => router.push("/admin/content-system")}
+            onClick={() => router.push("/client/content-system")}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>

@@ -173,7 +173,7 @@ const ContentSystemPage = () => {
                 {filteredPlatforms.map((platform) => (
                   <Link
                     key={platform.id}
-                    href={`/content-system/channels/${platform.id}${
+                    href={`/admin/content-system/channels/${platform.id}${
                       client ? `?clientId=${client.id}` : ""
                     }`}
                   >

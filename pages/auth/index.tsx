@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NextPage } from "next";
+// import { NextApiRequest, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth-context";
@@ -16,6 +16,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import BackgroundElements from "@/components/ui/background-elements";
+import { NextPage } from "next";
+// import { loggedInUser } from "@/utils/auth";
 
 const LoginPage: NextPage = () => {
   const [email, setEmail] = useState("");
@@ -29,7 +31,7 @@ const LoginPage: NextPage = () => {
 
   // If already authenticated, redirect to appropriate dashboard
   if (isAuthenticated) {
-    router.push("/");
+    router.push("/admin");
     return null;
   }
 
@@ -83,7 +85,10 @@ const LoginPage: NextPage = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4 flex flex-col gap-4">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-4 flex flex-col gap-4"
+            >
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -141,6 +146,7 @@ const LoginPage: NextPage = () => {
                 <p className="mt-1">Admin: admin@example.com / admin123</p>
                 <p>Videographer: video@example.com / video123</p>
                 <p>Designer: design@example.com / design123</p>
+                <p>Client: client@example.com / client123</p>
               </div>
             </form>
           </CardContent>
@@ -151,3 +157,24 @@ const LoginPage: NextPage = () => {
 };
 
 export default LoginPage;
+
+// export const getServerSideProps = async ({ req }: { req: NextApiRequest }) => {
+//   console.log(req);
+
+//   const user = loggedInUser();
+
+//   if (!user) {
+//     return {
+//       redirect: {
+//         destination: "/auth",
+//         permanent: false
+//       }
+//     }
+//   }
+//   return {
+//     redirect: {
+//       destination: "/admin",
+//       permanent: false,
+//     },
+//   };
+// };

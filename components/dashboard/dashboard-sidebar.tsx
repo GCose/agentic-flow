@@ -1,11 +1,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  // Brain,
-  Users,
-  // BarChart,
-  // FileInput,
-  // RefreshCw,
   Search,
   Settings,
   LogOut,
@@ -13,6 +8,11 @@ import {
   FileText,
   Video,
   Brush,
+  Users,
+  BarChart,
+  MessageSquare,
+  DollarSign,
+  Briefcase,
 } from "lucide-react";
 
 import {
@@ -42,96 +42,148 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
-  // Define navigation items based on role
+  // Function to determine if a menu item is active
+  const isMenuItemActive = (href: string) => {
+    // For client dashboard pages
+    if (href !== "/admin" && pathname?.startsWith(href)) {
+      return true;
+    }
+
+    // Exact match for other pages
+    return pathname === href;
+  };
+
+  // Navigation items based on role
   const getNavItems = (role: UserRole) => {
+    // Client role navigation items
+    if (role === "client") {
+      return {
+        mainItems: [
+          {
+            title: "Dashboard",
+            href: "/client",
+            icon: LayoutDashboard,
+          },
+          {
+            title: "Content System",
+            href: "/client/content-system",
+            icon: FileText,
+          },
+          {
+            title: "Leadgen System",
+            href: "/client/leadgen-system",
+            icon: Users,
+          },
+          {
+            title: "Sales System",
+            href: "/client/sales-system",
+            icon: DollarSign,
+          },
+          {
+            title: "Onboarding System",
+            href: "/client/onboarding-system",
+            icon: Briefcase,
+          },
+          {
+            title: "Reports",
+            href: "/client/reports",
+            icon: BarChart,
+          },
+          {
+            title: "Feedback & Optimization",
+            href: "/client/feedback",
+            icon: MessageSquare,
+          },
+        ],
+        contentCreationItems: [], // No content creation items for clients
+      };
+    }
+
     // Admin nav items
     if (role === "admin") {
-      return [
+      const adminMainItems = [
         {
           title: "Overview",
-          href: "/",
+          href: "/admin",
           icon: LayoutDashboard,
         },
         {
           title: "Clients",
-          href: "/client-dashboard",
+          href: "/admin/client-dashboard",
           icon: Users,
         },
-        // {
-        //   title: "Content System",
-        //   href: "/content-system",
-        //   icon: FileText,
-        // },
-        // {
-        //   title: "Agent Management",
-        //   href: "/agent-management",
-        //   icon: Brain,
-        // },
-        // {
-        //   title: "Reporting & Output",
-        //   href: "/reporting",
-        //   icon: BarChart,
-        // },
-        // {
-        //   title: "Onboarding & Prompts",
-        //   href: "/onboarding",
-        //   icon: FileInput,
-        // },
-        // {
-        //   title: "Feedback & Optimization",
-        //   href: "/feedback",
-        //   icon: RefreshCw,
-        // },
       ];
+
+      // Content creation items in a separate group
+      const contentCreationItems = [
+        {
+          title: "Videographer",
+          href: "/admin/videographer",
+          icon: Video,
+        },
+        {
+          title: "Graphics Designer",
+          href: "/admin/designer",
+          icon: Brush,
+        },
+      ];
+
+      return { mainItems: adminMainItems, contentCreationItems };
     }
 
     // Videographer nav items
     if (role === "videographer") {
-      return [
-        {
-          title: "Dashboard",
-          href: "/videographer",
-          icon: LayoutDashboard,
-        },
-        {
-          title: "Upload Videos",
-          href: "/videographer/upload",
-          icon: Video,
-        },
-        {
-          title: "Content Library",
-          href: "/videographer/content",
-          icon: FileText,
-        },
-      ];
+      return {
+        mainItems: [
+          {
+            title: "Dashboard",
+            href: "/admin/videographer",
+            icon: LayoutDashboard,
+          },
+          {
+            title: "Upload Videos",
+            href: "/admin/videographer/upload",
+            icon: Video,
+          },
+          {
+            title: "Content Library",
+            href: "/admin/videographer/content",
+            icon: FileText,
+          },
+        ],
+        contentCreationItems: [],
+      };
     }
 
     // Designer nav items
     if (role === "designer") {
-      return [
-        {
-          title: "Dashboard",
-          href: "/designer",
-          icon: LayoutDashboard,
-        },
-        {
-          title: "Upload Designs",
-          href: "/designer/upload",
-          icon: Brush,
-        },
-        {
-          title: "Content Library",
-          href: "/designer/content",
-          icon: FileText,
-        },
-      ];
+      return {
+        mainItems: [
+          {
+            title: "Dashboard",
+            href: "/admin/designer",
+            icon: LayoutDashboard,
+          },
+          {
+            title: "Upload Designs",
+            href: "/admin/designer/upload",
+            icon: Brush,
+          },
+          {
+            title: "Content Library",
+            href: "/admin/designer/content",
+            icon: FileText,
+          },
+        ],
+        contentCreationItems: [],
+      };
     }
 
     // Default to admin if role not recognized
-    return [];
+    return { mainItems: [], contentCreationItems: [] };
   };
 
-  const mainNavItems = getNavItems(role);
+  const { mainItems, contentCreationItems } = getNavItems(role);
 
   const secondaryNavItems = [
     {
@@ -170,7 +222,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
             <SidebarInput
               type="search"
               placeholder="Search..."
-              className="w-full pl-8"
+              className="w-full bg-transparent pl-8 border-slate-800"
             />
           </div>
         </div>
@@ -178,22 +230,22 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
 
       <SidebarContent className="overflow-x-hidden">
         <SidebarGroup>
-          <SidebarGroupLabel>{roleTitle} Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>Main Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="flex flex-col mt-2 gap-4">
-              {mainNavItems.map((item) => (
+            <SidebarMenu className="gap-4">
+              {mainItems.map((item) => (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
                     asChild
                     tooltip={item.title}
-                    isActive={pathname === item.href}
+                    isActive={isMenuItemActive(item.href)}
                   >
                     <Link href={item.href} className="group">
                       <div
-                        className={`flex h-7 w-7 rounded-sm items-center justify-center transition-colors ${
-                          pathname === item.href
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-transparent group-hover:bg-white/5"
+                        className={`flex h-6 w-6 items-center justify-center rounded transition-colors ${
+                          isMenuItemActive(item.href)
+                            ? "bg-blue-600 text-white"
+                            : "bg-transparent group-hover:bg-primary/10"
                         }`}
                       >
                         <item.icon className="h-5 w-5" />
@@ -207,6 +259,41 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           </SidebarGroupContent>
         </SidebarGroup>
 
+        {role === "admin" && contentCreationItems.length > 0 && (
+          <>
+            <SidebarSeparator />
+            <SidebarGroup>
+              <SidebarGroupLabel>Content Creation</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {contentCreationItems.map((item) => (
+                    <SidebarMenuItem key={item.href}>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip={item.title}
+                        isActive={isMenuItemActive(item.href)}
+                      >
+                        <Link href={item.href} className="group">
+                          <div
+                            className={`flex h-6 w-6 items-center justify-center rounded transition-colors ${
+                              isMenuItemActive(item.href)
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-transparent group-hover:bg-primary/10"
+                            }`}
+                          >
+                            <item.icon className="h-5 w-5" />
+                          </div>
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </>
+        )}
+
         <SidebarSeparator />
 
         <SidebarGroup>
@@ -214,25 +301,25 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           <SidebarGroupContent>
             <SidebarMenu>
               {secondaryNavItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
+                <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton
                     tooltip={item.title}
                     onClick={item.onClick}
                     asChild={!item.onClick}
-                    isActive={pathname === item.href}
+                    isActive={isMenuItemActive(item.href)}
                   >
                     {item.onClick ? (
-                      <div className="group flex h-8 w-full cursor-pointer items-center gap-2 overflow-hidden rounded-md p-2 text-left text-sm outline-hidden">
-                        <div className="flex h-5 w-5 items-center justify-center rounded transition-colors bg-transparent group-hover:bg-primary/10">
-                          <item.icon className="h-3.5 w-3.5" />
+                      <div className="group flex h-8 w-full cursor-pointer items-center gap-2 overflow-hidden rounded-md text-left text-sm outline-hidden">
+                        <div className="flex h-6 w-6 items-center justify-center rounded transition-colors bg-transparent group-hover:bg-primary/10">
+                          <item.icon className="h-5 w-5" />
                         </div>
                         <span>{item.title}</span>
                       </div>
                     ) : (
                       <Link href={item.href} className="group">
                         <div
-                          className={`flex h-7 w-7 items-center justify-center rounded transition-colors ${
-                            pathname === item.href
+                          className={`flex h-6 w-6 items-center justify-center rounded transition-colors ${
+                            isMenuItemActive(item.href)
                               ? "bg-primary text-primary-foreground"
                               : "bg-transparent group-hover:bg-primary/10"
                           }`}

@@ -6,4 +6,4 @@ export interface User {
   avatar?: string;
 }
 
-export type UserRole = "admin" | "videographer" | "designer";
+export type UserRole = "admin" | "videographer" | "designer" | "client";

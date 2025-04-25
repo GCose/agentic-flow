@@ -32,9 +32,9 @@ const DashboardLayout = ({
         // Admin can view all pages
         return;
       } else if (user?.role === "videographer") {
-        router.push("/videographer");
+        router.push("/admin/videographer");
       } else if (user?.role === "designer") {
-        router.push("/designer");
+        router.push("/admin/designer");
       }
     }
   }, [loading, isAuthenticated, user, router, role]);

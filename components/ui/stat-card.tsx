@@ -54,13 +54,13 @@ const StatCard = ({
   return (
     <Card className={`border-none overflow-hidden border ${colors.bg}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
+        <CardTitle className="text-md font-medium">{title}</CardTitle>
         <div className={`rounded-full ${colors.iconBg} px-2`}>
-          <Icon className={`h-4 w-4 ${colors.iconColor}`} />
+          <Icon className={`h-6 w-6 ${colors.iconColor}`} />
         </div>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
+        <div className="text-2xl font-bold pb-1">{value}</div>
         <p className="text-xs text-muted-foreground">{change}</p>
       </CardContent>
     </Card>

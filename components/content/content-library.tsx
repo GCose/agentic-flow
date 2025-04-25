@@ -200,7 +200,8 @@ const ContentLibrary = ({ userRole }: ContentLibraryProps) => {
                               {item.title}
                             </h3>
                             <Badge className={getStatusColor(item.status)}>
-                              {item.status}
+                              {item.status.charAt(0).toUpperCase() +
+                                item.status.slice(1)}
                             </Badge>
                           </div>
                           <p className="text-sm text-muted-foreground mb-3">

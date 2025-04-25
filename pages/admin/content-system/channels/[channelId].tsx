@@ -30,10 +30,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import AgentPerformanceForChannel from "@/components/content-generation/agent-performance-for-channel";
-import ChannelAnalytics from "@/components/content-generation/channel-analytics";
-import ChannelContentList from "@/components/content-generation/channel-content-list";
-import ContentViewer from "@/components/content-generation/content-viewer";
+import AgentPerformanceForChannel from "@/components/content-system/agent-performance-for-channel";
+import ChannelAnalytics from "@/components/content-system/channel-analytics";
+import ChannelContentList from "@/components/content-system/channel-content-list";
+import ContentViewer from "@/components/content-system/content-viewer";
 
 // Define the valid channel IDs as a type
 export type ChannelId =
@@ -171,7 +171,7 @@ const ChannelDetailPage = () => {
           <Button
             size="icon"
             variant="ghost"
-            onClick={() => router.push("/content-system")}
+            onClick={() => router.push("/admin/content-system")}
           >
             <ArrowLeft className="h-5 w-5" />
           </Button>

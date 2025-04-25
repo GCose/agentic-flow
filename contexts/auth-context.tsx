@@ -45,6 +45,13 @@ const MOCK_USERS: Array<User & { password: string }> = [
     name: "Graphic Designer",
     role: "designer",
   },
+  {
+    id: "4",
+    email: "client@example.com",
+    password: "client123",
+    name: "Client User",
+    role: "client",
+  },
 ];
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
@@ -71,7 +78,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setLoading(true);
 
     try {
-      // Api simulation call
       const matchedUser = MOCK_USERS.find(
         (u) => u.email === email && u.password === password
       );
@@ -80,7 +86,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         throw new Error("Invalid credentials");
       }
 
-      // Create sanitized user object (without password)
+      // Sanitized user object (without password)
       const authenticatedUser: User = {
         id: matchedUser.id,
         name: matchedUser.name,
@@ -97,11 +103,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       // Redirect based on role
       if (authenticatedUser.role === "admin") {
-        router.push("/");
+        router.push("/admin");
       } else if (authenticatedUser.role === "videographer") {
-        router.push("/videographer");
+        router.push("/admin/videographer");
       } else if (authenticatedUser.role === "designer") {
-        router.push("/designer");
+        router.push("/admin/designer");
+      } else if (authenticatedUser.role === "client") {
+        router.push("/client");
       }
     } catch (error) {
       console.error("Login error:", error);

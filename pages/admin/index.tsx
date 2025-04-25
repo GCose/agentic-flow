@@ -1,23 +1,23 @@
-import { NextPage } from "next";
+import type { NextPage } from "next";
 import Head from "next/head";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
-import VideographerHeader from "./videographer-header";
-import DashboardStats from "@/components/dashboard/dashboard-stats";
-import { SystemCards } from "@/components/dashboard/system-cards";
 import { Brain } from "lucide-react";
+import DashboardHeader from "@/components/dashboard/dashboard-header";
+import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardStats from "@/components/dashboard/admin-dashboard-stats";
+import SystemCards from "@/components/dashboard/system-cards";
 
-const VideographerDashboard: NextPage = () => {
+const DashboardPage: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Agentic Flow | Videographer Dashboard</title>
+        <title>Agentic Flow | Home</title>
         <meta
           name="description"
-          content="Videographer dashboard for Agentic Flow"
+          content="Welcome to the Agentic Flow AI agent management system"
         />
       </Head>
-      <DashboardLayout role="videographer">
-        <VideographerHeader />
+      <DashboardLayout>
+        <DashboardHeader />
         <div className="flex-1 p-8 pt-6">
           {/*==================== Welcome Section ====================*/}
           <div className="relative mb-10 py-12 px-8 rounded-2xl overflow-hidden bg-slate-800/30 backdrop-blur-md">
@@ -27,7 +27,7 @@ const VideographerDashboard: NextPage = () => {
               </div>
               <div>
                 <h1 className="text-4xl font-bold tracking-tight mb-2">
-                  Welcome to Agentic Flow
+                  Agentic Flow
                 </h1>
                 <p className="text-xl text-slate-300">
                   Your AI-powered operational ecosystem
@@ -73,7 +73,7 @@ const VideographerDashboard: NextPage = () => {
             <h2 className="text-2xl font-bold tracking-tight mb-6">
               Core Systems
             </h2>
-            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
               <SystemCards />
             </div>
           </div>
@@ -84,4 +84,4 @@ const VideographerDashboard: NextPage = () => {
   );
 };
 
-export default VideographerDashboard;
+export default DashboardPage;

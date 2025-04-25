@@ -1,11 +1,4 @@
-import {
-  FileText,
-  Users,
-  MessageSquare,
-  ShoppingBag,
-  UserPlus,
-  Cog,
-} from "lucide-react";
+import { FileText, Users, UserPlus, ShoppingBag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
 interface SystemCardProps {
@@ -28,7 +21,7 @@ const SystemCard = ({
 }: SystemCardProps) => {
   return (
     <Card
-      className={`border-white-400 ${color} hover:translate-y-2 cursor-pointer transition-all duration-500 h-full backdrop-blur-sm`}
+      className={`border-slate-800 ${color} hover:-translate-y-2 transition-all duration-500 h-full backdrop-blur-sm`}
     >
       <CardContent className="p-6 flex flex-col items-center text-center">
         <div className={`rounded-full ${iconBg} p-4 mb-4`}>
@@ -62,22 +55,13 @@ const SystemCards = () => {
       iconColor: "text-purple-500",
     },
     {
-      title: "Ads System",
-      description: "Analyze and optimize advertising campaigns",
-      icon: <MessageSquare className="h-6 w-6" />,
-      href: "/ads-system",
-      color: "bg-transparent from-green-500/10 to-green-500/5",
-      iconBg: "bg-green-500/10",
-      iconColor: "text-green-500",
-    },
-    {
       title: "Sales System",
       description: "Maximize conversion and manage proposals",
       icon: <ShoppingBag className="h-6 w-6" />,
       href: "/sales-system",
       color: "bg-transparent from-cyan-500/10 to-cyan-500/5",
-      iconBg: "bg-cyan-500/10",
-      iconColor: "text-cyan-500",
+      iconBg: "bg-orange-500/10",
+      iconColor: "text-orange-500",
     },
     {
       title: "Onboarding System",
@@ -85,17 +69,8 @@ const SystemCards = () => {
       icon: <UserPlus className="h-6 w-6" />,
       href: "/onboarding",
       color: "bg-transparent from-orange-500/10 to-orange-500/5",
-      iconBg: "bg-orange-500/10",
-      iconColor: "text-orange-500",
-    },
-    {
-      title: "Automations",
-      description: "Configure and monitor automated workflows",
-      icon: <Cog className="h-6 w-6" />,
-      href: "/automations",
-      color: "bg-transparent from-red-500/10 to-red-500/5",
-      iconBg: "bg-red-500/10",
-      iconColor: "text-red-500",
+      iconBg: "bg-cyan-500/10",
+      iconColor: "text-cyan-500",
     },
   ];
 

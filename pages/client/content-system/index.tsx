@@ -18,11 +18,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import ContentCalendar from "@/components/content-generation/content-calendar";
-import ContentChannelCard from "@/components/content-generation/content-channel";
-import ContentSystemHeader from "@/components/content-generation/content-generation-header";
-import RecentContent from "@/components/content-generation/recent-content";
-import ContentAgentPerformance from "@/components/content-generation/content-agent-performance";
+import ContentAgentPerformance from "@/components/content-system/content-agent-performance";
+import ContentCalendar from "@/components/content-system/content-calendar";
+import ContentChannelCard from "@/components/content-system/content-channel";
+import ContentSystemHeader from "@/components/content-system/content-generation-header";
+import RecentContent from "@/components/content-system/recent-content";
 
 const ContentSystemPage = () => {
   const [activeTab, setActiveTab] = useState("channels");
@@ -82,7 +82,7 @@ const ContentSystemPage = () => {
           content="Manage and monitor your social media ad campaigns"
         />
       </Head>
-      <DashboardLayout>
+      <DashboardLayout role="client">
         <ContentSystemHeader />
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between">

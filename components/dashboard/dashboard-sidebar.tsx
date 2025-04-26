@@ -42,7 +42,6 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
-  // Function to determine if a menu item is active
   const isMenuItemActive = (href: string) => {
     // Client role navigation highlighting
     if (role === "client") {
@@ -57,6 +56,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
       return (
         pathname?.startsWith(href) ||
         (pathname?.includes("/admin/content-system") &&
+          typeof window !== "undefined" &&
           window.location.search.includes("clientId="))
       );
 

@@ -59,6 +59,7 @@ const AdminWarmLeadsPage = () => {
       </Head>
       <DashboardLayout>
         <LeadGenHeader
+          role="admin"
           title={title}
           hasBackButton={true}
           clientId={client?.id}

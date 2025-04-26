@@ -30,10 +30,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import AgentPerformanceForChannel from "@/components/content-system/agent-performance-for-channel";
-import ChannelAnalytics from "@/components/content-system/channel-analytics";
-import ChannelContentList from "@/components/content-system/channel-content-list";
-import ContentViewer from "@/components/content-system/content-viewer";
+import AgentPerformanceForChannel from "@/components/systems/content-system/agent-performance-for-channel";
+import ChannelAnalytics from "@/components/systems/content-system/channel-analytics";
+import ChannelContentList from "@/components/systems/content-system/channel-content-list";
+import ContentViewer from "@/components/systems/content-system/content-viewer";
 
 // Define the valid channel IDs as a type
 export type ChannelId =

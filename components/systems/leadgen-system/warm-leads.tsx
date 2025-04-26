@@ -1,0 +1,272 @@
+import { useState } from "react";
+import { Search, MoreHorizontal, ArrowUpDown } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { WarmLead } from "@/types/leads";
+
+// Mock data for warm leads
+const generateWarmLeads = (): WarmLead[] => {
+  return [
+    {
+      id: "wl-1",
+      company: "Acme Inc.",
+      leadScore: 87,
+      strategy: "Direct outreach",
+      salePitch: "ROI-focused solution",
+      status: "qualified",
+      lastContact: "2025-04-20",
+      assignedTo: "John Smith",
+      createdAt: "2025-04-15",
+    },
+    {
+      id: "wl-2",
+      company: "TechCorp",
+      leadScore: 92,
+      strategy: "Demo + Case study",
+      salePitch: "Cost reduction focus",
+      status: "contacted",
+      lastContact: "2025-04-22",
+      assignedTo: "Sarah Johnson",
+      createdAt: "2025-04-16",
+    },
+    {
+      id: "wl-3",
+      company: "Global Services",
+      leadScore: 76,
+      strategy: "Consultative approach",
+      salePitch: "Efficiency improvement",
+      status: "new",
+      lastContact: "2025-04-19",
+      assignedTo: "Michael Brown",
+      createdAt: "2025-04-14",
+    },
+    {
+      id: "wl-4",
+      company: "Innovative Solutions",
+      leadScore: 94,
+      strategy: "Product demo",
+      salePitch: "Competitive advantage",
+      status: "qualified",
+      lastContact: "2025-04-21",
+      assignedTo: "Emily Davis",
+      createdAt: "2025-04-18",
+    },
+    {
+      id: "wl-5",
+      company: "Future Tech",
+      leadScore: 81,
+      strategy: "Solution presentation",
+      salePitch: "Growth opportunity",
+      status: "contacted",
+      lastContact: "2025-04-23",
+      assignedTo: "David Wilson",
+      createdAt: "2025-04-17",
+    },
+  ];
+};
+
+const WarmLeads = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortField, setSortField] = useState<keyof WarmLead>("leadScore");
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+  const [warmLeads] = useState<WarmLead[]>(generateWarmLeads());
+
+  // Filter leads based on search term
+  const filteredLeads = warmLeads.filter(
+    (lead) =>
+      lead.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      lead.strategy.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Sort leads based on sort field and direction
+  const sortedLeads = [...filteredLeads].sort((a, b) => {
+    if (typeof a[sortField] === "string" && typeof b[sortField] === "string") {
+      const aValue = a[sortField] as string;
+      const bValue = b[sortField] as string;
+      return sortDirection === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    } else {
+      const aValue = a[sortField] as number;
+      const bValue = b[sortField] as number;
+      return sortDirection === "asc" ? aValue - bValue : bValue - aValue;
+    }
+  });
+
+  // Handle sorting when column header is clicked
+  const handleSort = (field: keyof WarmLead) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortField(field);
+      setSortDirection("desc");
+    }
+  };
+
+  // Get status badge color
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "new":
+        return "bg-blue-500/10 text-blue-500";
+      case "contacted":
+        return "bg-yellow-500/10 text-yellow-500";
+      case "qualified":
+        return "bg-green-500/10 text-green-500";
+      case "converted":
+        return "bg-purple-500/10 text-purple-500";
+      case "lost":
+        return "bg-red-500/10 text-red-500";
+      default:
+        return "bg-slate-500/10 text-slate-500";
+    }
+  };
+
+  return (
+    <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+      <CardHeader>
+        <CardTitle>Warm Leads</CardTitle>
+        <CardDescription>
+          Manage and track leads that have shown interest in your products or
+          services
+        </CardDescription>
+
+        <div className="flex flex-col sm:flex-row gap-2 pt-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search leads..."
+              className="pl-8 bg-transparent border-slate-800"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+          <Button>Add New Lead</Button>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="rounded-md border-none">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-slate-800">
+                <TableHead className="w-[180px]">
+                  <Button
+                    variant="ghost"
+                    className="p-0 font-medium"
+                    onClick={() => handleSort("company")}
+                  >
+                    Company
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                  </Button>
+                </TableHead>
+                <TableHead>
+                  <Button
+                    variant="ghost"
+                    className="p-0 font-medium"
+                    onClick={() => handleSort("leadScore")}
+                  >
+                    Lead Score
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                  </Button>
+                </TableHead>
+                <TableHead className="hidden md:table-cell">Strategy</TableHead>
+                <TableHead className="hidden md:table-cell">
+                  Sale Pitch
+                </TableHead>
+                <TableHead className="hidden sm:table-cell">Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {sortedLeads.map((lead) => (
+                <TableRow
+                  key={lead.id}
+                  className="border-slate-800 hover:bg-white/5"
+                >
+                  <TableCell className="font-medium">{lead.company}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="outline"
+                      className="bg-indigo-500/10 text-indigo-500"
+                    >
+                      {lead.leadScore}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {lead.strategy}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {lead.salePitch}
+                  </TableCell>
+                  <TableCell className="hidden sm:table-cell">
+                    <Badge
+                      variant="outline"
+                      className={getStatusBadge(lead.status)}
+                    >
+                      {lead.status.charAt(0).toUpperCase() +
+                        lead.status.slice(1)}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuItem>View Details</DropdownMenuItem>
+                        <DropdownMenuItem>Edit Lead</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Change Status</DropdownMenuItem>
+                        <DropdownMenuItem>Assign to Agent</DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="text-destructive">
+                          Delete Lead
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))}
+              {filteredLeads.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={6} className="h-24 text-center">
+                    No leads found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default WarmLeads;

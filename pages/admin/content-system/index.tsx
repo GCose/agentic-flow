@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import ContentCalendar from "@/components/content-system/content-calendar";
-import ContentChannelCard from "@/components/content-system/content-channel";
-import ContentSystemHeader from "@/components/content-system/content-generation-header";
-import RecentContent from "@/components/content-system/recent-content";
-import ContentAgentPerformance from "@/components/content-system/content-agent-performance";
+import ContentCalendar from "@/components/systems/content-system/content-calendar";
+import ContentChannelCard from "@/components/systems/content-system/content-channel";
+import ContentSystemHeader from "@/components/systems/content-system/content-generation-header";
+import RecentContent from "@/components/systems/content-system/recent-content";
+import ContentAgentPerformance from "@/components/systems/content-system/content-agent-performance";
 
 // Client interface
 interface Client {

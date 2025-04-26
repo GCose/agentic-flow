@@ -9,10 +9,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import ContentCalendar from "@/components/content-system/content-calendar";
-import ContentSystemHeader from "@/components/content-system/content-generation-header";
-import ContentGenerationForm from "@/components/content-system/content-generation-form";
-import ContentHistory from "@/components/content-system/content-history";
+import ContentCalendar from "@/components/systems/content-system/content-calendar";
+import ContentSystemHeader from "@/components/systems/content-system/content-generation-header";
+import ContentGenerationForm from "@/components/systems/content-system/content-generation-form";
+import ContentHistory from "@/components/systems/content-system/content-history";
 
 const ContentSystemPage = () => {
   const [activeTab, setActiveTab] = useState("channels");

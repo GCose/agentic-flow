@@ -214,6 +214,8 @@ const ClientDashboardPage: NextPage = () => {
     // Direct to the content system page for this client
     if (system === "Content System") {
       router.push(`/admin/content-system?clientId=${clientId}`);
+    } else if (system === "LeadGen System") {
+      router.push("/admin/leadgen-system");
     } else {
       // For other systems, use a slug format
       const systemSlug = system.toLowerCase().replace(/\s+/g, "-");
@@ -288,39 +290,40 @@ const ClientDashboardPage: NextPage = () => {
             </div>
           </div>
 
-          {/* Client Stats Overview */}
+          {/*==================== Client Stats Overview ====================*/}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             <StatCard
-              value={client.stats.agents.toString()}
               icon={Users}
               color="blue"
               title="Active Agents"
+              value={client.stats.agents.toString()}
               change={`Total for ${client.systems.length} systems`}
             />
             <StatCard
-              value={client.stats.projects.toString()}
               color="purple"
               icon={FileText}
               title="Projects"
               change={`Across all systems`}
+              value={client.stats.projects.toString()}
             />
             <StatCard
-              value={client.stats.activeUsers.toString()}
-              color="green"
               icon={Users}
+              color="green"
               title="Active Users"
               change={`Last 30 days`}
+              value={client.stats.activeUsers.toString()}
             />
             <StatCard
-              value={`${client.stats.successRate}%`}
               color="orange"
               icon={BarChart}
               title="Success Rate"
               change={`Avg. across all systems`}
+              value={`${client.stats.successRate}%`}
             />
           </div>
+          {/*==================== End of Client Stats Overview ====================*/}
 
-          {/* Additional Client Info */}
+          {/*==================== Additional Client Info ====================*/}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             <Card className="col-span-1 lg:col-span-2 -none border-slate-800 bg-transparent backdrop-blur-sm">
               <CardHeader>
@@ -397,8 +400,9 @@ const ClientDashboardPage: NextPage = () => {
               </CardContent>
             </Card>
           </div>
+          {/*==================== End of Additional Client Info ====================*/}
 
-          {/* Subscribed Systems */}
+          {/*==================== Subscribed Systems ====================*/}
           <div className="space-y-4">
             <h2 className="text-2xl font-bold tracking-tight">
               Subscribed Systems
@@ -504,8 +508,8 @@ const ClientDashboardPage: NextPage = () => {
                       )}
                       {!isActive && (
                         <Button
-                          variant="outline"
                           size="sm"
+                          variant="outline"
                           className="mt-2 w-full"
                           onClick={(e) => {
                             e.stopPropagation();
@@ -520,6 +524,7 @@ const ClientDashboardPage: NextPage = () => {
               })}
             </div>
           </div>
+          {/*==================== End of Subscribed Systems ====================*/}
         </div>
       </DashboardLayout>
     </>

@@ -53,7 +53,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
     }
 
     // Admin client dashboard highlighting (handles content system with clientId)
-    if (href === "/admin/client-dashboard")
+    if (href === "/admin/clients")
       return (
         pathname?.startsWith(href) ||
         (pathname?.includes("/admin/content-system") &&
@@ -67,7 +67,6 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
   };
 
   const getNavItems = (role: UserRole) => {
-    // Client role navigation items
     if (role === "client") {
       return {
         mainItems: [
@@ -121,7 +120,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
         },
         {
           title: "Clients",
-          href: "/admin/client-dashboard",
+          href: "/admin/clients",
           icon: Users,
         },
       ];

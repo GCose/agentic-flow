@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import {
   Search,
-  Filter,
   ArrowUpDown,
   MoreHorizontal,
   Eye,
@@ -212,7 +211,7 @@ const ChannelContentList = ({
   const [contentData, setContentData] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Simulate data loading with useEffect
+  // Simulating data loading
   useEffect(() => {
     // Simulate API call
     setLoading(true);
@@ -225,7 +224,7 @@ const ChannelContentList = ({
 
   // Filter content based on search term and active filters
   const filteredContent = contentData.filter((content) => {
-    // First apply search filter
+    // Applying search filter first
     const matchesSearch =
       content.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       content.agent.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -282,15 +281,12 @@ const ChannelContentList = ({
           <div className="relative max-w-sm">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search posts..."
               className="pl-8"
               value={searchTerm}
+              placeholder="Search posts..."
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <Button variant={isFiltered ? "default" : "outline"} size="icon">
-            <Filter className="h-4 w-4" />
-          </Button>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-muted-foreground">
@@ -304,11 +300,11 @@ const ChannelContentList = ({
           <p>Loading content...</p>
         </div>
       ) : (
-        <div className="rounded-md border">
+        <div className="rounded-md border-none pt-5">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[30%]">
+                <TableHead className="w-[30%] border-t border-slate-800">
                   <Button
                     variant="ghost"
                     className="p-0 font-medium"
@@ -318,8 +314,10 @@ const ChannelContentList = ({
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>
+                <TableHead className="border-t border-slate-800">
+                  Type
+                </TableHead>
+                <TableHead className="border-t border-slate-800">
                   <Button
                     variant="ghost"
                     className="p-0 font-medium"
@@ -329,8 +327,10 @@ const ChannelContentList = ({
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead>Agent</TableHead>
-                <TableHead>
+                <TableHead className="border-t border-slate-800">
+                  Agent
+                </TableHead>
+                <TableHead className="border-t border-slate-800">
                   <Button
                     variant="ghost"
                     className="p-0 font-medium"
@@ -340,13 +340,17 @@ const ChannelContentList = ({
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="text-right">Actions</TableHead>
+                <TableHead className="text-right border-t border-slate-800">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {sortedContent.map((content) => (
-                <TableRow key={content.id}>
-                  <TableCell className="font-medium">{content.title}</TableCell>
+                <TableRow key={content.id} className="border-none">
+                  <TableCell className="font-medium">
+                    {content.title}
+                  </TableCell>
                   <TableCell>{content.type}</TableCell>
                   <TableCell>{content.date}</TableCell>
                   <TableCell>
@@ -377,7 +381,7 @@ const ChannelContentList = ({
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-right border-b-0">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon">

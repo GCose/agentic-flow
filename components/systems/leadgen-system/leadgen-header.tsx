@@ -8,20 +8,29 @@ interface LeadGenHeaderProps {
   title: string;
   hasBackButton?: boolean;
   clientId?: string;
+  role?: "admin" | "client";
 }
 
 const LeadGenHeader = ({
   title,
   hasBackButton = false,
   clientId,
+  role = "admin", // Default to admin for backward compatibility
 }: LeadGenHeaderProps) => {
   const router = useRouter();
 
   const handleBack = () => {
-    if (clientId) {
-      router.push(`/admin/clients/${clientId}`);
+    // Check if we're in client or admin role
+    if (role === "client") {
+      // Client role navigation goes back to client paths
+      router.push("/client/leadgen-system");
     } else {
-      router.push("/admin/leadgen-system");
+      // Admin role navigation
+      if (clientId) {
+        router.push(`/admin/clients/${clientId}`);
+      } else {
+        router.push("/admin/leadgen-system");
+      }
     }
   };
 

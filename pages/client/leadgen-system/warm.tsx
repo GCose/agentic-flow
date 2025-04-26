@@ -14,7 +14,7 @@ const ClientWarmLeadsPage = () => {
         />
       </Head>
       <DashboardLayout role="client">
-        <LeadGenHeader title="Warm Leads" hasBackButton={true} />
+        <LeadGenHeader title="Warm Leads" hasBackButton={true} role="client" />
         <div className="flex-1 space-y-6 p-8 pt-6">
           <WarmLeads />
         </div>

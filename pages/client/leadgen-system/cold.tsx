@@ -7,14 +7,14 @@ const ClientColdLeadsPage = () => {
   return (
     <>
       <Head>
-        <title>Agentic Flow | Cold Leads</title>
+        <title>Aftermath Marketing | Cold Leads</title>
         <meta
           name="description"
           content="Manage your cold leads in the lead generation system"
         />
       </Head>
       <DashboardLayout role="client">
-        <LeadGenHeader title="Cold Leads" hasBackButton={true} />
+        <LeadGenHeader title="Cold Leads" hasBackButton={true} role="client" />
         <div className="flex-1 space-y-6 p-8 pt-6">
           <ColdLeads />
         </div>

@@ -1,4 +1,3 @@
-// pages/admin/leadgen-system/cold.tsx
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -60,6 +59,7 @@ const AdminColdLeadsPage = () => {
       </Head>
       <DashboardLayout>
         <LeadGenHeader
+          role="admin"
           title={title}
           hasBackButton={true}
           clientId={client?.id}

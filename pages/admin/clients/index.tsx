@@ -259,7 +259,7 @@ const ClientDashboardPage: NextPage = () => {
   );
 
   const navigateToClientDashboard = (clientId: string) => {
-    router.push(`/admin/client-dashboard/${clientId}`);
+    router.push(`/admin/clients/${clientId}`);
   };
 
   const navigateToClientSystem = (clientId: string, system: string) => {
@@ -269,7 +269,7 @@ const ClientDashboardPage: NextPage = () => {
     } else {
       // For other systems, use a slug format
       const systemSlug = system.toLowerCase().replace(/\s+/g, "-");
-      router.push(`/admin/client-dashboard/${clientId}/${systemSlug}`);
+      router.push(`/admin/clients/${clientId}/${systemSlug}`);
     }
   };
 
@@ -286,7 +286,6 @@ const ClientDashboardPage: NextPage = () => {
   };
 
   const handleCreateClient = () => {
-    // Simple validation
     if (!newClient.name) return;
 
     const newClientData: Client = {
@@ -451,7 +450,7 @@ const ClientDashboardPage: NextPage = () => {
                       <TableRow
                         key={client.id}
                         onClick={() => navigateToClientDashboard(client.id)}
-                        className="cursor-pointer border-b border-slate-800 hover:bg-white/5"
+                        className="cursor-pointer border-none hover:bg-white/5 hover:rounded-md"
                       >
                         <TableCell className="font-medium">
                           {client.name}

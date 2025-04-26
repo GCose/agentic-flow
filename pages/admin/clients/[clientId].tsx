@@ -58,7 +58,7 @@ type SystemConfigs = Record<string, SystemConfig>;
 const clientsData: ClientData[] = [
   {
     id: "client-1",
-    name: "NextGen Technologies",
+    name: "NextGen Agency",
     description: "Enterprise technology solutions provider",
     systems: [
       "Content System",
@@ -77,7 +77,7 @@ const clientsData: ClientData[] = [
   },
   {
     id: "client-2",
-    name: "Acme Corporation",
+    name: "Aftermath Marketing",
     description: "Manufacturing and consumer goods company",
     systems: ["Content System", "LeadGen System"],
     stats: {
@@ -91,7 +91,7 @@ const clientsData: ClientData[] = [
   },
   {
     id: "client-3",
-    name: "Global Innovations",
+    name: "Group26Consult",
     description: "Research and development firm",
     systems: ["Content System", "Sales System"],
     stats: {
@@ -217,7 +217,7 @@ const ClientDashboardPage: NextPage = () => {
     } else {
       // For other systems, use a slug format
       const systemSlug = system.toLowerCase().replace(/\s+/g, "-");
-      router.push(`/admin/client-dashboard/${clientId}/${systemSlug}`);
+      router.push(`/admin/clients/${clientId}/${systemSlug}`);
     }
   };
 
@@ -233,7 +233,7 @@ const ClientDashboardPage: NextPage = () => {
             <Button
               className="mr-4"
               variant="outline"
-              onClick={() => router.push("/admin/client-dashboard")}
+              onClick={() => router.push("/admin/clients")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Clients
@@ -263,7 +263,7 @@ const ClientDashboardPage: NextPage = () => {
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
-                onClick={() => router.push("/admin/client-dashboard")}
+                onClick={() => router.push("/admin/clients")}
                 className="h-9 w-9 p-0 rounded-full"
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -322,7 +322,7 @@ const ClientDashboardPage: NextPage = () => {
 
           {/* Additional Client Info */}
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <Card className="col-span-1 lg:col-span-2 border bg-transparent backdrop-blur-sm">
+            <Card className="col-span-1 lg:col-span-2 -none border-slate-800 bg-transparent backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Client Information</CardTitle>
               </CardHeader>
@@ -366,7 +366,7 @@ const ClientDashboardPage: NextPage = () => {
               </CardContent>
             </Card>
 
-            <Card className="col-span-1 border bg-transparent backdrop-blur-sm">
+            <Card className="col-span-1 border border-slate-800 bg-transparent backdrop-blur-sm">
               <CardHeader>
                 <CardTitle>Active Projects</CardTitle>
               </CardHeader>
@@ -411,7 +411,7 @@ const ClientDashboardPage: NextPage = () => {
                 return (
                   <Card
                     key={system}
-                    className={`border relative overflow-hidden transition-all duration-300 ${
+                    className={`border-none border-slate-800 relative overflow-hidden transition-all duration-300 ${
                       isActive
                         ? config.bgGradient
                         : "bg-slate-800/20 opacity-60"
@@ -509,7 +509,6 @@ const ClientDashboardPage: NextPage = () => {
                           className="mt-2 w-full"
                           onClick={(e) => {
                             e.stopPropagation();
-                            // This would open a dialog to add the system
                           }}
                         >
                           Subscribe to {system}

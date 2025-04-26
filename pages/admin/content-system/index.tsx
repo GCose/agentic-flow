@@ -120,9 +120,9 @@ const ContentSystemPage = () => {
   // Handle going back to client dashboard
   const handleBackToClient = () => {
     if (client) {
-      router.push(`/admin/client-dashboard/${client.id}`);
+      router.push(`/admin/clients/${client.id}`);
     } else {
-      router.push("/admin/client-dashboard");
+      router.push("/admin/clients");
     }
   };
 
@@ -142,15 +142,16 @@ const ContentSystemPage = () => {
             <div className="flex items-center gap-2">
               {client && (
                 <Button
-                  variant="outline"
+                  size="icon"
+                  variant="ghost"
+                  className="p-0"
                   onClick={handleBackToClient}
-                  className="h-9 w-9 p-0 rounded-full"
                 >
                   <ArrowLeft className="h-4 w-4" />
                   <span className="sr-only">Back</span>
                 </Button>
               )}
-              <h2 className="text-3xl font-bold tracking-tight">
+              <h2 className="text-2xl font-bold tracking-tight">
                 {client ? `${client.name} | Content System` : "Content System"}
               </h2>
             </div>

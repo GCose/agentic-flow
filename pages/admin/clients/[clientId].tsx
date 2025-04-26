@@ -203,7 +203,6 @@ const ClientDashboardPage: NextPage = () => {
 
   useEffect(() => {
     if (clientId) {
-      // In a real app, this would be an API call
       const clientData = clientsData.find((c) => c.id === clientId);
       setClient(clientData || null);
       setLoading(false);
@@ -465,34 +464,6 @@ const ClientDashboardPage: NextPage = () => {
                     <CardContent>
                       {isActive && (
                         <div className="text-sm">
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-muted-foreground">
-                              Agents:
-                            </span>
-                            <span className="font-medium">
-                              {system === "Content System"
-                                ? "10"
-                                : system === "LeadGen System"
-                                ? "6"
-                                : system === "Sales System"
-                                ? "5"
-                                : "3"}
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-muted-foreground">
-                              Content Items:
-                            </span>
-                            <span className="font-medium">
-                              {system === "Content System"
-                                ? "42"
-                                : system === "LeadGen System"
-                                ? "28"
-                                : system === "Sales System"
-                                ? "19"
-                                : "14"}
-                            </span>
-                          </div>
                           <Button
                             variant="link"
                             className="px-0 mt-2 flex items-center gap-1 text-primary hover:text-primary/80"

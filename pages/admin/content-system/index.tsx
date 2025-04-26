@@ -23,9 +23,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import ContentCalendar from "@/components/systems/content-system/content-calendar";
 import ContentChannelCard from "@/components/systems/content-system/content-channel";
-import ContentSystemHeader from "@/components/systems/content-system/content-generation-header";
 import RecentContent from "@/components/systems/content-system/recent-content";
 import ContentAgentPerformance from "@/components/systems/content-system/content-agent-performance";
+import AdminContentSystemHeader from "@/components/systems/content-system/content-system-header";
 
 // Client interface
 interface Client {
@@ -136,7 +136,7 @@ const ContentSystemPage = () => {
         />
       </Head>
       <DashboardLayout>
-        <ContentSystemHeader />
+        <AdminContentSystemHeader />
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex items-center gap-2">

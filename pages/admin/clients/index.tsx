@@ -41,7 +41,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import ClientDashboardHeader from "@/components/client-dashboard/client-dashboard-header";
+import ClientDashboardHeader from "@/components/clients/clients-header";
 
 // Client interface
 interface Client {
@@ -265,7 +265,7 @@ const ClientDashboardPage: NextPage = () => {
   const navigateToClientSystem = (clientId: string, system: string) => {
     // If Content, go to that page with the clientId
     if (system === "Content") {
-      router.push(`/admin/content-system?clientId=${clientId}`);
+      router.push(`/admin/content-system/clientId=${clientId}`);
     } else {
       // For other systems, use a slug format
       const systemSlug = system.toLowerCase().replace(/\s+/g, "-");

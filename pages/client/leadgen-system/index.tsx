@@ -59,7 +59,7 @@ const ClientLeadGenSystemPage = () => {
             </Card>
             {/*==================== End of Warm leads card ====================*/}
 
-            {/*==================== Cold leads card ====================*/}
+            {/*==================== Cold leads card ====================*/} 
             <Card
               onClick={() => handleLeadTypeClick("cold")}
               className="border-none bg-gradient-to-br from-blue-500/10 to-blue-500/5 cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1"

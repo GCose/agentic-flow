@@ -21,8 +21,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ContentAgentPerformance from "@/components/systems/content-system/content-agent-performance";
 import ContentCalendar from "@/components/systems/content-system/content-calendar";
 import ContentChannelCard from "@/components/systems/content-system/content-channel";
-import ContentSystemHeader from "@/components/systems/content-system/content-generation-header";
 import RecentContent from "@/components/systems/content-system/recent-content";
+import ClientContentSystemHeader from "@/components/systems/content-system/content-generation-header";
 
 const ContentSystemPage = () => {
   const [activeTab, setActiveTab] = useState("channels");
@@ -84,7 +84,7 @@ const ContentSystemPage = () => {
         />
       </Head>
       <DashboardLayout role="client">
-        <ContentSystemHeader />
+        <ClientContentSystemHeader />
         <div className="flex-1 space-y-4 px-8 pb-6">
           <Tabs
             value={activeTab}

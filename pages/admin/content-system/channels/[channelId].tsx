@@ -186,7 +186,7 @@ const ChannelDetailPage = () => {
             <div className={`rounded-full bg-${platform.color}-500/10 p-1.5`}>
               <PlatformIcon className={`h-5 w-5 text-${platform.color}-500`} />
             </div>
-            <h2 className="text-xl font-semibold">{platform.name}</h2>
+            <h2 className="text-md font-semibold">{platform.name}</h2>
           </div>
 
           <div className="ml-auto flex items-center gap-2">

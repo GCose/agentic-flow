@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import ThemeToggle from "@/components/theme-toggle";
 
-const ContentSystemHeader = () => {
+const AdminContentSystemHeader = () => {
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent backdrop-blur-xs px-4 sm:px-6">
       <SidebarTrigger />
@@ -27,4 +27,4 @@ const ContentSystemHeader = () => {
   );
 };
 
-export default ContentSystemHeader;
+export default AdminContentSystemHeader;

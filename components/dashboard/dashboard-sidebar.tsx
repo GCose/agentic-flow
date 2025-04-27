@@ -148,17 +148,17 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
         mainItems: [
           {
             title: "Dashboard",
-            href: "/admin/videographer",
+            href: "/admin/role/videographer",
             icon: LayoutDashboard,
           },
           {
             title: "Upload Videos",
-            href: "/admin/videographer/upload",
+            href: "/admin/role/videographer/upload",
             icon: Video,
           },
           {
             title: "Content Library",
-            href: "/admin/videographer/content",
+            href: "/admin/role/videographer/content",
             icon: FileText,
           },
         ],
@@ -172,17 +172,17 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
         mainItems: [
           {
             title: "Dashboard",
-            href: "/admin/designer",
+            href: "/admin/role/designer",
             icon: LayoutDashboard,
           },
           {
-            title: "Upload Designs",
-            href: "/admin/designer/upload",
+            title: " Designs",
+            href: "/admin/role/designer/upload",
             icon: Brush,
           },
           {
             title: "Content Library",
-            href: "/admin/designer/content",
+            href: "/admin/role/designer/content",
             icon: FileText,
           },
         ],

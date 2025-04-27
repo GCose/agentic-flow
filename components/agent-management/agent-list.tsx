@@ -13,10 +13,10 @@ const AgentList = () => {
   const [agentData] = useState(agents);
 
   return (
-    <div className="rounded-md border">
+    <div className="rounded-md border border-slate-800 backdrop-blur-sm">
       <Table>
         <TableHeader>
-          <TableRow>
+          <TableRow className="border-slate-800">
             <TableHead className="w-[250px]">Name</TableHead>
             <TableHead>Type</TableHead>
             <TableHead className="text-left">Clients</TableHead>
@@ -26,7 +26,7 @@ const AgentList = () => {
         </TableHeader>
         <TableBody>
           {agentData.map((agent) => (
-            <TableRow key={agent.id}>
+            <TableRow key={agent.id} className="border-none">
               <TableCell className="font-medium">{agent.name}</TableCell>
               <TableCell>{agent.type}</TableCell>
               <TableCell className="text-left">{agent.clients}</TableCell>

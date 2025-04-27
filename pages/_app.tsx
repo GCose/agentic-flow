@@ -13,8 +13,8 @@ const App = ({ Component, pageProps }: AppProps) => {
       <ThemeProvider
         enableSystem
         attribute="class"
-        defaultTheme="system"
-        disableTransitionOnChange
+        defaultTheme="dark"
+        disableTransitionOnChange={false}
       >
         <SidebarProvider>
           <main className={inter.className}>

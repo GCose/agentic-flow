@@ -60,7 +60,7 @@ const initialClients: Client[] = [
     id: "client-1",
     name: "Nextgen Agency",
     description: "Forward-thinking digital marketing solutions",
-    systems: ["Content", "LeadGen System", "Sales System", "Onboarding System"],
+    systems: ["Content", "LeadGen", "Sales", "Onboarding"],
     agents: 24,
     createdAt: "2024-03-15",
     subscriptionDuration: "6 months",
@@ -69,7 +69,7 @@ const initialClients: Client[] = [
     id: "client-2",
     name: "Aftermath Marketing",
     description: "Results-driven performance marketing",
-    systems: ["Content", "LeadGen System", "Sales System"],
+    systems: ["Content", "LeadGen", "Sales"],
     agents: 18,
     createdAt: "2024-02-20",
     subscriptionDuration: "3 months",
@@ -78,7 +78,7 @@ const initialClients: Client[] = [
     id: "client-3",
     name: "Group26Consult",
     description: "Strategic marketing consultancy",
-    systems: ["Content", "LeadGen System", "Onboarding System"],
+    systems: ["Content", "LeadGen", "Onboarding"],
     agents: 15,
     createdAt: "2024-01-10",
     subscriptionDuration: "12 months",
@@ -87,7 +87,7 @@ const initialClients: Client[] = [
     id: "client-4",
     name: "Zenith Digital",
     description: "Premium digital strategy firm",
-    systems: ["Content", "Sales System"],
+    systems: ["Content", "Sales"],
     agents: 12,
     createdAt: "2023-12-05",
     subscriptionDuration: "9 months",
@@ -96,7 +96,7 @@ const initialClients: Client[] = [
     id: "client-5",
     name: "Apex Marketing Group",
     description: "Comprehensive marketing solutions",
-    systems: ["Content", "LeadGen System"],
+    systems: ["Content", "LeadGen"],
     agents: 10,
     createdAt: "2024-03-01",
     subscriptionDuration: "4 months",
@@ -114,7 +114,7 @@ const initialClients: Client[] = [
     id: "client-7",
     name: "Catalyst Partners",
     description: "Business transformation specialists",
-    systems: ["LeadGen System", "Sales System"],
+    systems: ["LeadGen", "Sales"],
     agents: 14,
     createdAt: "2024-01-21",
     subscriptionDuration: "8 months",
@@ -123,7 +123,7 @@ const initialClients: Client[] = [
     id: "client-8",
     name: "Blueprint Agency",
     description: "Strategic marketing blueprints",
-    systems: ["Content", "Sales System"],
+    systems: ["Content", "Sales"],
     agents: 11,
     createdAt: "2023-10-05",
     subscriptionDuration: "10 months",
@@ -132,7 +132,7 @@ const initialClients: Client[] = [
     id: "client-9",
     name: "Horizon Marketing",
     description: "Future-focused marketing strategies",
-    systems: ["Content", "LeadGen System", "Onboarding System"],
+    systems: ["Content", "LeadGen", "Onboarding"],
     agents: 16,
     createdAt: "2024-02-10",
     subscriptionDuration: "5 months",
@@ -150,7 +150,7 @@ const initialClients: Client[] = [
     id: "client-11",
     name: "Innovate Partners",
     description: "Disruptive marketing solutions",
-    systems: ["LeadGen System", "Sales System"],
+    systems: ["LeadGen", "Sales"],
     agents: 12,
     createdAt: "2024-01-03",
     subscriptionDuration: "7 months",
@@ -159,7 +159,7 @@ const initialClients: Client[] = [
     id: "client-12",
     name: "Quantum Marketing",
     description: "Data-driven marketing excellence",
-    systems: ["Content", "LeadGen System", "Sales System"],
+    systems: ["Content", "LeadGen", "Sales"],
     agents: 19,
     createdAt: "2023-11-22",
     subscriptionDuration: "9 months",
@@ -168,7 +168,7 @@ const initialClients: Client[] = [
     id: "client-13",
     name: "Fusion Strategies",
     description: "Integrated marketing approaches",
-    systems: ["Content", "Onboarding System"],
+    systems: ["Content", "Onboarding"],
     agents: 13,
     createdAt: "2024-02-28",
     subscriptionDuration: "4 months",
@@ -177,7 +177,7 @@ const initialClients: Client[] = [
     id: "client-14",
     name: "Pinnacle Media",
     description: "High-performance media solutions",
-    systems: ["Content", "LeadGen System"],
+    systems: ["Content", "LeadGen"],
     agents: 14,
     createdAt: "2023-10-12",
     subscriptionDuration: "11 months",
@@ -186,7 +186,7 @@ const initialClients: Client[] = [
     id: "client-15",
     name: "Vertex Consulting",
     description: "Strategic marketing consulting",
-    systems: ["Content", "Sales System", "Onboarding System"],
+    systems: ["Content", "Sales", "Onboarding"],
     agents: 17,
     createdAt: "2024-01-17",
     subscriptionDuration: "5 months",
@@ -204,7 +204,7 @@ const initialClients: Client[] = [
     id: "client-17",
     name: "Velocity Partners",
     description: "Accelerated growth marketing",
-    systems: ["Content", "LeadGen System", "Sales System"],
+    systems: ["Content", "LeadGen", "Sales"],
     agents: 20,
     createdAt: "2024-02-05",
     subscriptionDuration: "4 months",
@@ -213,7 +213,7 @@ const initialClients: Client[] = [
     id: "client-18",
     name: "Synergy Group",
     description: "Collaborative marketing excellence",
-    systems: ["LeadGen System", "Onboarding System"],
+    systems: ["LeadGen", "Onboarding"],
     agents: 11,
     createdAt: "2023-11-18",
     subscriptionDuration: "7 months",
@@ -222,7 +222,7 @@ const initialClients: Client[] = [
     id: "client-19",
     name: "Spark Creative",
     description: "Inspired creative marketing",
-    systems: ["Content", "LeadGen System"],
+    systems: ["Content", "LeadGen"],
     agents: 15,
     createdAt: "2024-03-05",
     subscriptionDuration: "2 months",
@@ -231,7 +231,7 @@ const initialClients: Client[] = [
     id: "client-20",
     name: "Prism Media",
     description: "Multi-faceted media strategies",
-    systems: ["Content", "Sales System"],
+    systems: ["Content", "Sales"],
     agents: 13,
     createdAt: "2023-10-30",
     subscriptionDuration: "8 months",
@@ -377,34 +377,31 @@ const ClientDashboardPage: NextPage = () => {
                   <div className="space-y-2">
                     <Label>Systems</Label>
                     <div className="grid grid-cols-2 gap-2">
-                      {[
-                        "Content",
-                        "LeadGen System",
-                        "Sales System",
-                        "Onboarding System",
-                      ].map((system) => (
-                        <div
-                          key={system}
-                          className="flex items-center space-x-2"
-                        >
-                          <Button
-                            type="button"
-                            variant={
-                              newClient.systems.includes(system)
-                                ? "default"
-                                : "outline"
-                            }
-                            size="sm"
-                            className="w-full justify-start"
-                            onClick={() => handleSystemToggle(system)}
+                      {["Content", "LeadGen", "Sales", "Onboarding"].map(
+                        (system) => (
+                          <div
+                            key={system}
+                            className="flex items-center space-x-2"
                           >
-                            {newClient.systems.includes(system) ? (
-                              <Check className="mr-2 h-4 w-4" />
-                            ) : null}
-                            {system}
-                          </Button>
-                        </div>
-                      ))}
+                            <Button
+                              type="button"
+                              variant={
+                                newClient.systems.includes(system)
+                                  ? "default"
+                                  : "outline"
+                              }
+                              size="sm"
+                              className="w-full justify-start"
+                              onClick={() => handleSystemToggle(system)}
+                            >
+                              {newClient.systems.includes(system) ? (
+                                <Check className="mr-2 h-4 w-4" />
+                              ) : null}
+                              {system}
+                            </Button>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>

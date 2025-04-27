@@ -40,14 +40,14 @@ const NotFound = () => {
         <BackgroundElements />
 
         {/*==================== Main Content ====================*/}
-        <main className=" flex-col justify-center relative z-10 w-full max-w-lg px-4 py-8 mx-auto text-center">
-          {/*==================== 404 with responsive font size ====================*/}
+        <main className=" flex-col justify-center relative z-10 w-full max-w-lg py-8 mx-auto text-center">
+          {/*==================== 404 Message ====================*/}
           <div className="mb-6">
-            <h1 className="text-8xl sm:text-9xl md:text-[8rem] font-bold leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse">
+            <h1 className="text-8xl sm:text-9xl w-full md:text-[7.5rem] font-bold leading-none tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500 animate-pulse">
               {errorCode}
             </h1>
           </div>
-          {/*==================== End of 404 with responsive font size ====================*/}
+          {/*==================== End of 404 Message ====================*/}
 
           <div className="mb-8">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 text-foreground">

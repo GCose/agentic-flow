@@ -70,14 +70,14 @@ const LeadGenSystemPage = () => {
       <DashboardLayout>
         <LeadGenHeader
           title={title}
-          hasBackButton={!!client}
           clientId={client?.id}
+          hasBackButton={!!client}
         />
         <div className="flex-1 space-y-6 p-8 pt-6">
           <LeadGenOverview />
 
           <div className="grid gap-6 md:grid-cols-2">
-            {/* Warm leads card */}
+            {/*==================== Warm leads card ====================*/}
             <Card
               className="border border-slate-800 bg-gradient-to-br from-orange-500/10 to-orange-500/5 cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1"
               onClick={() => handleLeadTypeClick("warm")}
@@ -106,11 +106,12 @@ const LeadGenSystemPage = () => {
                 </div>
               </CardContent>
             </Card>
+            {/*==================== End of Warm leads card ====================*/}
 
-            {/* Cold leads card */}
+            {/*==================== Cold leads card ====================*/}
             <Card
-              className="border border-slate-800 bg-gradient-to-br from-blue-500/10 to-blue-500/5 cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1"
               onClick={() => handleLeadTypeClick("cold")}
+              className="border border-slate-800 bg-gradient-to-br from-blue-500/10 to-blue-500/5 cursor-pointer transition-all duration-300 hover:shadow-md hover:-translate-y-1"
             >
               <CardContent className="p-6 flex flex-col items-center text-center">
                 <div className="rounded-full bg-blue-500/10 p-4 mb-4">
@@ -135,6 +136,7 @@ const LeadGenSystemPage = () => {
                 </div>
               </CardContent>
             </Card>
+            {/*==================== End of Cold leads card ====================*/}
           </div>
         </div>
       </DashboardLayout>

@@ -1,7 +1,7 @@
 import { Bell, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import ThemeToggle from "../theme-toggle";
+import ThemeToggle from "@/components/theme-toggle";
 
 const DashboardHeader = () => {
   return (

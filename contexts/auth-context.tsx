@@ -105,9 +105,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       if (authenticatedUser.role === "admin") {
         router.push("/admin");
       } else if (authenticatedUser.role === "videographer") {
-        router.push("/admin/videographer");
+        router.push("/videographer");
       } else if (authenticatedUser.role === "designer") {
-        router.push("/admin/designer");
+        router.push("/designer");
       } else if (authenticatedUser.role === "client") {
         router.push("/client");
       }

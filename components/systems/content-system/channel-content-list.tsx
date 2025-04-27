@@ -348,9 +348,7 @@ const ChannelContentList = ({
             <TableBody>
               {sortedContent.map((content) => (
                 <TableRow key={content.id} className="border-none">
-                  <TableCell className="font-medium">
-                    {content.title}
-                  </TableCell>
+                  <TableCell className="font-medium">{content.title}</TableCell>
                   <TableCell>{content.type}</TableCell>
                   <TableCell>{content.date}</TableCell>
                   <TableCell>

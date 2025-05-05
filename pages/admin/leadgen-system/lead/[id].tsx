@@ -375,7 +375,7 @@ const LeadDetailPage = () => {
                     <p className="text-muted-foreground">{lead.description}</p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-2">
                       {lead.industry && (
                         <div className="flex items-center justify-between">
@@ -519,9 +519,9 @@ const LeadDetailPage = () => {
           >
             <TabsList className="grid w-full max-w-md grid-cols-4 bg-slate-800/30">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="contacts">Contacts</TabsTrigger>
-              <TabsTrigger value="activities">Activities</TabsTrigger>
-              <TabsTrigger value="documents">Documents</TabsTrigger>
+              <TabsTrigger value="contacts">Sales Pitch</TabsTrigger>
+              <TabsTrigger value="activities">Sales Report</TabsTrigger>
+              <TabsTrigger value="documents">Sales Strategy</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-4">

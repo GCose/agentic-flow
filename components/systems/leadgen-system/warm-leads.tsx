@@ -223,7 +223,8 @@ const WarmLeads = () => {
               {sortedLeads.map((lead) => (
                 <TableRow
                   key={lead.id}
-                  className="border-slate-800 hover:bg-white/5"
+                  onClick={() => handleViewDetails(lead.id)}
+                  className="border-slate-800 hover:bg-white/5 cursor-pointer"
                 >
                   <TableCell className="font-medium">{lead.company}</TableCell>
                   <TableCell>
@@ -267,17 +268,12 @@ const WarmLeads = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => handleViewDetails(lead.id)}
                         >
                           View Details
                         </DropdownMenuItem>
-                        <DropdownMenuItem>Edit Lead</DropdownMenuItem>
-                        <DropdownMenuItem>View Report</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>Change Status</DropdownMenuItem>
-                        <DropdownMenuItem>Assign to Agent</DropdownMenuItem>
-                        <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-destructive">
                           Delete Lead
                         </DropdownMenuItem>

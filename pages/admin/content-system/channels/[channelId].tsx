@@ -9,7 +9,6 @@ import {
   Linkedin,
   Youtube,
   LucideIcon,
-  Filter,
   Download,
   Eye,
   MousePointer,
@@ -109,12 +108,6 @@ const ChannelDetailPage = () => {
     null
   );
   const [isApproving, setIsApproving] = useState(false);
-  const [isFiltering, setIsFiltering] = useState(false);
-
-  // Handle filtering
-  const handleFilter = () => {
-    setIsFiltering(!isFiltering);
-  };
 
   // Reset content viewer when closing
   const handleCloseViewer = () => {
@@ -187,20 +180,6 @@ const ChannelDetailPage = () => {
               <PlatformIcon className={`h-5 w-5 text-${platform.color}-500`} />
             </div>
             <h2 className="text-md font-semibold">{platform.name}</h2>
-          </div>
-
-          <div className="ml-auto flex items-center gap-2">
-            <Button
-              variant={isFiltering ? "default" : "outline"}
-              onClick={handleFilter}
-            >
-              <Filter className="mr-2 h-4 w-4" />
-              {isFiltering ? "Filters Applied" : "Filter"}
-            </Button>
-            <Button variant="outline">
-              <Download className="mr-2 h-4 w-4" />
-              Export Reports
-            </Button>
           </div>
         </header>
 
@@ -354,7 +333,6 @@ const ChannelDetailPage = () => {
                     <CardContent>
                       <ChannelContentList
                         channelId={channelId}
-                        isFiltered={isFiltering}
                         onViewContent={handleViewContent}
                       />
                     </CardContent>

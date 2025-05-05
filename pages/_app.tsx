@@ -1,11 +1,11 @@
 import { ThemeProvider } from "next-themes";
-import { Inter } from "next/font/google";
+import { Manrope } from "next/font/google";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { AuthProvider } from "@/contexts/auth-context";
 
-const inter = Inter({ subsets: ["latin"] });
+const manrope = Manrope({ subsets: ["latin"], variable: "--font-manrope" });
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -17,7 +17,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         disableTransitionOnChange={false}
       >
         <SidebarProvider>
-          <main className={inter.className}>
+          <main className={manrope.className}>
             <Component {...pageProps} />
           </main>
         </SidebarProvider>

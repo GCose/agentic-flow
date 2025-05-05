@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { Search, MoreHorizontal, ArrowUpDown, FileText } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { useRouter } from "next/router";
 import {
   Table,
   TableBody,
@@ -29,7 +30,7 @@ import {
 import { WarmLead } from "@/types/leads";
 
 // Mock data for warm leads
-const generateWarmLeads = (): WarmLead[] => {
+const generateWarmLeads = (): (WarmLead & { report?: string })[] => {
   return [
     {
       id: "wl-1",
@@ -41,6 +42,7 @@ const generateWarmLeads = (): WarmLead[] => {
       lastContact: "2025-04-20",
       assignedTo: "John Smith",
       createdAt: "2025-04-15",
+      report: "Q1 Sales Report - 95% Conversion Rate",
     },
     {
       id: "wl-2",
@@ -52,6 +54,7 @@ const generateWarmLeads = (): WarmLead[] => {
       lastContact: "2025-04-22",
       assignedTo: "Sarah Johnson",
       createdAt: "2025-04-16",
+      report: "Q1 Sales Report - 87% Conversion Rate",
     },
     {
       id: "wl-3",
@@ -63,6 +66,7 @@ const generateWarmLeads = (): WarmLead[] => {
       lastContact: "2025-04-19",
       assignedTo: "Michael Brown",
       createdAt: "2025-04-14",
+      report: "Monthly Sales Report - 72% Conversion Rate",
     },
     {
       id: "wl-4",
@@ -74,6 +78,7 @@ const generateWarmLeads = (): WarmLead[] => {
       lastContact: "2025-04-21",
       assignedTo: "Emily Davis",
       createdAt: "2025-04-18",
+      report: "Q1 Sales Report - 91% Conversion Rate",
     },
     {
       id: "wl-5",
@@ -85,6 +90,7 @@ const generateWarmLeads = (): WarmLead[] => {
       lastContact: "2025-04-23",
       assignedTo: "David Wilson",
       createdAt: "2025-04-17",
+      report: "Monthly Sales Report - 78% Conversion Rate",
     },
   ];
 };
@@ -93,13 +99,18 @@ const WarmLeads = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof WarmLead>("leadScore");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
-  const [warmLeads] = useState<WarmLead[]>(generateWarmLeads());
+  const [warmLeads] = useState<(WarmLead & { report?: string })[]>(
+    generateWarmLeads()
+  );
+  const router = useRouter();
 
   // Filter leads based on search term
   const filteredLeads = warmLeads.filter(
     (lead) =>
       lead.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.strategy.toLowerCase().includes(searchTerm.toLowerCase())
+      lead.strategy.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (lead.report &&
+        lead.report.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   // Sort leads based on sort field and direction
@@ -127,7 +138,11 @@ const WarmLeads = () => {
     }
   };
 
-  // Get status badge color
+  // Navigate to lead details page
+  const handleViewDetails = (leadId: string) => {
+    router.push(`/admin/leadgen-system/lead/${leadId}`);
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "new":
@@ -146,7 +161,7 @@ const WarmLeads = () => {
   };
 
   return (
-    <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+    <Card className=" border-slate-800 bg-transparent backdrop-blur-sm">
       <CardHeader>
         <CardTitle>Warm Leads</CardTitle>
         <CardDescription>
@@ -175,26 +190,31 @@ const WarmLeads = () => {
                 <TableHead className="w-[180px]">
                   <Button
                     variant="ghost"
-                    className="p-0 font-medium"
+                    className="font-medium"
                     onClick={() => handleSort("company")}
                   >
                     Company
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="h-4 w-4" />
                   </Button>
                 </TableHead>
                 <TableHead>
                   <Button
                     variant="ghost"
-                    className="p-0 font-medium"
+                    className="font-medium"
                     onClick={() => handleSort("leadScore")}
                   >
                     Lead Score
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="hidden md:table-cell">Strategy</TableHead>
+                <TableHead className="hidden lg:table-cell">
+                  Sales Report
+                </TableHead>
                 <TableHead className="hidden md:table-cell">
-                  Sale Pitch
+                  Sales Strategy
+                </TableHead>
+                <TableHead className="hidden md:table-cell">
+                  Sales Pitch
                 </TableHead>
                 <TableHead className="hidden sm:table-cell">Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
@@ -214,6 +234,14 @@ const WarmLeads = () => {
                     >
                       {lead.leadScore}
                     </Badge>
+                  </TableCell>
+                  <TableCell className="hidden lg:table-cell">
+                    {lead.report && (
+                      <div className="flex items-center">
+                        <FileText className="h-4 w-4 mr-2 text-muted-foreground" />
+                        <span className="text-sm">{lead.report}</span>
+                      </div>
+                    )}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     {lead.strategy}
@@ -240,8 +268,13 @@ const WarmLeads = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>View Details</DropdownMenuItem>
+                        <DropdownMenuItem
+                          onClick={() => handleViewDetails(lead.id)}
+                        >
+                          View Details
+                        </DropdownMenuItem>
                         <DropdownMenuItem>Edit Lead</DropdownMenuItem>
+                        <DropdownMenuItem>View Report</DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>Change Status</DropdownMenuItem>
                         <DropdownMenuItem>Assign to Agent</DropdownMenuItem>
@@ -256,7 +289,7 @@ const WarmLeads = () => {
               ))}
               {filteredLeads.length === 0 && (
                 <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center">
+                  <TableCell colSpan={7} className="h-24 text-center">
                     No leads found.
                   </TableCell>
                 </TableRow>

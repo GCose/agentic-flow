@@ -432,7 +432,6 @@ const ClientDashboardPage: NextPage = () => {
                     <TableRow className="border-slate-800 border-t">
                       <TableHead>Client</TableHead>
                       <TableHead>Systems</TableHead>
-                      <TableHead>Agents</TableHead>
                       <TableHead className="hidden md:table-cell">
                         Client Since
                       </TableHead>
@@ -469,7 +468,6 @@ const ClientDashboardPage: NextPage = () => {
                             ))}
                           </div>
                         </TableCell>
-                        <TableCell>{client.agents}</TableCell>
                         <TableCell className="hidden md:table-cell">
                           {client.createdAt}
                         </TableCell>

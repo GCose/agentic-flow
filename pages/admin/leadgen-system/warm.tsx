@@ -5,7 +5,6 @@ import DashboardLayout from "@/components/layouts/dashboard-layout";
 import LeadGenHeader from "@/components/systems/leadgen-system/leadgen-header";
 import WarmLeads from "@/components/systems/leadgen-system/warm-leads";
 
-// Client interface
 interface Client {
   id: string;
   name: string;

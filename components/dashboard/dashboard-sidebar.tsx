@@ -277,7 +277,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
 
         {role === "admin" && contentCreationItems.length > 0 && (
           <>
-            <SidebarSeparator />
+            <SidebarSeparator/>
             <SidebarGroup>
               <SidebarGroupLabel>Content Creation</SidebarGroupLabel>
               <SidebarGroupContent>

@@ -162,9 +162,6 @@ const RecentContent = () => {
               <span className="text-sm text-muted-foreground">
                 {content.channel.name}
               </span>
-              <span className="text-sm text-muted-foreground">
-                Created by {content.agent.replace(" Agent", "")}
-              </span>
               <div className="flex items-center gap-3 sm:ml-auto">
                 <div className="flex items-center gap-1 text-sm">
                   <Eye className="h-3.5 w-3.5 text-muted-foreground" />

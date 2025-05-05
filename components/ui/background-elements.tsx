@@ -2,7 +2,7 @@ const BackgroundElements = () => {
   return (
     <>
       <div className="fixed inset-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-slate-900/[0.03] dark:bg-slate-50/[0.0] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:20px_20px]" />
+        {/* <div className="absolute inset-0 bg-slate-900/[0.03] dark:bg-slate-50/[0.0] bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] [background-size:20px_20px]" /> */}
 
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-blue-500/20 to-transparent rounded-full blur-3xl -z-10 transform translate-x-1/3 -translate-y-1/2" />
 

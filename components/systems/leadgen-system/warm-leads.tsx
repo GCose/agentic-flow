@@ -173,13 +173,12 @@ const WarmLeads = () => {
           <div className="relative flex-1">
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search leads..."
-              className="pl-8 bg-transparent border-slate-800"
               value={searchTerm}
+              placeholder="Search leads..."
               onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-8 bg-transparent border-slate-800"
             />
           </div>
-          <Button>Add New Lead</Button>
         </div>
       </CardHeader>
       <CardContent>

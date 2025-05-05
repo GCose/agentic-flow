@@ -1,4 +1,4 @@
-import { ArrowLeft, Filter, Download } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import ThemeToggle from "@/components/theme-toggle";
@@ -50,14 +50,6 @@ const LeadGenHeader = ({
 
       <div className="ml-auto flex items-center gap-2">
         <ThemeToggle />
-        <Button variant="outline">
-          <Filter className="mr-2 h-4 w-4" />
-          Filter
-        </Button>
-        <Button variant="outline">
-          <Download className="mr-2 h-4 w-4" />
-          Export
-        </Button>
       </div>
     </header>
   );

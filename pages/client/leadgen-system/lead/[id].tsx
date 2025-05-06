@@ -31,7 +31,6 @@ import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { WarmLead } from "@/types/leads";
 
-// Mock data for lead details - extended from the warm leads data
 const leadDetails: Record<
   string,
   WarmLead & {

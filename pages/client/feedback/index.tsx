@@ -16,7 +16,7 @@ const FeedbackPage: NextPage = () => {
           content="Collect feedback and optimize your AI agents"
         />
       </Head>
-      <DashboardLayout>
+      <DashboardLayout role="client">
         <FeedbackHeader />
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between">

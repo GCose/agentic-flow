@@ -11,7 +11,7 @@ const OnboardingPage: NextPage = () => {
         <title>Agentic Flow | Onboarding & Prompts</title>
         <meta name="description" content="Create and customize AI agents" />
       </Head>
-      <DashboardLayout>
+      <DashboardLayout role="client">
         <OnboardingHeader />
         <div className="flex-1 p-8 pt-6">
           <div className="flex items-center justify-between mb-6">

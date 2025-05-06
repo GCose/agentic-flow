@@ -11,7 +11,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import AgentErrorAnalysis from "@/components/agent-management/agent-error-analysis";
 import AgentPerformanceMatrix from "@/components/agent-management/agent-performance-matrix";
 import AgentResponseTimes from "@/components/agent-management/agent-response-time";
-import AgentTaskDistribution from "@/components/agent-management/agent-task-distribution";
 import SIMAgentDashboard from "@/components/agent-management/sim-agent-dashboard";
 import { fetchSystemDetail } from "@/lib/api/agent-management-api";
 import { SystemDetail } from "@/types/agent-systems";
@@ -129,10 +128,9 @@ const SystemAgentManagementPage = () => {
             className="space-y-4"
             onValueChange={setActiveTab}
           >
-            <TabsList className="grid grid-cols-4 bg-slate-800/30">
+            <TabsList className="grid grid-cols-3 bg-slate-800/30">
               <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
               <TabsTrigger value="performance">Performance</TabsTrigger>
-              <TabsTrigger value="tasks">Task Distribution</TabsTrigger>
               <TabsTrigger value="errors">Error Analysis</TabsTrigger>
             </TabsList>
 
@@ -157,20 +155,6 @@ const SystemAgentManagementPage = () => {
                 </CardHeader>
                 <CardContent>
                   <AgentResponseTimes
-                    agents={system.agents}
-                    systemColor={systemColor}
-                  />
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="tasks" className="space-y-4">
-              <Card className="border-slate-800 bg-transparent">
-                <CardHeader>
-                  <CardTitle>Task Distribution & Completion Rates</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <AgentTaskDistribution
                     agents={system.agents}
                     systemColor={systemColor}
                   />

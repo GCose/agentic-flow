@@ -60,16 +60,6 @@ const reportSections = [
       "Through our analysis, we've identified several key challenges Acme Inc. is facing:\n\n1. Operational inefficiency in their customer support workflow\n2. High cost of manual data processing across departments\n3. Integration issues between their legacy systems and newer cloud applications\n4. Employee productivity bottlenecks in their approval processes\n5. Compliance reporting requirements creating significant overhead",
   },
   {
-    title: "Decision Makers",
-    content:
-      "We've identified two key stakeholders in the buying process:\n\n- Jane Cooper (CTO): Technical decision maker with final sign-off authority. Strong advocate for automation and efficiency improvements.\n- Robert Garcia (Procurement Manager): Manages vendor selection process and budget allocation. Primary focus on ROI and implementation timeline.",
-  },
-  {
-    title: "Competitive Analysis",
-    content:
-      "Acme Inc. is currently evaluating two competitor solutions alongside our offering:\n\n- CompetitorX: Lower cost but limited integration capabilities\n- CompetitorY: More established but significantly higher TCO and longer implementation timeline\n\nOur competitive advantages include superior API flexibility, faster implementation, and our unique approach to workflow automation.",
-  },
-  {
     title: "Budget & Timeline",
     content:
       "Based on our intelligence gathering, Acme Inc. has allocated a budget range of $100K-$150K for this initiative. They expect to make a final vendor selection within the next 4-6 weeks and aim for full implementation by the end of Q3. Budget approval is expected at their next executive meeting scheduled for the end of the current quarter.",
@@ -99,11 +89,6 @@ const strategySections = [
       "For Jane Cooper (CTO):\n- Focus on technical advantages and API flexibility\n- Demonstrate our integration capabilities with their existing tech stack\n- Emphasize our solution's scalability for future needs\n\nFor Robert Garcia (Procurement):\n- Highlight our competitive TCO compared to alternatives\n- Present clear ROI calculations and payback period\n- Detail our implementation timeline advantages\n\nIdentify and engage additional stakeholders in IT and Operations to build broader internal support.",
   },
   {
-    title: "Competitive Positioning",
-    content:
-      "Against CompetitorX:\n- Acknowledge their lower price point but emphasize our superior integration capabilities\n- Demonstrate the hidden costs of their limited feature set\n\nAgainst CompetitorY:\n- Position us as the more agile, innovative alternative\n- Highlight our faster implementation timeline (crucial to their Q3 deadline)\n- Emphasize our modern architecture vs. their legacy approach",
-  },
-  {
     title: "Risk Mitigation Plan",
     content:
       "1. Budget concerns: Prepare a phased implementation option that fits within their current budget constraints while allowing for expansion\n\n2. Technical concerns: Offer a proof-of-concept demonstration with their actual data to validate integration feasibility\n\n3. Competitive relationships: Provide case studies of clients who switched from CompetitorY to our solution\n\n4. Timeline pressure: Develop an accelerated implementation plan with dedicated resources",
@@ -131,11 +116,6 @@ const pitchSections = [
     title: "Solution Presentation",
     content:
       "Our platform addresses these challenges through:\n\n1. Automated workflow orchestration that eliminates manual handoffs\n2. Intelligent data processing that reduces errors by 87%\n3. Pre-built connectors for legacy and cloud systems\n4. No-code approval flows that reduce bottlenecks\n5. Automated compliance reporting dashboards\n\nUnlike alternatives, our solution combines enterprise-grade security with rapid implementation and superior integration capabilities.",
-  },
-  {
-    title: "Differentiation",
-    content:
-      "What sets us apart from CompetitorX and CompetitorY:\n\n• Implementation in 6-8 weeks vs. industry average of 4-6 months\n• 40% lower total cost of ownership compared to CompetitorY\n• Flexible API architecture that connects with any system\n• No-code configuration that reduces IT dependency\n• Phased approach allowing for quick wins while building toward complete solution",
   },
   {
     title: "Evidence & Proof",
@@ -216,53 +196,6 @@ const leadDetails: Record<
       "Budget approval expected by end of quarter",
       "Considering competitors, but our solution has unique advantages",
     ],
-    activities: [
-      {
-        type: "Email",
-        date: "2025-04-18",
-        description: "Sent follow-up with case studies",
-        user: "John Smith",
-      },
-      {
-        type: "Call",
-        date: "2025-04-15",
-        description: "Initial discovery call with CTO",
-        user: "Sarah Johnson",
-      },
-      {
-        type: "Meeting",
-        date: "2025-04-10",
-        description: "Demo presentation to the executive team",
-        user: "John Smith",
-      },
-    ],
-    contacts: [
-      {
-        name: "Jane Cooper",
-        position: "CTO",
-        email: "jane.cooper@acmeinc.com",
-        phone: "+1 (555) 987-6543",
-      },
-      {
-        name: "Robert Garcia",
-        position: "Procurement Manager",
-        email: "robert.garcia@acmeinc.com",
-      },
-    ],
-    documents: [
-      {
-        name: "Acme Inc Proposal",
-        type: "PDF",
-        date: "2025-04-19",
-        size: "2.4 MB",
-      },
-      {
-        name: "Technical Requirements",
-        type: "DOCX",
-        date: "2025-04-16",
-        size: "1.8 MB",
-      },
-    ],
     timeline: [
       {
         date: "2025-04-20",
@@ -309,36 +242,6 @@ const leadDetails: Record<
       "Referred by existing client MediTech",
       "Looking for implementation before Q3",
       "Budget constraints, but high interest in ROI",
-    ],
-    activities: [
-      {
-        type: "Email",
-        date: "2025-04-22",
-        description: "Sent pricing proposal",
-        user: "Sarah Johnson",
-      },
-      {
-        type: "Call",
-        date: "2025-04-19",
-        description: "Product demonstration call",
-        user: "Sarah Johnson",
-      },
-    ],
-    contacts: [
-      {
-        name: "Alex Morgan",
-        position: "CIO",
-        email: "alex.morgan@techcorp.com",
-        phone: "+1 (555) 444-5555",
-      },
-    ],
-    documents: [
-      {
-        name: "TechCorp Cost Analysis",
-        type: "PDF",
-        date: "2025-04-22",
-        size: "1.7 MB",
-      },
     ],
     timeline: [
       {
@@ -1097,8 +1000,8 @@ const LeadDetailPage = () => {
                   </div>
                   <Button
                     variant="outline"
-                    onClick={() => handleDownload("report")}
                     disabled={downloading === "report"}
+                    onClick={() => handleDownload("report")}
                     className="bg-slate-800/50 border-slate-700"
                   >
                     {downloading === "report" ? (

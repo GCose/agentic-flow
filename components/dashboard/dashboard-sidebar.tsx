@@ -92,12 +92,12 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           },
           {
             title: "Onboarding System",
-            href: "/client/onboarding-system",
+            href: "/client/onboarding",
             icon: Briefcase,
           },
           {
             title: "Reports",
-            href: "/client/reports",
+            href: "/client/reporting",
             icon: BarChart,
           },
           {
@@ -277,7 +277,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
 
         {role === "admin" && contentCreationItems.length > 0 && (
           <>
-            <SidebarSeparator/>
+            <SidebarSeparator />
             <SidebarGroup>
               <SidebarGroupLabel>Content Creation</SidebarGroupLabel>
               <SidebarGroupContent>

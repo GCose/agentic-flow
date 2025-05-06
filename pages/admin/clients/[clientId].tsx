@@ -25,34 +25,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import StatCard from "@/components/ui/stat-card";
-
-// Define TypeScript interfaces
-interface ClientStats {
-  agents: number;
-  projects: number;
-  activeUsers: number;
-  successRate: number;
-}
-
-interface ClientData {
-  id: string;
-  name: string;
-  description: string;
-  systems: string[];
-  stats: ClientStats;
-  activeTime: string;
-  createdAt: string;
-}
-
-interface SystemConfig {
-  icon: React.ElementType;
-  color: string;
-  description: string;
-  bgGradient: string;
-  iconClassName: string;
-}
-
-type SystemConfigs = Record<string, SystemConfig>;
+import { ClientData, SystemConfigs } from "@/types/clients";
 
 // Sample clients data
 const clientsData: ClientData[] = [

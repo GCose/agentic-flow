@@ -251,7 +251,7 @@ const AgentErrorAnalysis: React.FC<AgentErrorAnalysisProps> = ({ agents }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Error Types Chart */}
+        {/*==================== Error Types Chart ====================*/}
         <div className="space-y-2">
           <h3 className="text-lg font-medium">Error Type Distribution</h3>
           <div className="h-[300px] flex items-center justify-center">
@@ -285,8 +285,9 @@ const AgentErrorAnalysis: React.FC<AgentErrorAnalysisProps> = ({ agents }) => {
             )}
           </div>
         </div>
+        {/*==================== End of Error Types Chart ====================*/}
 
-        {/* Errors Per Agent */}
+        {/*==================== Errors Per Agent ====================*/}
         <div className="space-y-2">
           <h3 className="text-lg font-medium">Errors By Agent</h3>
           <div className="h-[300px]">
@@ -316,9 +317,10 @@ const AgentErrorAnalysis: React.FC<AgentErrorAnalysisProps> = ({ agents }) => {
             </ResponsiveContainer>
           </div>
         </div>
+        {/*==================== End of Errors Per Agent ====================*/}
       </div>
 
-      {/* Error Timeline */}
+      {/*==================== Error Timeline ====================*/}
       <div className="space-y-4">
         <h3 className="text-lg font-medium">Error Trend (Last 7 Days)</h3>
         <div className="h-[200px]">
@@ -381,6 +383,7 @@ const AgentErrorAnalysis: React.FC<AgentErrorAnalysisProps> = ({ agents }) => {
           </div>
         </div>
       </div>
+      {/*==================== End of Error Timeline ====================*/}
     </div>
   );
 };

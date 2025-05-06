@@ -277,35 +277,8 @@ const AgentTaskDistribution: React.FC<AgentTaskDistributionProps> = ({
 
   return (
     <div className="space-y-8">
-      {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-slate-800/30 rounded-lg p-4 text-center">
-          <p className="text-sm text-muted-foreground">Total Tasks</p>
-          <p className="text-2xl font-bold mt-1">
-            {taskStatusData.reduce((sum, item) => sum + item.value, 0)}
-          </p>
-        </div>
-        <div className="bg-slate-800/30 rounded-lg p-4 text-center">
-          <p className="text-sm text-muted-foreground">Completion Rate</p>
-          <p className="text-2xl font-bold mt-1 text-green-500">
-            {taskStatusData.length
-              ? (
-                  (taskStatusData[0].value /
-                    taskStatusData.reduce((sum, item) => sum + item.value, 0)) *
-                  100
-                ).toFixed(1) + "%"
-              : "0%"}
-          </p>
-        </div>
-        <div className="bg-slate-800/30 rounded-lg p-4 text-center">
-          <p className="text-sm text-muted-foreground">Busiest Agent</p>
-          <p className="text-lg font-bold mt-1 truncate">
-            {agentLoadData.length > 0 ? agentLoadData[0].name : "None"}
-          </p>
-        </div>
-      </div> */}
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Task Status Distribution */}
+        {/*==================== Task Status Distribution ====================*/}
         <div className="space-y-2">
           <h3 className="text-lg font-medium">Task Status Distribution</h3>
           <div className="h-[300px]">
@@ -335,8 +308,9 @@ const AgentTaskDistribution: React.FC<AgentTaskDistributionProps> = ({
             </ResponsiveContainer>
           </div>
         </div>
+        {/*==================== End of Task Status Distribution ====================*/}
 
-        {/* Agent Task Load */}
+        {/*==================== Agent Task Load ====================*/}
         <div className="space-y-2">
           <h3 className="text-lg font-medium">Agent Task Load</h3>
           <div className="h-[300px]">
@@ -363,10 +337,11 @@ const AgentTaskDistribution: React.FC<AgentTaskDistributionProps> = ({
             </ResponsiveContainer>
           </div>
         </div>
+        {/*==================== End of Agent Task Load ====================*/}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Task Type Distribution */}
+        {/*==================== Task Type Distribution ====================*/}
         <div className="space-y-2">
           <h3 className="text-lg font-medium">Task Type Distribution</h3>
           <div className="h-[300px]">
@@ -396,8 +371,9 @@ const AgentTaskDistribution: React.FC<AgentTaskDistributionProps> = ({
             </ResponsiveContainer>
           </div>
         </div>
+        {/*==================== End of Task Type Distribution ====================*/}
 
-        {/* Efficiency Matrix */}
+        {/*==================== Efficiency Matrix ====================*/}
         <div className="space-y-2">
           <h3 className="text-lg font-medium">Efficiency vs Load Matrix</h3>
           <div className="h-[300px]">
@@ -448,6 +424,7 @@ const AgentTaskDistribution: React.FC<AgentTaskDistributionProps> = ({
             </ResponsiveContainer>
           </div>
         </div>
+        {/*==================== End of Efficiency Matrix ====================*/}
       </div>
     </div>
   );

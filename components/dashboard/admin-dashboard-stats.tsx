@@ -1,15 +1,15 @@
-import { Brain, Grid2X2, Zap, Clock } from "lucide-react";
+import { Grid2X2, Zap, Clock, Users2Icon } from "lucide-react";
 import StatCard from "../ui/stat-card";
 
 const DashboardStats = () => {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
-        value="44"
-        icon={Brain}
+        value="20"
+        icon={Users2Icon}
         color="blue"
-        title="Total Agents"
-        change="Autonomous AI agents across all systems"
+        title="Total Clients"
+        change="Clients using Agentic Flow"
       />
       <StatCard
         value="4"

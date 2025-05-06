@@ -15,8 +15,9 @@ import AgentTaskDistribution from "@/components/agent-management/agent-task-dist
 import SIMAgentDashboard from "@/components/agent-management/sim-agent-dashboard";
 import { fetchSystemDetail } from "@/lib/api/agent-management-api";
 import { SystemDetail } from "@/types/agent-systems";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 
-const SystemAgentManagementPage = ()   => {
+const SystemAgentManagementPage = () => {
   const router = useRouter();
   const { systemId } = router.query;
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -29,7 +30,7 @@ const SystemAgentManagementPage = ()   => {
       const loadSystemData = async () => {
         setLoading(true);
         try {
-          // In a real app, this would be an API call
+          // API Simulation Call
           const data = await fetchSystemDetail(systemId);
           setSystem(data);
         } catch (error) {
@@ -95,7 +96,9 @@ const SystemAgentManagementPage = ()   => {
         />
       </Head>
       <DashboardLayout>
-        <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent backdrop-blur-xs px-4 sm:px-6">
+        {/*==================== Header ====================*/}
+        <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border border-slate-800 rounded-br-4xl rounded-bl-4xl bg-transparent backdrop-blur-xs px-4 sm:px-6">
+          <SidebarTrigger />
           <Button
             size="icon"
             variant="ghost"
@@ -113,12 +116,14 @@ const SystemAgentManagementPage = ()   => {
             Last updated: {lastUpdate.toLocaleTimeString()}
           </div>
         </header>
+        {/*==================== End of Header ====================*/}
 
         <div className="flex-1 space-y-6 p-8">
-          {/* System Intelligence Manager Dashboard */}
+          {/*==================== System Intelligence Manager Dashboard ====================*/}
           <SIMAgentDashboard sim={system.sim} systemColor={systemColor} />
+          {/*==================== End of System Intelligence Manager Dashboard ====================*/}
 
-          {/* Tabs for different views */}
+          {/*==================== Tabs for different views ====================*/}
           <Tabs
             value={activeTab}
             className="space-y-4"
@@ -132,7 +137,7 @@ const SystemAgentManagementPage = ()   => {
             </TabsList>
 
             <TabsContent value="dashboard" className="space-y-4">
-              <Card className="border bg-transparent">
+              <Card className="border-slate-800 bg-transparent">
                 <CardHeader>
                   <CardTitle>Agent Performance Matrix</CardTitle>
                 </CardHeader>
@@ -146,7 +151,7 @@ const SystemAgentManagementPage = ()   => {
             </TabsContent>
 
             <TabsContent value="performance" className="space-y-4">
-              <Card className="border bg-transparent">
+              <Card className="border-slate-800 bg-transparent">
                 <CardHeader>
                   <CardTitle>Agent Response Times</CardTitle>
                 </CardHeader>
@@ -160,7 +165,7 @@ const SystemAgentManagementPage = ()   => {
             </TabsContent>
 
             <TabsContent value="tasks" className="space-y-4">
-              <Card className="border bg-transparent">
+              <Card className="border-slate-800 bg-transparent">
                 <CardHeader>
                   <CardTitle>Task Distribution & Completion Rates</CardTitle>
                 </CardHeader>
@@ -174,7 +179,7 @@ const SystemAgentManagementPage = ()   => {
             </TabsContent>
 
             <TabsContent value="errors" className="space-y-4">
-              <Card className="border bg-transparent">
+              <Card className="border-slate-800 bg-transparent">
                 <CardHeader>
                   <CardTitle>Error Frequency & Analysis</CardTitle>
                 </CardHeader>
@@ -187,9 +192,10 @@ const SystemAgentManagementPage = ()   => {
               </Card>
             </TabsContent>
           </Tabs>
+          {/*==================== End of Tabs for different views ====================*/}
 
-          {/* Agent Activity Timeline */}
-          <Card className="border bg-transparent">
+          {/*==================== Agent Activity Timeline ====================*/}
+          <Card className="border-slate-800 bg-transparent">
             <CardHeader className="flex flex-row items-center justify-between">
               <CardTitle className="flex items-center gap-2">
                 <Activity className="h-5 w-5 text-primary" />
@@ -197,7 +203,7 @@ const SystemAgentManagementPage = ()   => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-[300px] relative overflow-hidden">
+              <div className="h-[300px] relative overflow-y-auto">
                 {system.agents.map((agent, index) => (
                   <div
                     key={agent.id}
@@ -232,6 +238,7 @@ const SystemAgentManagementPage = ()   => {
               </div>
             </CardContent>
           </Card>
+          {/*==================== End of Agent Activity Timeline ====================*/}
         </div>
       </DashboardLayout>
     </>

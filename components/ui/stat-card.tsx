@@ -55,9 +55,7 @@ const StatCard = ({
     <Card className={`border-none overflow-hidden border ${colors.bg}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-md font-medium">{title}</CardTitle>
-        <div className={`rounded-full ${colors.iconBg} px-2`}>
-          <Icon className={`h-6 w-6 ${colors.iconColor}`} />
-        </div>
+        <Icon className={`h-7 w-7 ${colors.iconColor}`} />
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold pb-1">{value}</div>

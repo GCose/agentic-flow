@@ -428,7 +428,7 @@ const ClientDashboardPage: NextPage = () => {
                     <CardHeader>
                       <div className="flex justify-between items-start">
                         <div
-                          className={`p-2 rounded-lg ${
+                          className={`p-2 mb-4 rounded-lg ${
                             isActive ? "bg-white/10" : "bg-white/5"
                           }`}
                         >
@@ -442,8 +442,8 @@ const ClientDashboardPage: NextPage = () => {
                         </div>
                         {!isActive && (
                           <Button
-                            variant="outline"
                             size="sm"
+                            variant="outline"
                             className="text-xs bg-slate-800/40"
                           >
                             Add System
@@ -466,7 +466,7 @@ const ClientDashboardPage: NextPage = () => {
                         <div className="text-sm">
                           <Button
                             variant="link"
-                            className="px-0 mt-2 flex items-center gap-1 text-primary hover:text-primary/80"
+                            className="cursor-pointer flex items-center gap-1 text-primary hover:text-primary/80"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleSystemClick(system);

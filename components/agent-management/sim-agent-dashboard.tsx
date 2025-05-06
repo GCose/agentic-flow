@@ -15,7 +15,7 @@ const SIMAgentDashboard: React.FC<SIMAgentDashboardProps> = ({
 }) => {
   return (
     <Card
-      className={`border bg-gradient-to-br from-${systemColor}-500/10 to-transparent`}
+      className={`border-none bg-gradient-to-br from-${systemColor}-500/10 to-transparent`}
     >
       <CardHeader>
         <CardTitle className="flex items-center gap-2">

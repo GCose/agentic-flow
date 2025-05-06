@@ -88,12 +88,13 @@ const AgentManagementPage: NextPage = () => {
       <DashboardLayout>
         <AgentManagementHeader />
         <div className="flex-1 space-y-6 p-8 pt-6">
+          {/*==================== Agent Management Title ====================*/}
           <div className="flex justify-between items-center">
             <div>
               <h2 className="text-3xl font-bold tracking-tight">
                 Agent Management
               </h2>
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground pt-2">
                 Monitor and manage your AI agent crews
               </p>
             </div>
@@ -101,8 +102,9 @@ const AgentManagementPage: NextPage = () => {
               Last updated: {updateTime.toLocaleTimeString()}
             </div>
           </div>
+          {/*==================== End of Agent Management Title ====================*/}
 
-          {/* System Cards */}
+          {/*==================== System Cards ====================*/}
           <div className="grid gap-6 grid-cols-1 md:grid-cols-2 mt-8">
             {loading
               ? Array(4)
@@ -110,7 +112,7 @@ const AgentManagementPage: NextPage = () => {
                   .map((_, i) => (
                     <Card
                       key={i}
-                      className="border bg-transparent backdrop-blur-sm animate-pulse"
+                      className="border-slate-800 bg-transparent backdrop-blur-sm animate-pulse"
                     >
                       <CardContent className="p-6 h-48"></CardContent>
                     </Card>
@@ -123,6 +125,7 @@ const AgentManagementPage: NextPage = () => {
                   />
                 ))}
           </div>
+          {/*==================== End of System Cards ====================*/}
         </div>
       </DashboardLayout>
     </>

@@ -40,13 +40,12 @@ const AgentResponseTimes: React.FC<AgentResponseTimesProps> = ({
 }) => {
   const [responseData, setResponseData] = useState<ResponseData[]>([]);
   const [averageTime, setAverageTime] = useState<number>(0);
-
   const [responseTimeHistory, setResponseTimeHistory] = useState<
     ResponseTimeHistory[]
   >([]);
 
+  // Initial setup when `agents` change
   useEffect(() => {
-    // Format the agents data for the bar chart
     const formattedData = agents.map((agent) => ({
       name: agent.name.replace(" Agent", ""),
       responseTime: agent.responseTime,
@@ -55,61 +54,60 @@ const AgentResponseTimes: React.FC<AgentResponseTimesProps> = ({
 
     setResponseData(formattedData);
 
-    // Calculate average response time
     const total = agents.reduce((sum, agent) => sum + agent.responseTime, 0);
     setAverageTime(Math.round(total / agents.length));
 
-    // Generate mock historical data
     const hours = Array.from({ length: 24 }, (_, i) => i);
     const historicalData = hours.map((hour) => {
       const baseTime = Math.floor(Math.random() * 300) + 500;
       return {
         hour: `${hour}:00`,
-        responseTime: baseTime + (hour >= 9 && hour <= 17 ? 100 : 0), // Simulated higher times during work hours
+        responseTime: baseTime + (hour >= 9 && hour <= 17 ? 100 : 0),
       };
     });
 
     setResponseTimeHistory(historicalData);
+  }, [agents]);
 
-    // Set up an interval to simulate real-time updates
+  // Interval updates (runs once)
+  useEffect(() => {
     const interval = setInterval(() => {
       setResponseData((prev) => {
-        return prev.map((item) => ({
+        const updated = prev.map((item) => ({
           ...item,
           responseTime: Math.max(
             100,
             item.responseTime + (Math.random() * 100 - 50)
           ),
         }));
+
+        const newTotal = updated.reduce(
+          (sum, item) => sum + item.responseTime,
+          0
+        );
+        setAverageTime(Math.round(newTotal / updated.length));
+
+        return updated;
       });
 
-      // Update average
-      const newTotal = responseData.reduce(
-        (sum, item) => sum + item.responseTime,
-        0
-      );
-      setAverageTime(Math.round(newTotal / responseData.length));
-
-      // Update history for the current hour
       const currentHour = new Date().getHours();
-      setResponseTimeHistory((prev) => {
-        return prev.map((item, index) => {
-          if (index === currentHour) {
-            return {
-              ...item,
-              responseTime: Math.max(
-                100,
-                item.responseTime + (Math.random() * 50 - 25)
-              ),
-            };
-          }
-          return item;
-        });
-      });
+      setResponseTimeHistory((prev) =>
+        prev.map((item, index) =>
+          index === currentHour
+            ? {
+                ...item,
+                responseTime: Math.max(
+                  100,
+                  item.responseTime + (Math.random() * 50 - 25)
+                ),
+              }
+            : item
+        )
+      );
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [agents, responseData]);
+  }, []);
 
   const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
@@ -128,11 +126,10 @@ const AgentResponseTimes: React.FC<AgentResponseTimesProps> = ({
     return null;
   };
 
-  // Get bar color based on response time
   const getBarColor = (responseTime: number) => {
-    if (responseTime < 500) return "#4ade80"; // Good - green
-    if (responseTime < 800) return "#facc15"; // Warning - yellow
-    return "#f87171"; // Slow - red
+    if (responseTime < 500) return "#4ade80"; // green
+    if (responseTime < 800) return "#facc15"; // yellow
+    return "#f87171"; // red
   };
 
   return (
@@ -168,12 +165,7 @@ const AgentResponseTimes: React.FC<AgentResponseTimesProps> = ({
             margin={{ top: 10, right: 30, left: 20, bottom: 70 }}
             layout="vertical"
           >
-            <CartesianGrid
-              strokeDasharray="3 3"
-              horizontal={true}
-              vertical={false}
-              stroke="#1e293b"
-            />
+            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
             <XAxis
               type="number"
               domain={[0, "dataMax"]}
@@ -184,8 +176,8 @@ const AgentResponseTimes: React.FC<AgentResponseTimesProps> = ({
               dataKey="name"
               type="category"
               width={150}
-              tick={{ fontSize: 12 }}
               stroke="#6b7280"
+              tick={{ fontSize: 12 }}
             />
             <Tooltip content={<CustomTooltip />} />
             <ReferenceLine

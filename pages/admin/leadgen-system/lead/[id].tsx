@@ -118,11 +118,6 @@ const pitchSections = [
       "Our platform addresses these challenges through:\n\n1. Automated workflow orchestration that eliminates manual handoffs\n2. Intelligent data processing that reduces errors by 87%\n3. Pre-built connectors for legacy and cloud systems\n4. No-code approval flows that reduce bottlenecks\n5. Automated compliance reporting dashboards\n\nUnlike alternatives, our solution combines enterprise-grade security with rapid implementation and superior integration capabilities.",
   },
   {
-    title: "Evidence & Proof",
-    content:
-      "Companies similar to Acme Inc. have achieved remarkable results:\n\n• FinTech Leader reduced processing time by 72% within 3 months\n• Healthcare Provider achieved $1.2M annual savings from automation\n• Manufacturing company improved compliance reporting time by 85%\n\nAll with implementation timelines that meet or exceed your Q3 deadline requirement.",
-  },
-  {
     title: "Call to Action",
     content:
       "I recommend we schedule a technical deep-dive session with your IT team to demonstrate our integration capabilities with your specific systems. Following that, we can present a customized ROI analysis to your executive team.\n\nWould next Tuesday work for an initial technical workshop with your team?",

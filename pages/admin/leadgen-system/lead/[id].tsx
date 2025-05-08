@@ -981,7 +981,7 @@ const LeadDetailPage = () => {
 
             {/* Sales Report Tab */}
             <TabsContent value="report">
-              <Card className="border-transparent bg-transparent">
+              <Card className="border-slate-800 bg-transparent">
                 <CardHeader className="flex flex-row items-center justify-between pb-3">
                   <div>
                     <CardTitle className="flex items-center gap-2 text-lg">
@@ -1053,7 +1053,7 @@ const LeadDetailPage = () => {
 
             {/* Sales Strategy Tab */}
             <TabsContent value="strategy">
-              <Card className="border-transparent bg-transparent">
+              <Card className="border-slate-800 bg-transparent">
                 <CardHeader className="flex flex-row items-center justify-between pb-3">
                   <div>
                     <CardTitle className="flex items-center gap-2 text-lg">
@@ -1159,7 +1159,7 @@ const LeadDetailPage = () => {
 
             {/* Sales Pitch Tab */}
             <TabsContent value="pitch">
-              <Card className="border-transparent bg-transparent">
+              <Card className="border-slate-800 bg-transparent">
                 <CardHeader className="flex flex-row items-center justify-between pb-3">
                   <div>
                     <CardTitle className="flex items-center gap-2 text-lg">

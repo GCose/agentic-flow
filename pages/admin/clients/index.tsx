@@ -1,18 +1,10 @@
 import { useState } from "react";
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import { PlusCircle, MoreHorizontal, Check } from "lucide-react";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Table,
   TableBody,
@@ -41,9 +33,10 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import ClientDashboardHeader from "@/components/clients/clients-header";
 import { initialClients } from "@/mock/clients-data";
 import { Client } from "@/types/clients";
+import { AdminPageMeta } from "@/page-config/meta.config";
+import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 const ClientDashboardPage: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -117,27 +110,19 @@ const ClientDashboardPage: NextPage = () => {
   };
 
   return (
-    <>
-      <Head>
-        <title>Agentic Flow | Client Dashboard</title>
-        <meta
-          name="description"
-          content="Manage all your clients in Agentic Flow"
-        />
-      </Head>
-      <DashboardLayout>
-        <ClientDashboardHeader
-          searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
-        />
-        <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight">Clients</h2>
-              <p className="text-muted-foreground">
-                Manage all client accounts and their system access
-              </p>
-            </div>
+    <DashboardLayout meta={AdminPageMeta.clientsDashboardPage}>
+      <DashboardHeader title="Clients" />
+
+      {/*==================== Client Content ====================*/}
+      <div className="flex-1 p-4 py-2">
+        <Card className="border-none bg-transparent ">
+          <CardHeader className="flex flex-col gap-4 md:flex-row items-center justify-between">
+            <Input
+              value={searchTerm}
+              placeholder="Search clients..."
+              className="w-full md:w-64 border-slate-800"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
               <DialogTrigger asChild>
                 <Button className="w-full md:w-auto">
@@ -223,127 +208,98 @@ const ClientDashboardPage: NextPage = () => {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
-          </div>
-
-          <Card className="border-slate-800 bg-transparent backdrop-blur-sm mt-7">
-            <CardHeader className="pb-2">
-              <CardTitle>Client List</CardTitle>
-              <CardDescription>
-                All clients with their active systems and agents
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <TableRow className="border-slate-800 border-t">
-                      <TableHead>Client</TableHead>
-                      <TableHead>Systems</TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Client Since
-                      </TableHead>
-                      <TableHead className="hidden md:table-cell">
-                        Subscription
-                      </TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredClients.map((client) => (
-                      <TableRow
-                        key={client.id}
-                        onClick={() => navigateToClientDashboard(client.id)}
-                        className="cursor-pointer border-none hover:bg-white/5 hover:rounded-md"
-                      >
-                        <TableCell className="font-medium">
-                          {client.name}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-1">
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-slate-800">
+              <Table>
+                <TableHeader>
+                  <TableRow className="border-b border-slate-800 hover:bg-transparent">
+                    <TableHead>Client</TableHead>
+                    <TableHead>Systems</TableHead>
+                    <TableHead className="hidden md:table-cell">
+                      Client Since
+                    </TableHead>
+                    <TableHead className="hidden md:table-cell">
+                      Subscription
+                    </TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {filteredClients.map((client) => (
+                    <TableRow
+                      key={client.id}
+                      onClick={() => navigateToClientDashboard(client.id)}
+                      className="cursor-pointer border-b border-slate-800 hover:bg-white/3 hover:rounded-md"
+                    >
+                      <TableCell className="font-medium">
+                        {client.name}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex flex-wrap gap-1">
+                          {client.systems.map((system) => (
+                            <div key={system} className="font-medium p-2">
+                              {system}
+                            </div>
+                          ))}
+                        </div>
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell font-medium">
+                        {client.createdAt}
+                      </TableCell>
+                      <TableCell className="hidden md:table-cell font-medium">
+                        {client.subscriptionDuration}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger
+                            asChild
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Button variant="ghost" className="h-8 w-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <MoreHorizontal className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Systems</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
                             {client.systems.map((system) => (
-                              <Badge
+                              <DropdownMenuItem
                                 key={system}
-                                variant="outline"
-                                className="cursor-pointer hover:bg-primary/20"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   navigateToClientSystem(client.id, system);
                                 }}
                               >
-                                {system}
-                              </Badge>
+                                View {system}
+                              </DropdownMenuItem>
                             ))}
-                          </div>
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          {client.createdAt}
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell">
-                          {client.subscriptionDuration}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger
-                              asChild
-                              onClick={(e) => e.stopPropagation()}
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setClients(
+                                  clients.filter((c) => c.id !== client.id)
+                                );
+                              }}
+                              className="text-destructive focus:text-destructive"
                             >
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                              <DropdownMenuItem
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  navigateToClientDashboard(client.id);
-                                }}
-                              >
-                                View Dashboard
-                              </DropdownMenuItem>
-                              <DropdownMenuSeparator />
-                              {client.systems.map((system) => (
-                                <DropdownMenuItem
-                                  key={system}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigateToClientSystem(client.id, system);
-                                  }}
-                                >
-                                  View {system}
-                                </DropdownMenuItem>
-                              ))}
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                onClick={(e) => e.stopPropagation()}
-                              >
-                                Edit Client
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  setClients(
-                                    clients.filter((c) => c.id !== client.id)
-                                  );
-                                }}
-                                className="text-destructive focus:text-destructive"
-                              >
-                                Delete Client
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </DashboardLayout>
-    </>
+                              Delete Client
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      {/*==================== End of Client Content ====================*/}
+    </DashboardLayout>
   );
 };
 

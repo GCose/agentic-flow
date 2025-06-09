@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import jsPDF from "jspdf";
-import Head from "next/head";
 import {
   ArrowLeft,
   Building,
@@ -26,7 +25,7 @@ import {
   AlertCircle,
   Bookmark,
 } from "lucide-react";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import {
   Card,
   CardContent,
@@ -38,10 +37,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import type { WarmLead } from "@/types/leads";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import { AdminPageMeta } from "@/page-config/meta.config";
 
 const reportSections = [
   {
@@ -290,15 +289,6 @@ const leadDetails: Record<
   },
 };
 
-// Helper function to get initials from name
-const getInitials = (name: string) => {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase();
-};
-
 // Helper function to get activity icon
 const getActivityIcon = (type: string) => {
   switch (type) {
@@ -349,7 +339,7 @@ const LeadDetailPage = () => {
   }, [id]);
 
   const handleBack = () => {
-    router.push("/admin/leadgen-system/warm");
+    router.push("/admin/leadgen-system/warm-leads");
   };
 
   const handleDownload = (type: string) => {
@@ -449,14 +439,19 @@ const LeadDetailPage = () => {
     return "text-rose-500";
   };
 
+  const meta = lead
+    ? {
+        title: `Aftermath Marketing | ${lead.company} Lead Details`,
+        description: `View detailed information about ${lead.company}`,
+        icon: AdminPageMeta.leadDetailPage.icon,
+      }
+    : AdminPageMeta.leadDetailPage;
+
   if (loading) {
     return (
-      <DashboardLayout>
+      <DashboardLayout role="client" meta={meta}>
         <div className="flex-1 p-8 flex items-center justify-center">
-          <div className="flex flex-col items-center gap-4">
-            <div className="h-12 w-12 rounded-full border-4 border-primary/30 border-t-primary animate-spin"></div>
-            <p className="text-muted-foreground">Loading lead details...</p>
-          </div>
+          <p>Loading lead details...</p>
         </div>
       </DashboardLayout>
     );
@@ -464,18 +459,13 @@ const LeadDetailPage = () => {
 
   if (!lead) {
     return (
-      <DashboardLayout>
+      <DashboardLayout role="client" meta={meta}>
         <div className="flex-1 p-8 flex flex-col items-center justify-center">
-          <div className="bg-transparent p-8 rounded-xl border border-slate-800 text-center max-w-md">
-            <AlertCircle className="h-12 w-12 mx-auto mb-4 text-rose-500" />
-            <h2 className="text-2xl font-bold mb-2">Lead Not Found</h2>
-            <p className="text-muted-foreground mb-6">
-              The lead you are looking for does not exist or has been removed.
-            </p>
-            <Button onClick={handleBack} size="lg">
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Leads
-            </Button>
-          </div>
+          <h2 className="text-2xl font-bold mb-2">Lead Not Found</h2>
+          <p className="text-muted-foreground mb-4">
+            The lead you are looking for does not exist or has been removed.
+          </p>
+          <Button onClick={handleBack}>Back to Leads</Button>
         </div>
       </DashboardLayout>
     );
@@ -484,541 +474,566 @@ const LeadDetailPage = () => {
   const statusBadge = getStatusBadge(lead.status);
 
   return (
-    <>
-      <Head>
-        <title>Agentic Flow | {lead.company} Lead Details</title>
-        <meta
-          name="description"
-          content={`Detailed information about ${lead.company}`}
-        />
-      </Head>
-      <DashboardLayout>
-        {/* Header with company name and status */}
-        <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur-sm px-4 sm:px-6">
-          <SidebarTrigger />
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleBack}
-            className="mr-2"
-          >
-            <ArrowLeft className="h-5 w-5" />
-          </Button>
-          <div className="flex items-center gap-3 flex-1">
-            <div className="bg-slate-800/50 h-10 w-10 rounded-full flex items-center justify-center">
-              <Building className="h-5 w-5 text-primary" />
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold leading-none">
-                {lead.company}
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                {lead.industry}
-              </p>
-            </div>
+    <DashboardLayout role="client" meta={meta}>
+      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-slate-800 rounded-br-4xl rounded-bl-4xl bg-transparent backdrop-blur-sm px-4 sm:px-6">
+        <SidebarTrigger />
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={handleBack}
+          className="mr-2"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+        <div className="flex items-center gap-3 flex-1">
+          <div className="flex flex-col md:flex-row items-center gap-3">
+            <h2 className="text-xl font-semibold leading-none">
+              {lead.company}
+            </h2>
+            <p className="text-sm text-muted-foreground">({lead.industry})</p>
           </div>
-          <Badge
-            variant="outline"
-            className={cn(
-              "flex items-center px-3 py-1.5 rounded-full",
-              statusBadge.className
-            )}
-          >
-            {statusBadge.icon}
-            {statusBadge.label}
-          </Badge>
-        </header>
+        </div>
+        <Badge
+          variant="outline"
+          className={cn(
+            "flex items-center px-3 py-1.5 rounded-full",
+            statusBadge.className
+          )}
+        >
+          {statusBadge.icon}
+          {statusBadge.label}
+        </Badge>
+      </header>
 
-        <div className="flex-1 p-6 md:p-8 pt-6 space-y-8">
-          {/* Lead Summary Card */}
-          <div className="bg-gradient-to-r from-slate-900/40 to-slate-800/20 rounded-xl border border-slate-800/50 overflow-hidden">
-            <div className="p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Company Description */}
-                <div className="md:col-span-2">
-                  <h3 className="text-lg font-medium mb-2">
-                    About {lead.company}
-                  </h3>
-                  <p className="text-muted-foreground mb-4">
-                    {lead.description}
-                  </p>
+      <div className="flex-1 p-6 md:p-8 pt-6 space-y-8">
+        {/* Lead Summary Card */}
+        <div className="bg-gradient-to-r from-green-900/40 to-slate-800/20 rounded-xl border-none overflow-hidden">
+          <div className="p-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {/* Company Description */}
+              <div className="md:col-span-2">
+                <h3 className="text-lg font-medium mb-2">
+                  About {lead.company}
+                </h3>
+                <p className="text-muted-foreground mb-4">{lead.description}</p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mt-4">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-slate-800/50 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0">
-                        <Mail className="h-4 w-4 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Email</p>
-                        <p className="text-sm">{lead.email}</p>
-                      </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4 mt-4">
+                  <div className="flex items-center gap-3">
+                    <div className="bg-slate-800/50 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0">
+                      <Mail className="h-4 w-4 text-primary" />
                     </div>
-
-                    <div className="flex items-center gap-3">
-                      <div className="bg-slate-800/50 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0">
-                        <Phone className="h-4 w-4 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Phone</p>
-                        <p className="text-sm">{lead.phone}</p>
-                      </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Email</p>
+                      <p className="text-sm">{lead.email}</p>
                     </div>
+                  </div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="bg-slate-800/50 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0">
-                        <Globe className="h-4 w-4 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Website</p>
-                        <a
-                          href={lead.website}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm flex items-center hover:text-primary"
-                        >
-                          {lead.website?.replace(/(^\w+:|^)\/\//, "")}
-                          <ExternalLink className="ml-1 h-3 w-3" />
-                        </a>
-                      </div>
+                  <div className="flex items-center gap-3">
+                    <div className="bg-slate-800/50 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0">
+                      <Phone className="h-4 w-4 text-primary" />
                     </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Phone</p>
+                      <p className="text-sm">{lead.phone}</p>
+                    </div>
+                  </div>
 
-                    <div className="flex items-center gap-3">
-                      <div className="bg-slate-800/50 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0">
-                        <MapPin className="h-4 w-4 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-muted-foreground">Address</p>
-                        <p className="text-sm">{lead.address}</p>
-                      </div>
+                  <div className="flex items-center gap-3">
+                    <div className="bg-slate-800/50 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0">
+                      <Globe className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Website</p>
+                      <a
+                        href={lead.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm flex items-center hover:text-primary"
+                      >
+                        {lead.website?.replace(/(^\w+:|^)\/\//, "")}
+                        <ExternalLink className="ml-1 h-3 w-3" />
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <div className="bg-slate-800/50 h-8 w-8 rounded-md flex items-center justify-center flex-shrink-0">
+                      <MapPin className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-muted-foreground">Address</p>
+                      <p className="text-sm">{lead.address}</p>
                     </div>
                   </div>
                 </div>
+              </div>
 
-                {/* Lead Score and Stats */}
-                <div className="bg-slate-900/40 rounded-xl p-5 border border-slate-800/50">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-medium">Lead Score</h3>
-                    <div
-                      className={cn(
-                        "text-2xl font-bold",
-                        getLeadScoreColor(lead.leadScore)
-                      )}
-                    >
-                      {lead.leadScore}
-                    </div>
-                  </div>
-
-                  <Progress
-                    value={lead.leadScore}
-                    className="h-2 mb-6"
-                    indicatorClassName={cn(
-                      lead.leadScore >= 80
-                        ? "bg-emerald-500"
-                        : lead.leadScore >= 60
-                        ? "bg-amber-500"
-                        : "bg-rose-500"
+              {/* Lead Score and Stats */}
+              <div className="bg-slate-900/40 rounded-xl p-5 border border-slate-800">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-medium">Lead Score</h3>
+                  <div
+                    className={cn(
+                      "text-2xl font-bold",
+                      getLeadScoreColor(lead.leadScore)
                     )}
-                  />
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1.5">
-                        <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">
-                          Created
-                        </span>
-                      </div>
-                      <p className="text-sm font-medium">{lead.createdAt}</p>
-                    </div>
-
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1.5">
-                        <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">
-                          Last Contact
-                        </span>
-                      </div>
-                      <p className="text-sm font-medium">{lead.lastContact}</p>
-                    </div>
-
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1.5">
-                        <User className="h-3.5 w-3.5 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">
-                          Assigned To
-                        </span>
-                      </div>
-                      <p className="text-sm font-medium">{lead.assignedTo}</p>
-                    </div>
-
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1.5">
-                        <Briefcase className="h-3.5 w-3.5 text-muted-foreground" />
-                        <span className="text-xs text-muted-foreground">
-                          Industry
-                        </span>
-                      </div>
-                      <p className="text-sm font-medium">{lead.industry}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Company Metrics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 border-t border-slate-800/50">
-              <div className="p-4 text-center border-r border-slate-800/50">
-                <p className="text-xs text-muted-foreground mb-1">
-                  Company Size
-                </p>
-                <div className="flex items-center justify-center gap-1.5">
-                  <Users className="h-4 w-4 text-primary" />
-                  <p className="font-medium">{lead.size}</p>
-                </div>
-              </div>
-
-              <div className="p-4 text-center border-r border-slate-800/50">
-                <p className="text-xs text-muted-foreground mb-1">
-                  Annual Revenue
-                </p>
-                <div className="flex items-center justify-center gap-1.5">
-                  <DollarSign className="h-4 w-4 text-primary" />
-                  <p className="font-medium">{lead.revenue}</p>
-                </div>
-              </div>
-
-              <div className="p-4 text-center border-r border-slate-800/50">
-                <p className="text-xs text-muted-foreground mb-1">Strategy</p>
-                <div className="flex items-center justify-center gap-1.5">
-                  <Target className="h-4 w-4 text-primary" />
-                  <p className="font-medium">{lead.strategy}</p>
-                </div>
-              </div>
-
-              <div className="p-4 text-center">
-                <p className="text-xs text-muted-foreground mb-1">Sale Pitch</p>
-                <div className="flex items-center justify-center gap-1.5">
-                  <Lightbulb className="h-4 w-4 text-primary" />
-                  <p className="font-medium">{lead.salePitch}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tabs for detailed information */}
-          <Tabs
-            value={activeTab}
-            className="space-y-6"
-            onValueChange={setActiveTab}
-          >
-            <div className="flex justify-center">
-              <TabsList className="grid w-full max-w-2xl grid-cols-4 bg-slate-800/30 p-1">
-                <TabsTrigger value="overview" className="rounded-md">
-                  <div className="flex items-center gap-2">
-                    <Building className="h-4 w-4" />
-                    <span className="hidden sm:inline">Overview</span>
-                  </div>
-                </TabsTrigger>
-                <TabsTrigger value="report" className="rounded-md">
-                  <div className="flex items-center gap-2">
-                    <FileText className="h-4 w-4" />
-                    <span className="hidden sm:inline">Sales Report</span>
-                  </div>
-                </TabsTrigger>
-                <TabsTrigger value="strategy" className="rounded-md">
-                  <div className="flex items-center gap-2">
-                    <Target className="h-4 w-4" />
-                    <span className="hidden sm:inline">Strategy</span>
-                  </div>
-                </TabsTrigger>
-                <TabsTrigger value="pitch" className="rounded-md">
-                  <div className="flex items-center gap-2">
-                    <Lightbulb className="h-4 w-4" />
-                    <span className="hidden sm:inline">Pitch</span>
-                  </div>
-                </TabsTrigger>
-              </TabsList>
-            </div>
-
-            {/* Overview Tab */}
-            <TabsContent value="overview" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Key Contacts */}
-                <Card className="md:col-span-1 border-slate-800/50 bg-transparent">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <Users className="h-5 w-5 text-primary" />
-                      Key Contacts
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    {lead.contacts && lead.contacts.length > 0 ? (
-                      lead.contacts.map((contact, index) => (
-                        <div
-                          key={index}
-                          className={cn(
-                            "flex items-start gap-3 p-3 rounded-lg",
-                            index % 2 === 0
-                              ? "bg-slate-800/20"
-                              : "bg-transparent"
-                          )}
-                        >
-                          <Avatar className="h-10 w-10 border border-slate-700">
-                            <AvatarFallback className="bg-primary/10 text-primary">
-                              {getInitials(contact.name)}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div>
-                            <p className="font-medium">{contact.name}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {contact.position}
-                            </p>
-                            <div className="flex items-center gap-3 mt-1.5">
-                              <a
-                                href={`mailto:${contact.email}`}
-                                className="text-xs flex items-center text-primary hover:underline"
-                              >
-                                <Mail className="h-3 w-3 mr-1" />
-                                {contact.email}
-                              </a>
-                              {contact.phone && (
-                                <a
-                                  href={`tel:${contact.phone}`}
-                                  className="text-xs flex items-center text-primary hover:underline"
-                                >
-                                  <Phone className="h-3 w-3 mr-1" />
-                                  {contact.phone}
-                                </a>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    ) : (
-                      <div className="text-center py-6 text-muted-foreground">
-                        <Users className="h-8 w-8 mx-auto mb-2 opacity-50" />
-                        <p>No contacts available</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-
-                {/* Notes & Activities */}
-                <Card className="md:col-span-2 border-slate-800/50 bg-transparent">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <MessageCircle className="h-5 w-5 text-primary" />
-                      Notes & Activities
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      {/* Notes */}
-                      {lead.notes && lead.notes.length > 0 && (
-                        <div className="space-y-3">
-                          <h4 className="text-sm font-medium text-muted-foreground">
-                            Notes
-                          </h4>
-                          <div className="bg-slate-800/20 rounded-lg p-4 border border-slate-800/50">
-                            <ul className="space-y-2">
-                              {lead.notes.map((note, index) => (
-                                <li
-                                  key={index}
-                                  className="flex items-start gap-2"
-                                >
-                                  <div className="rounded-full h-1.5 w-1.5 bg-primary mt-2 flex-shrink-0"></div>
-                                  <span className="text-sm">{note}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Activities */}
-                      {lead.activities && lead.activities.length > 0 && (
-                        <div className="space-y-3">
-                          <h4 className="text-sm font-medium text-muted-foreground">
-                            Recent Activities
-                          </h4>
-                          <div className="space-y-3">
-                            {lead.activities.map((activity, index) => (
-                              <div
-                                key={index}
-                                className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/20 border border-slate-800/50"
-                              >
-                                <div className="bg-primary/10 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
-                                  {getActivityIcon(activity.type)}
-                                </div>
-                                <div className="flex-1">
-                                  <div className="flex items-center justify-between">
-                                    <p className="font-medium text-sm">
-                                      {activity.type}
-                                    </p>
-                                    <p className="text-xs text-muted-foreground">
-                                      {activity.date}
-                                    </p>
-                                  </div>
-                                  <p className="text-sm mt-1">
-                                    {activity.description}
-                                  </p>
-                                  <div className="flex items-center mt-2">
-                                    <User className="h-3 w-3 text-muted-foreground mr-1" />
-                                    <p className="text-xs text-muted-foreground">
-                                      {activity.user}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {/* Documents */}
-                      {lead.documents && lead.documents.length > 0 && (
-                        <div className="space-y-3">
-                          <h4 className="text-sm font-medium text-muted-foreground">
-                            Documents
-                          </h4>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            {lead.documents.map((doc, index) => (
-                              <div
-                                key={index}
-                                className="flex items-center gap-3 p-3 rounded-lg bg-slate-800/20 border border-slate-800/50"
-                              >
-                                <div className="bg-primary/10 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
-                                  {getDocumentIcon(doc.type)}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <p className="font-medium text-sm truncate">
-                                    {doc.name}
-                                  </p>
-                                  <div className="flex items-center justify-between mt-1">
-                                    <Badge
-                                      variant="outline"
-                                      className="text-xs"
-                                    >
-                                      {doc.type}
-                                    </Badge>
-                                    <div className="flex items-center gap-2">
-                                      <p className="text-xs text-muted-foreground">
-                                        {doc.size}
-                                      </p>
-                                      <p className="text-xs text-muted-foreground">
-                                        {doc.date}
-                                      </p>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Timeline */}
-              {lead.timeline && lead.timeline.length > 0 && (
-                <Card className="border-slate-800/50 bg-transparent">
-                  <CardHeader className="pb-3">
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <Clock className="h-5 w-5 text-primary" />
-                      Timeline
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="relative pl-8 border-l border-slate-700">
-                      {lead.timeline.map((event, index) => {
-                        const status = getStatusBadge(event.status);
-                        return (
-                          <div key={index} className="mb-8 last:mb-0">
-                            <div
-                              className={cn(
-                                "absolute w-4 h-4 rounded-full -left-2 mt-1 border-2 border-background",
-                                event.status === "new"
-                                  ? "bg-blue-500"
-                                  : event.status === "contacted"
-                                  ? "bg-amber-500"
-                                  : event.status === "qualified"
-                                  ? "bg-emerald-500"
-                                  : event.status === "converted"
-                                  ? "bg-violet-500"
-                                  : event.status === "lost"
-                                  ? "bg-rose-500"
-                                  : "bg-slate-500"
-                              )}
-                            ></div>
-                            <div className="flex flex-col">
-                              <div className="flex items-center gap-2 mb-1">
-                                <span className="text-sm font-medium">
-                                  {event.date}
-                                </span>
-                                <Badge
-                                  variant="outline"
-                                  className={cn(
-                                    "flex items-center",
-                                    status.className
-                                  )}
-                                >
-                                  {status.icon}
-                                  {status.label}
-                                </Badge>
-                              </div>
-                              <p className="text-sm">{event.description}</p>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-            </TabsContent>
-
-            {/* Sales Report Tab */}
-            <TabsContent value="report">
-              <Card className="border-slate-800 bg-transparent">
-                <CardHeader className="flex flex-row items-center justify-between pb-3">
-                  <div>
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <FileText className="h-5 w-5 text-primary" />
-                      Sales Intelligence Report
-                    </CardTitle>
-                    <CardDescription>
-                      Comprehensive analysis of {lead.company} for sales
-                      preparation
-                    </CardDescription>
-                  </div>
-                  <Button
-                    variant="outline"
-                    disabled={downloading === "report"}
-                    onClick={() => handleDownload("report")}
-                    className="bg-slate-800/50 border-slate-700"
                   >
-                    {downloading === "report" ? (
-                      <>
-                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-                        Downloading...
-                      </>
-                    ) : (
-                      <>
-                        <Download className="mr-2 h-4 w-4" />
-                        Download Report
-                      </>
-                    )}
-                  </Button>
+                    {lead.leadScore}
+                  </div>
+                </div>
+
+                <Progress
+                  value={lead.leadScore}
+                  className="h-2 mb-6"
+                  indicatorClassName={cn(
+                    lead.leadScore >= 80
+                      ? "bg-emerald-500"
+                      : lead.leadScore >= 60
+                      ? "bg-amber-500"
+                      : "bg-rose-500"
+                  )}
+                />
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground">
+                        Created
+                      </span>
+                    </div>
+                    <p className="text-sm font-medium">{lead.createdAt}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground">
+                        Last Contact
+                      </span>
+                    </div>
+                    <p className="text-sm font-medium">{lead.lastContact}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <User className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground">
+                        Assigned To
+                      </span>
+                    </div>
+                    <p className="text-sm font-medium">{lead.assignedTo}</p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-1.5">
+                      <Briefcase className="h-3.5 w-3.5 text-muted-foreground" />
+                      <span className="text-xs text-muted-foreground">
+                        Industry
+                      </span>
+                    </div>
+                    <p className="text-sm font-medium">{lead.industry}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Company Metrics */}
+          <div className="grid grid-cols-2 md:grid-cols-4 border-t border-slate-800">
+            <div className="p-4 text-center border-r border-slate-800">
+              <p className="text-xs text-muted-foreground mb-1">Company Size</p>
+              <div className="flex items-center justify-center gap-1.5">
+                <Users className="h-4 w-4 text-primary" />
+                <p className="font-medium">{lead.size}</p>
+              </div>
+            </div>
+
+            <div className="p-4 text-center border-r border-slate-800">
+              <p className="text-xs text-muted-foreground mb-1">
+                Annual Revenue
+              </p>
+              <div className="flex items-center justify-center gap-1.5">
+                <DollarSign className="h-4 w-4 text-primary" />
+                <p className="font-medium">{lead.revenue}</p>
+              </div>
+            </div>
+
+            <div className="p-4 text-center border-r border-slate-800">
+              <p className="text-xs text-muted-foreground mb-1">Strategy</p>
+              <div className="flex items-center justify-center gap-1.5">
+                <Target className="h-4 w-4 text-primary" />
+                <p className="font-medium">{lead.strategy}</p>
+              </div>
+            </div>
+
+            <div className="p-4 text-center">
+              <p className="text-xs text-muted-foreground mb-1">Sale Pitch</p>
+              <div className="flex items-center justify-center gap-1.5">
+                <Lightbulb className="h-4 w-4 text-primary" />
+                <p className="font-medium">{lead.salePitch}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tabs for detailed information */}
+        <Tabs
+          value={activeTab}
+          className="space-y-6"
+          onValueChange={setActiveTab}
+        >
+          <div className="flex justify-center">
+            <TabsList className="grid w-full max-w-2xl grid-cols-4 bg-slate-800/30 p-1">
+              <TabsTrigger value="overview" className="rounded-md">
+                <div className="flex items-center gap-2">
+                  <Building className="h-4 w-4" />
+                  <span className="hidden sm:inline">Overview</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger value="report" className="rounded-md">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-4 w-4" />
+                  <span className="hidden sm:inline">Sales Report</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger value="strategy" className="rounded-md">
+                <div className="flex items-center gap-2">
+                  <Target className="h-4 w-4" />
+                  <span className="hidden sm:inline">Strategy</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger value="pitch" className="rounded-md">
+                <div className="flex items-center gap-2">
+                  <Lightbulb className="h-4 w-4" />
+                  <span className="hidden sm:inline">Pitch</span>
+                </div>
+              </TabsTrigger>
+            </TabsList>
+          </div>
+
+          {/* Overview Tab */}
+          <TabsContent value="overview" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Notes & Activities */}
+              <Card className="md:col-span-2 border-slate-800 bg-transparent">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <MessageCircle className="h-5 w-5 text-primary" />
+                    Notes & Activities
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
-                    {lead.salesReport ? (
-                      lead.salesReport.map((section, index) => (
+                    {/* Notes */}
+                    {lead.notes && lead.notes.length > 0 && (
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-medium text-muted-foreground">
+                          Notes
+                        </h4>
+                        <div className="bg-slate-800/20 rounded-lg p-4 border border-slate-800">
+                          <ul className="space-y-2">
+                            {lead.notes.map((note, index) => (
+                              <li
+                                key={index}
+                                className="flex items-start gap-2"
+                              >
+                                <div className="rounded-full h-1.5 w-1.5 bg-primary mt-2 flex-shrink-0"></div>
+                                <span className="text-sm">{note}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Activities */}
+                    {lead.activities && lead.activities.length > 0 && (
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-medium text-muted-foreground">
+                          Recent Activities
+                        </h4>
+                        <div className="space-y-3">
+                          {lead.activities.map((activity, index) => (
+                            <div
+                              key={index}
+                              className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/20 border border-slate-800"
+                            >
+                              <div className="bg-primary/10 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
+                                {getActivityIcon(activity.type)}
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center justify-between">
+                                  <p className="font-medium text-sm">
+                                    {activity.type}
+                                  </p>
+                                  <p className="text-xs text-muted-foreground">
+                                    {activity.date}
+                                  </p>
+                                </div>
+                                <p className="text-sm mt-1">
+                                  {activity.description}
+                                </p>
+                                <div className="flex items-center mt-2">
+                                  <User className="h-3 w-3 text-muted-foreground mr-1" />
+                                  <p className="text-xs text-muted-foreground">
+                                    {activity.user}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Documents */}
+                    {lead.documents && lead.documents.length > 0 && (
+                      <div className="space-y-3">
+                        <h4 className="text-sm font-medium text-muted-foreground">
+                          Documents
+                        </h4>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          {lead.documents.map((doc, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-3 p-3 rounded-lg bg-slate-800/20 border border-slate-800"
+                            >
+                              <div className="bg-primary/10 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
+                                {getDocumentIcon(doc.type)}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-sm truncate">
+                                  {doc.name}
+                                </p>
+                                <div className="flex items-center justify-between mt-1">
+                                  <Badge variant="outline" className="text-xs">
+                                    {doc.type}
+                                  </Badge>
+                                  <div className="flex items-center gap-2">
+                                    <p className="text-xs text-muted-foreground">
+                                      {doc.size}
+                                    </p>
+                                    <p className="text-xs text-muted-foreground">
+                                      {doc.date}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Timeline */}
+            {lead.timeline && lead.timeline.length > 0 && (
+              <Card className="border-slate-800 bg-transparent">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Clock className="h-5 w-5 text-primary" />
+                    Timeline
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative pl-8 border-l border-slate-700">
+                    {lead.timeline.map((event, index) => {
+                      const status = getStatusBadge(event.status);
+                      return (
+                        <div key={index} className="mb-8 last:mb-0">
+                          <div
+                            className={cn(
+                              "absolute w-4 h-4 rounded-full -left-2 mt-1 border-2 border-background",
+                              event.status === "new"
+                                ? "bg-blue-500"
+                                : event.status === "contacted"
+                                ? "bg-amber-500"
+                                : event.status === "qualified"
+                                ? "bg-emerald-500"
+                                : event.status === "converted"
+                                ? "bg-violet-500"
+                                : event.status === "lost"
+                                ? "bg-rose-500"
+                                : "bg-slate-500"
+                            )}
+                          ></div>
+                          <div className="flex flex-col">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-sm font-medium">
+                                {event.date}
+                              </span>
+                              <Badge
+                                variant="outline"
+                                className={cn(
+                                  "flex items-center",
+                                  status.className
+                                )}
+                              >
+                                {status.icon}
+                                {status.label}
+                              </Badge>
+                            </div>
+                            <p className="text-sm">{event.description}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          {/* Sales Report Tab */}
+          <TabsContent value="report">
+            <Card className="border-slate-800 bg-transparent">
+              <CardHeader className="flex flex-row items-center justify-between pb-3">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <FileText className="h-5 w-5 text-primary" />
+                    Sales Intelligence Report
+                  </CardTitle>
+                  <CardDescription>
+                    Comprehensive analysis of {lead.company} for sales
+                    preparation
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="outline"
+                  disabled={downloading === "report"}
+                  onClick={() => handleDownload("report")}
+                  className="bg-slate-800/50 border-slate-700"
+                >
+                  {downloading === "report" ? (
+                    <>
+                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Downloading...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="mr-2 h-4 w-4" />
+                      Download Report
+                    </>
+                  )}
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {lead.salesReport ? (
+                    lead.salesReport.map((section, index) => (
+                      <div
+                        key={index}
+                        className="border border-slate-800 rounded-lg overflow-hidden bg-slate-900/30"
+                      >
+                        <div className="bg-slate-800/50 px-4 py-3">
+                          <h3 className="font-medium">{section.title}</h3>
+                        </div>
+                        <div className="p-4 text-sm whitespace-pre-line">
+                          {section.content}
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="flex items-center justify-center py-12 text-center">
+                      <div>
+                        <FileText className="mx-auto h-16 w-16 text-muted-foreground mb-4 opacity-30" />
+                        <h3 className="text-lg font-medium mb-2">
+                          No Report Available
+                        </h3>
+                        <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
+                          A detailed sales report has not been generated for
+                          this lead yet. Generate a report to get comprehensive
+                          insights.
+                        </p>
+                        <Button className="bg-primary/90 hover:bg-primary">
+                          Generate Report
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Sales Strategy Tab */}
+          <TabsContent value="strategy">
+            <Card className="border-slate-800 bg-transparent">
+              <CardHeader className="flex flex-row items-center justify-between pb-3">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Target className="h-5 w-5 text-primary" />
+                    Sales Strategy
+                  </CardTitle>
+                  <CardDescription>
+                    Strategic approach to convert {lead.company} into a client
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => handleDownload("strategy")}
+                  disabled={downloading === "strategy"}
+                  className="bg-slate-800/50 border-slate-700"
+                >
+                  {downloading === "strategy" ? (
+                    <>
+                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Downloading...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="mr-2 h-4 w-4" />
+                      Download Strategy
+                    </>
+                  )}
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  {lead.salesStrategy ? (
+                    <>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-800 flex flex-col items-center justify-center text-center">
+                          <div className="bg-primary/10 h-12 w-12 rounded-full flex items-center justify-center mb-3">
+                            <DollarSign className="h-6 w-6 text-primary" />
+                          </div>
+                          <h4 className="font-medium mb-1">Budget Range</h4>
+                          <p className="text-sm text-muted-foreground">
+                            $100K-$150K
+                          </p>
+                        </div>
+
+                        <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-800 flex flex-col items-center justify-center text-center">
+                          <div className="bg-primary/10 h-12 w-12 rounded-full flex items-center justify-center mb-3">
+                            <Clock className="h-6 w-6 text-primary" />
+                          </div>
+                          <h4 className="font-medium mb-1">Timeline</h4>
+                          <p className="text-sm text-muted-foreground">
+                            4-6 weeks selection, Q3 implementation
+                          </p>
+                        </div>
+
+                        <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-800 flex flex-col items-center justify-center text-center">
+                          <div className="bg-primary/10 h-12 w-12 rounded-full flex items-center justify-center mb-3">
+                            <Users className="h-6 w-6 text-primary" />
+                          </div>
+                          <h4 className="font-medium mb-1">
+                            Key Decision Makers
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
+                            CTO and Procurement Manager
+                          </p>
+                        </div>
+                      </div>
+
+                      {lead.salesStrategy.map((section, index) => (
                         <div
                           key={index}
-                          className="border border-slate-800/50 rounded-lg overflow-hidden bg-slate-900/30"
+                          className="border border-slate-800 rounded-lg overflow-hidden bg-slate-900/30"
                         >
                           <div className="bg-slate-800/50 px-4 py-3">
                             <h3 className="font-medium">{section.title}</h3>
@@ -1027,288 +1042,178 @@ const LeadDetailPage = () => {
                             {section.content}
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="flex items-center justify-center py-12 text-center">
-                        <div>
-                          <FileText className="mx-auto h-16 w-16 text-muted-foreground mb-4 opacity-30" />
-                          <h3 className="text-lg font-medium mb-2">
-                            No Report Available
-                          </h3>
-                          <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-                            A detailed sales report has not been generated for
-                            this lead yet. Generate a report to get
-                            comprehensive insights.
-                          </p>
-                          <Button className="bg-primary/90 hover:bg-primary">
-                            Generate Report
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Sales Strategy Tab */}
-            <TabsContent value="strategy">
-              <Card className="border-slate-800 bg-transparent">
-                <CardHeader className="flex flex-row items-center justify-between pb-3">
-                  <div>
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <Target className="h-5 w-5 text-primary" />
-                      Sales Strategy
-                    </CardTitle>
-                    <CardDescription>
-                      Strategic approach to convert {lead.company} into a client
-                    </CardDescription>
-                  </div>
-                  <Button
-                    variant="outline"
-                    onClick={() => handleDownload("strategy")}
-                    disabled={downloading === "strategy"}
-                    className="bg-slate-800/50 border-slate-700"
-                  >
-                    {downloading === "strategy" ? (
-                      <>
-                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-                        Downloading...
-                      </>
-                    ) : (
-                      <>
-                        <Download className="mr-2 h-4 w-4" />
-                        Download Strategy
-                      </>
-                    )}
-                  </Button>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-6">
-                    {lead.salesStrategy ? (
-                      <>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                          <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-800/50 flex flex-col items-center justify-center text-center">
-                            <div className="bg-primary/10 h-12 w-12 rounded-full flex items-center justify-center mb-3">
-                              <DollarSign className="h-6 w-6 text-primary" />
-                            </div>
-                            <h4 className="font-medium mb-1">Budget Range</h4>
-                            <p className="text-sm text-muted-foreground">
-                              $100K-$150K
-                            </p>
-                          </div>
-
-                          <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-800/50 flex flex-col items-center justify-center text-center">
-                            <div className="bg-primary/10 h-12 w-12 rounded-full flex items-center justify-center mb-3">
-                              <Clock className="h-6 w-6 text-primary" />
-                            </div>
-                            <h4 className="font-medium mb-1">Timeline</h4>
-                            <p className="text-sm text-muted-foreground">
-                              4-6 weeks selection, Q3 implementation
-                            </p>
-                          </div>
-
-                          <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-800/50 flex flex-col items-center justify-center text-center">
-                            <div className="bg-primary/10 h-12 w-12 rounded-full flex items-center justify-center mb-3">
-                              <Users className="h-6 w-6 text-primary" />
-                            </div>
-                            <h4 className="font-medium mb-1">
-                              Key Decision Makers
-                            </h4>
-                            <p className="text-sm text-muted-foreground">
-                              CTO and Procurement Manager
-                            </p>
-                          </div>
-                        </div>
-
-                        {lead.salesStrategy.map((section, index) => (
-                          <div
-                            key={index}
-                            className="border border-slate-800/50 rounded-lg overflow-hidden bg-slate-900/30"
-                          >
-                            <div className="bg-slate-800/50 px-4 py-3">
-                              <h3 className="font-medium">{section.title}</h3>
-                            </div>
-                            <div className="p-4 text-sm whitespace-pre-line">
-                              {section.content}
-                            </div>
-                          </div>
-                        ))}
-                      </>
-                    ) : (
-                      <div className="flex items-center justify-center py-12 text-center">
-                        <div>
-                          <Target className="mx-auto h-16 w-16 text-muted-foreground mb-4 opacity-30" />
-                          <h3 className="text-lg font-medium mb-2">
-                            No Strategy Available
-                          </h3>
-                          <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-                            A sales strategy has not been developed for this
-                            lead yet. Create a strategy to plan your approach.
-                          </p>
-                          <Button className="bg-primary/90 hover:bg-primary">
-                            Develop Strategy
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            {/* Sales Pitch Tab */}
-            <TabsContent value="pitch">
-              <Card className="border-slate-800 bg-transparent">
-                <CardHeader className="flex flex-row items-center justify-between pb-3">
-                  <div>
-                    <CardTitle className="flex items-center gap-2 text-lg">
-                      <Lightbulb className="h-5 w-5 text-primary" />
-                      Sales Pitch
-                    </CardTitle>
-                    <CardDescription>
-                      Persuasive script for engaging with {lead.company}
-                    </CardDescription>
-                  </div>
-                  <Button
-                    variant="outline"
-                    onClick={() => handleDownload("pitch")}
-                    disabled={downloading === "pitch"}
-                    className="bg-slate-800/50 border-slate-700"
-                  >
-                    {downloading === "pitch" ? (
-                      <>
-                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-                        Downloading...
-                      </>
-                    ) : (
-                      <>
-                        <Download className="mr-2 h-4 w-4" />
-                        Download Pitch
-                      </>
-                    )}
-                  </Button>
-                </CardHeader>
-                <CardContent>
-                  {lead.salesPitch ? (
-                    <div className="space-y-6">
-                      <div className="space-y-4">
-                        {lead.salesPitch.map((section, index) => (
-                          <div
-                            key={index}
-                            className="border border-slate-800/50 rounded-lg overflow-hidden bg-slate-900/30"
-                          >
-                            <div className="bg-slate-800/50 px-4 py-3 flex justify-between items-center">
-                              <h3 className="font-medium flex items-center">
-                                {index === 0 && (
-                                  <Bookmark className="h-4 w-4 text-primary mr-2" />
-                                )}
-                                {section.title}
-                              </h3>
-                              <Badge
-                                variant={index === 0 ? "default" : "outline"}
-                                className={index === 0 ? "bg-primary" : ""}
-                              >
-                                {index === 0
-                                  ? "Start Here"
-                                  : `Step ${index + 1}`}
-                              </Badge>
-                            </div>
-                            <div className="p-4 text-sm whitespace-pre-line">
-                              {section.content}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="border border-slate-800/50 rounded-lg p-5 bg-rose-500/5">
-                        <h3 className="text-sm font-medium mb-3 text-rose-400">
-                          Objection Handling Guidance
-                        </h3>
-                        <div className="space-y-4">
-                          <div className="flex gap-3 p-3 rounded-lg bg-slate-900/40 border border-slate-800/50">
-                            <div className="flex-shrink-0 mt-1">
-                              <div className="bg-rose-500/10 h-6 w-6 rounded-full flex items-center justify-center">
-                                <X className="h-3.5 w-3.5 text-rose-500" />
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">
-                                Pricing Concern:
-                              </p>
-                              <p className="text-sm text-muted-foreground">
-                                While our solution requires an initial
-                                investment, the ROI within 6 months completely
-                                offsets this cost through operational savings of
-                                40%.
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex gap-3 p-3 rounded-lg bg-slate-900/40 border border-slate-800/50">
-                            <div className="flex-shrink-0 mt-1">
-                              <div className="bg-rose-500/10 h-6 w-6 rounded-full flex items-center justify-center">
-                                <X className="h-3.5 w-3.5 text-rose-500" />
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">
-                                Integration Complexity:
-                              </p>
-                              <p className="text-sm text-muted-foreground">
-                                Our platform was designed with legacy system
-                                integration as a core feature. We{"'"}ve
-                                successfully integrated with 17 systems similar
-                                to yours in the past year alone.
-                              </p>
-                            </div>
-                          </div>
-
-                          <div className="flex gap-3 p-3 rounded-lg bg-slate-900/40 border border-slate-800/50">
-                            <div className="flex-shrink-0 mt-1">
-                              <div className="bg-rose-500/10 h-6 w-6 rounded-full flex items-center justify-center">
-                                <X className="h-3.5 w-3.5 text-rose-500" />
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-sm font-medium">
-                                Implementation Timeline:
-                              </p>
-                              <p className="text-sm text-muted-foreground">
-                                We can offer a phased implementation approach
-                                that delivers immediate value within 2 weeks,
-                                while building toward the complete solution by
-                                your Q3 deadline.
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                      ))}
+                    </>
                   ) : (
                     <div className="flex items-center justify-center py-12 text-center">
                       <div>
-                        <Lightbulb className="mx-auto h-16 w-16 text-muted-foreground mb-4 opacity-30" />
+                        <Target className="mx-auto h-16 w-16 text-muted-foreground mb-4 opacity-30" />
                         <h3 className="text-lg font-medium mb-2">
-                          No Pitch Available
+                          No Strategy Available
                         </h3>
                         <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
-                          A sales pitch has not been created for this lead yet.
-                          Create a pitch to guide your sales conversations.
+                          A sales strategy has not been developed for this lead
+                          yet. Create a strategy to plan your approach.
                         </p>
                         <Button className="bg-primary/90 hover:bg-primary">
-                          Create Pitch
+                          Develop Strategy
                         </Button>
                       </div>
                     </div>
                   )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-        </div>
-      </DashboardLayout>
-    </>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Sales Pitch Tab */}
+          <TabsContent value="pitch">
+            <Card className="border-slate-800 bg-transparent">
+              <CardHeader className="flex flex-row items-center justify-between pb-3">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Lightbulb className="h-5 w-5 text-primary" />
+                    Sales Pitch
+                  </CardTitle>
+                  <CardDescription>
+                    Persuasive script for engaging with {lead.company}
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => handleDownload("pitch")}
+                  disabled={downloading === "pitch"}
+                  className="bg-slate-800/50 border-slate-700"
+                >
+                  {downloading === "pitch" ? (
+                    <>
+                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Downloading...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="mr-2 h-4 w-4" />
+                      Download Pitch
+                    </>
+                  )}
+                </Button>
+              </CardHeader>
+              <CardContent>
+                {lead.salesPitch ? (
+                  <div className="space-y-6">
+                    <div className="space-y-4">
+                      {lead.salesPitch.map((section, index) => (
+                        <div
+                          key={index}
+                          className="border border-slate-800 rounded-lg overflow-hidden bg-slate-900/30"
+                        >
+                          <div className="bg-slate-800/50 px-4 py-3 flex justify-between items-center">
+                            <h3 className="font-medium flex items-center">
+                              {index === 0 && (
+                                <Bookmark className="h-4 w-4 text-primary mr-2" />
+                              )}
+                              {section.title}
+                            </h3>
+                            <Badge
+                              variant={index === 0 ? "default" : "outline"}
+                              className={index === 0 ? "bg-primary" : ""}
+                            >
+                              {index === 0 ? "Start Here" : `Step ${index + 1}`}
+                            </Badge>
+                          </div>
+                          <div className="p-4 text-sm whitespace-pre-line">
+                            {section.content}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="border border-slate-800 rounded-lg p-5 bg-rose-500/5">
+                      <h3 className="text-sm font-medium mb-3 text-rose-400">
+                        Objection Handling Guidance
+                      </h3>
+                      <div className="space-y-4">
+                        <div className="flex gap-3 p-3 rounded-lg bg-slate-900/40 border border-slate-800">
+                          <div className="flex-shrink-0 mt-1">
+                            <div className="bg-rose-500/10 h-6 w-6 rounded-full flex items-center justify-center">
+                              <X className="h-3.5 w-3.5 text-rose-500" />
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">
+                              Pricing Concern:
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              While our solution requires an initial investment,
+                              the ROI within 6 months completely offsets this
+                              cost through operational savings of 40%.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-3 p-3 rounded-lg bg-slate-900/40 border border-slate-800">
+                          <div className="flex-shrink-0 mt-1">
+                            <div className="bg-rose-500/10 h-6 w-6 rounded-full flex items-center justify-center">
+                              <X className="h-3.5 w-3.5 text-rose-500" />
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">
+                              Integration Complexity:
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              Our platform was designed with legacy system
+                              integration as a core feature. We{"'"}ve
+                              successfully integrated with 17 systems similar to
+                              yours in the past year alone.
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-3 p-3 rounded-lg bg-slate-900/40 border border-slate-800">
+                          <div className="flex-shrink-0 mt-1">
+                            <div className="bg-rose-500/10 h-6 w-6 rounded-full flex items-center justify-center">
+                              <X className="h-3.5 w-3.5 text-rose-500" />
+                            </div>
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium">
+                              Implementation Timeline:
+                            </p>
+                            <p className="text-sm text-muted-foreground">
+                              We can offer a phased implementation approach that
+                              delivers immediate value within 2 weeks, while
+                              building toward the complete solution by your Q3
+                              deadline.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center py-12 text-center">
+                    <div>
+                      <Lightbulb className="mx-auto h-16 w-16 text-muted-foreground mb-4 opacity-30" />
+                      <h3 className="text-lg font-medium mb-2">
+                        No Pitch Available
+                      </h3>
+                      <p className="text-sm text-muted-foreground max-w-md mx-auto mb-6">
+                        A sales pitch has not been created for this lead yet.
+                        Create a pitch to guide your sales conversations.
+                      </p>
+                      <Button className="bg-primary/90 hover:bg-primary">
+                        Create Pitch
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </DashboardLayout>
   );
 };
 

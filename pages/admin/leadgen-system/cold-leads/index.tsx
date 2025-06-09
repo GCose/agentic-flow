@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import ColdLeads from "@/components/systems/leadgen-system/cold-leads";
 import LeadGenHeader from "@/components/systems/leadgen-system/leadgen-header";
 

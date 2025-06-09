@@ -73,7 +73,7 @@ const ContentChannelCard = ({
 
   return (
     <Card
-      className={`border border-slate-800 backdrop-blur-sm overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.1] hover:shadow-md ${colors.bg}`}
+      className={`border border-slate-800  overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.1] hover:shadow-md ${colors.bg}`}
     >
       <CardContent>
         <div className="flex items-center justify-between mb-4">

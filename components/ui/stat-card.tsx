@@ -1,13 +1,5 @@
-import type { LucideIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-interface StatCardProps {
-  title: string;
-  value: string;
-  change: string;
-  icon: LucideIcon;
-  color: "blue" | "purple" | "green" | "cyan" | "orange" | "red";
-}
+import { StatCardProps } from "@/types";
 
 const StatCard = ({
   title,

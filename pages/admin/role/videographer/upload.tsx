@@ -1,4 +1,4 @@
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import FileUpload from "@/components/upload/file-upload";
 import { NextPage } from "next";
 import Head from "next/head";

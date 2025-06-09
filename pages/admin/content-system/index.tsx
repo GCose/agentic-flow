@@ -11,7 +11,7 @@ import {
   Music2Icon,
   ArrowLeft,
 } from "lucide-react";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import {
   Card,
   CardContent,
@@ -204,7 +204,7 @@ const ContentSystemPage = () => {
             </TabsContent>
 
             <TabsContent value="calendar" className="space-y-4">
-              <Card className="border bg-transparent backdrop-blur-sm">
+              <Card className="border bg-transparent ">
                 <CardHeader>
                   <CardTitle>Content Calendar</CardTitle>
                   <CardDescription>
@@ -219,7 +219,7 @@ const ContentSystemPage = () => {
           </Tabs>
 
           {activeTab === "channels" && (
-            <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+            <Card className="border border-slate-800 bg-transparent ">
               <CardHeader>
                 <CardTitle>Recent Agent-Generated Content</CardTitle>
                 <CardDescription>

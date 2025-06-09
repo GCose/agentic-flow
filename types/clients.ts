@@ -8,7 +8,6 @@ export interface Client {
   subscriptionDuration: string;
 }
 
-// Define TypeScript interfaces
 export interface ClientStats {
   agents: number;
   projects: number;

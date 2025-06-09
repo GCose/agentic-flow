@@ -161,7 +161,7 @@ const WarmLeads = () => {
   };
 
   return (
-    <Card className=" border-slate-800 bg-transparent backdrop-blur-sm">
+    <Card className=" border-slate-800 bg-transparent">
       <CardHeader>
         <CardTitle>Warm Leads</CardTitle>
         <CardDescription>

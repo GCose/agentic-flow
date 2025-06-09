@@ -1,10 +1,10 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import VideographerHeader from "./videographer-header";
 import DashboardStats from "@/components/dashboard/admin-dashboard-stats";
 import { Brain } from "lucide-react";
-import SystemCards from "@/components/dashboard/system-cards";
+import SystemCards from "@/components/shared/cards/system-cards";
 
 const VideographerDashboard: NextPage = () => {
   return (
@@ -20,7 +20,7 @@ const VideographerDashboard: NextPage = () => {
         <VideographerHeader />
         <div className="flex-1 p-8 pt-6">
           {/*==================== Welcome Section ====================*/}
-          <div className="relative mb-10 py-12 px-8 rounded-2xl overflow-hidden bg-slate-800/30 backdrop-blur-md">
+          <div className="relative mb-10 py-12 px-8 rounded-2xl overflow-hidden bg-slate-800/30 ">
             <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
               <div className="flex h-20 w-20 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600">
                 <Brain className="h-10 w-10 text-white" />

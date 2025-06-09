@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import ContentLibrary from "@/components/content/content-library";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 
 const DesignerContentPage: NextPage = () => {
   return (

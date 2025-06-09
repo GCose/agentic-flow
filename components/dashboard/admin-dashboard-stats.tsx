@@ -5,18 +5,18 @@ const DashboardStats = () => {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
-        value="20"
-        icon={Users2Icon}
+        value="14"
+        icon={Grid2X2}
         color="blue"
-        title="Total Clients"
-        change="Clients using Agentic Flow"
+        title="Total Leads"
+        change="Warm and Cold Leads"
       />
       <StatCard
-        value="4"
-        icon={Grid2X2}
+        value="20"
+        icon={Users2Icon}
         color="purple"
-        title="Core Systems"
-        change="Content, Lead Gen, Sales, and Onboarding"
+        title="Total Clients"
+        change="Clients using Agentic Flow"
       />
       <StatCard
         value="100%"

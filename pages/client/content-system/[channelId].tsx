@@ -19,7 +19,7 @@ import {
   Share2,
   Music2Icon,
 } from "lucide-react";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import {
   Card,
   CardContent,
@@ -246,7 +246,7 @@ const ChannelDetailPage = () => {
           ) : (
             <>
               <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+                <Card className="border border-slate-800 bg-transparent ">
                   <CardContent className="p-6">
                     <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <p className="text-sm font-medium text-muted-foreground">
@@ -267,7 +267,7 @@ const ChannelDetailPage = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+                <Card className="border border-slate-800 bg-transparent ">
                   <CardContent className="p-6">
                     <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <p className="text-sm font-medium text-muted-foreground">
@@ -288,7 +288,7 @@ const ChannelDetailPage = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+                <Card className="border border-slate-800 bg-transparent ">
                   <CardContent className="p-6">
                     <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <p className="text-sm font-medium text-muted-foreground">
@@ -308,7 +308,7 @@ const ChannelDetailPage = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+                <Card className="border border-slate-800 bg-transparent ">
                   <CardContent className="p-6">
                     <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                       <p className="text-sm font-medium text-muted-foreground">
@@ -339,7 +339,7 @@ const ChannelDetailPage = () => {
                 </TabsList>
 
                 <TabsContent value="content" className="space-y-4">
-                  <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+                  <Card className="border border-slate-800 bg-transparent ">
                     <CardHeader>
                       <CardTitle>Content Library</CardTitle>
                       <CardDescription>
@@ -356,10 +356,7 @@ const ChannelDetailPage = () => {
                   </Card>
                 </TabsContent>
 
-                <TabsContent
-                  value="analytics"
-                  className="space-y-4 backdrop-blur-sm"
-                >
+                <TabsContent value="analytics" className="space-y-4 ">
                   <Card className="border bg-transparent">
                     <CardHeader>
                       <CardTitle>Content Performance</CardTitle>
@@ -374,7 +371,7 @@ const ChannelDetailPage = () => {
                 </TabsContent>
 
                 <TabsContent value="agents" className="space-y-4">
-                  <Card className="border bg-transparent backdrop-blur-sm">
+                  <Card className="border bg-transparent ">
                     <CardHeader>
                       <CardTitle>Agent Performance</CardTitle>
                       <CardDescription>

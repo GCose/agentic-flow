@@ -20,4 +20,4 @@ export interface ColdLead extends BaseLead {
   lastOutreach: string | null;
 }
 
-export type LeadType = "warm" | "cold";
+export type LeadType = "warm" | "cold" | "appointment" | "audit";

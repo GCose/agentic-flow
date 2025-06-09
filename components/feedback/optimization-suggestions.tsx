@@ -47,7 +47,7 @@ const suggestions = [
 
 const OptimizationSuggestions = () => {
   return (
-    <Card className="border-none rounded-lg backdrop-blur-sm bg-green-600/20">
+    <Card className="border-none rounded-lg  bg-green-600/20">
       <CardHeader>
         <CardTitle>Optimization Suggestions</CardTitle>
       </CardHeader>

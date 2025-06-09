@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import FileUpload from "@/components/upload/file-upload";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 
 const UploadDesignsPage: NextPage = () => {
   return (

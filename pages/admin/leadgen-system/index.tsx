@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Thermometer, Snowflake, ArrowUpRight } from "lucide-react";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import LeadGenHeader from "@/components/systems/leadgen-system/leadgen-header";
 import LeadGenOverview from "@/components/systems/leadgen-system/leadgen-overview";
 import { Card, CardContent } from "@/components/ui/card";

@@ -129,7 +129,7 @@ const ColdLeads = () => {
   };
 
   return (
-    <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+    <Card className="border border-slate-800 bg-transparent ">
       <CardHeader>
         <CardTitle>Cold Leads</CardTitle>
         <CardDescription>

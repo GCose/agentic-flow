@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useRouter } from "next/router";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
-import AgentManagementHeader from "@/components/agent-management/agent-management-header";
-import SystemCard from "@/components/agent-management/agent-system-card";
-import { FileText, Users, ShoppingBag, UserPlus } from "lucide-react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
+import { FileText, Users, ShoppingBag, UserPlus } from "lucide-react";
 import { fetchSystemsOverview } from "@/lib/api/agent-management-api";
+import SystemCard from "@/components/agent-management/agent-system-card";
+import AgentManagementHeader from "@/components/agent-management/agent-management-header";
 import {
   SystemOverview,
   SystemOverviewWithVisuals,
 } from "@/types/agent-systems";
+import { AdminPageMeta } from "@/page-config/meta.config";
 
 const AgentManagementPage: NextPage = () => {
   const router = useRouter();
@@ -80,55 +80,49 @@ const AgentManagementPage: NextPage = () => {
   );
 
   return (
-    <>
-      <Head>
-        <title>Agentic Flow | Agent Management</title>
-        <meta name="description" content="Manage and monitor your AI agents" />
-      </Head>
-      <DashboardLayout>
-        <AgentManagementHeader />
-        <div className="flex-1 space-y-6 p-8 pt-6">
-          {/*==================== Agent Management Title ====================*/}
-          <div className="flex justify-between items-center">
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight">
-                Agent Management
-              </h2>
-              <p className="text-muted-foreground pt-2">
-                Monitor and manage your AI agent crews
-              </p>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              Last updated: {updateTime.toLocaleTimeString()}
-            </div>
+    <DashboardLayout meta={AdminPageMeta.agentManagementPage}>
+      <AgentManagementHeader />
+      <div className="flex-1 space-y-6 p-8 pt-6">
+        {/*==================== Agent Management Title ====================*/}
+        <div className="flex justify-between items-center">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight">
+              Agent Management
+            </h2>
+            <p className="text-muted-foreground pt-2">
+              Monitor and manage your AI agent crews
+            </p>
           </div>
-          {/*==================== End of Agent Management Title ====================*/}
-
-          {/*==================== System Cards ====================*/}
-          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 mt-8">
-            {loading
-              ? Array(4)
-                  .fill(null)
-                  .map((_, i) => (
-                    <Card
-                      key={i}
-                      className="border-slate-800 bg-transparent backdrop-blur-sm animate-pulse"
-                    >
-                      <CardContent className="p-6 h-48"></CardContent>
-                    </Card>
-                  ))
-              : systemsWithVisuals.map((system) => (
-                  <SystemCard
-                    key={system.id}
-                    system={system}
-                    onClick={() => handleSystemClick(system.id)}
-                  />
-                ))}
+          <div className="text-sm text-muted-foreground">
+            Last updated: {updateTime.toLocaleTimeString()}
           </div>
-          {/*==================== End of System Cards ====================*/}
         </div>
-      </DashboardLayout>
-    </>
+        {/*==================== End of Agent Management Title ====================*/}
+
+        {/*==================== System Cards ====================*/}
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 mt-8">
+          {loading
+            ? Array(4)
+                .fill(null)
+                .map((_, i) => (
+                  <Card
+                    key={i}
+                    className="border-slate-800 bg-transparent animate-pulse"
+                  >
+                    <CardContent className="p-6 h-48"></CardContent>
+                  </Card>
+                ))
+            : systemsWithVisuals.map((system) => (
+                <SystemCard
+                  key={system.id}
+                  system={system}
+                  onClick={() => handleSystemClick(system.id)}
+                />
+              ))}
+        </div>
+        {/*==================== End of System Cards ====================*/}
+      </div>
+    </DashboardLayout>
   );
 };
 

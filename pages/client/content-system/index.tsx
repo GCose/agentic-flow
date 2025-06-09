@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Head from "next/head";
 import Link from "next/link";
 import {
   Facebook,
@@ -9,7 +8,7 @@ import {
   Youtube,
   Music2Icon,
 } from "lucide-react";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import {
   Card,
   CardContent,
@@ -22,7 +21,8 @@ import ContentAgentPerformance from "@/components/systems/content-system/content
 import ContentCalendar from "@/components/systems/content-system/content-calendar";
 import ContentChannelCard from "@/components/systems/content-system/content-channel";
 import RecentContent from "@/components/systems/content-system/recent-content";
-import ClientContentSystemHeader from "@/components/systems/content-system/content-generation-header";
+import { ClientPageMeta } from "@/page-config/meta.config";
+import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 const ContentSystemPage = () => {
   const [activeTab, setActiveTab] = useState("channels");
@@ -74,93 +74,82 @@ const ContentSystemPage = () => {
   );
 
   return (
-    <>
-      <Head>
-        <title>Aftermath Marketing | Content System</title>
-        <link rel="icon" href="/images/logo.jpg" />
-        <meta
-          name="description"
-          content="Manage and monitor your social media ad campaigns"
-        />
-      </Head>
-      <DashboardLayout role="client">
-        <ClientContentSystemHeader />
-        <div className="flex-1 space-y-4 px-8 pb-6">
-          <Tabs
-            value={activeTab}
-            className="space-y-4 border-slate-800"
-            defaultValue="channels"
-            onValueChange={setActiveTab}
-          >
-            <TabsList className="grid w-full max-w-md grid-cols-3 bg-slate-800/30 mt-6">
-              <TabsTrigger value="channels">Channels</TabsTrigger>
-              <TabsTrigger value="agents">Agents</TabsTrigger>
-              <TabsTrigger value="calendar">Calendar</TabsTrigger>
-            </TabsList>
+    <DashboardLayout role="client" meta={ClientPageMeta.contentSystemPage}>
+      <DashboardHeader title="Content System" />
+      <div className="flex-1 space-y-4 px-8 pb-6">
+        <Tabs
+          value={activeTab}
+          defaultValue="channels"
+          onValueChange={setActiveTab}
+          className="space-y-4 border-slate-800"
+        >
+          <TabsList className="grid w-full max-w-md grid-cols-3 bg-slate-800/30 mt-6">
+            <TabsTrigger value="channels">Channels</TabsTrigger>
+            <TabsTrigger value="agents">Agents</TabsTrigger>
+            <TabsTrigger value="calendar">Calendar</TabsTrigger>
+          </TabsList>
 
-            <TabsContent value="channels" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {filteredPlatforms.map((platform) => (
-                  <Link
-                    key={platform.id}
-                    href={`/client/content-system/${platform.id}`}
-                  >
-                    <ContentChannelCard
-                      name={platform.name}
-                      icon={platform.icon}
-                      color={platform.color}
-                    />
-                  </Link>
-                ))}
-              </div>
-            </TabsContent>
+          <TabsContent value="channels" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {filteredPlatforms.map((platform) => (
+                <Link
+                  key={platform.id}
+                  href={`/client/content-system/${platform.id}`}
+                >
+                  <ContentChannelCard
+                    name={platform.name}
+                    icon={platform.icon}
+                    color={platform.color}
+                  />
+                </Link>
+              ))}
+            </div>
+          </TabsContent>
 
-            <TabsContent value="agents" className="space-y-4">
-              <Card className="border bg-transparent">
-                <CardHeader>
-                  <CardTitle>Agent Performance</CardTitle>
-                  <CardDescription>
-                    See how your AI content agents are performing across
-                    platforms
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ContentAgentPerformance />
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="calendar" className="space-y-4">
-              <Card className="border bg-transparent backdrop-blur-sm">
-                <CardHeader>
-                  <CardTitle>Content Calendar</CardTitle>
-                  <CardDescription>
-                    Upcoming and scheduled ad content across platforms
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ContentCalendar />
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
-
-          {activeTab === "channels" && (
-            <Card className="border border-slate-800 bg-transparent backdrop-blur-sm">
+          <TabsContent value="agents" className="space-y-4">
+            <Card className="border bg-transparent">
               <CardHeader>
-                <CardTitle>Recent Agent-Generated Content</CardTitle>
+                <CardTitle>Agent Performance</CardTitle>
                 <CardDescription>
-                  Latest content created by AI agents across platforms
+                  See how your AI content agents are performing across platforms
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <RecentContent />
+                <ContentAgentPerformance />
               </CardContent>
             </Card>
-          )}
-        </div>
-      </DashboardLayout>
-    </>
+          </TabsContent>
+
+          <TabsContent value="calendar" className="space-y-4">
+            <Card className="border bg-transparent ">
+              <CardHeader>
+                <CardTitle>Content Calendar</CardTitle>
+                <CardDescription>
+                  Upcoming and scheduled ad content across platforms
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ContentCalendar />
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {activeTab === "channels" && (
+          <Card className="border border-slate-800 bg-transparent ">
+            <CardHeader>
+              <CardTitle>Recent Agent-Generated Content</CardTitle>
+              <CardDescription>
+                Latest content created by AI agents across platforms
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <RecentContent />
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    </DashboardLayout>
   );
 };
 

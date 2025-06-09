@@ -69,7 +69,6 @@ export interface SystemDetail {
   workflows: AgentWorkflow[];
 }
 
-// Workflow-related types for tracking agent crew work
 export interface AgentTask {
   id: string;
   name: string;
@@ -112,7 +111,6 @@ export interface AgentWorkflow {
   execution: TaskExecution;
 }
 
-// For visual elements
 export interface WorkflowNode {
   id: string;
   name: string;

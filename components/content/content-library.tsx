@@ -157,7 +157,7 @@ const ContentLibrary = ({ userRole }: ContentLibraryProps) => {
   };
 
   return (
-    <Card className="border bg-transparent backdrop-blur-sm">
+    <Card className="border bg-transparent ">
       <CardHeader>
         <CardTitle>Content Library</CardTitle>
         <div className="flex items-center gap-2 pt-2">

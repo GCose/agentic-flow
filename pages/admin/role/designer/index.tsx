@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import DashboardLayout from "@/components/layouts/dashboard-layout";
+import DashboardLayout from "@/components/dashboard/dashboard-layout";
 
 const DesignerDashboard: NextPage = () => {
   return (
@@ -21,7 +21,7 @@ const DesignerDashboard: NextPage = () => {
             </h2>
           </div>
 
-          <Card className="border bg-transparent backdrop-blur-sm">
+          <Card className="border bg-transparent ">
             <CardHeader>
               <CardTitle>Welcome to your dashboard</CardTitle>
             </CardHeader>

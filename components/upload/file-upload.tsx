@@ -117,7 +117,7 @@ const FileUpload = ({
   }, [files]);
 
   return (
-    <Card className="border bg-transparent backdrop-blur-sm">
+    <Card className="border bg-transparent ">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>

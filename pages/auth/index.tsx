@@ -66,7 +66,7 @@ const LoginPage: NextPage = () => {
       <div className="flex min-h-screen w-screen items-center justify-center">
         <BackgroundElements />
 
-        <Card className="w-full max-w-md border bg-transparent backdrop-blur-md z-10">
+        <Card className="w-full max-w-md border bg-transparent  z-10">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center mb-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full">

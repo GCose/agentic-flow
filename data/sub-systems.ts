@@ -10,10 +10,49 @@ import {
 } from "lucide-react";
 import { SubSystemsItem } from "@/types";
 
+/**=================================================
+ * Admin Lead Generation Subsystems Configuration.
+ =================================================*/
+export const adminLeadGenSubSystems: SubSystemsItem[] = [
+  {
+    title: "Warm Leads",
+    description:
+      "Manage leads that have shown interest in your products or services",
+    icon: Thermometer,
+    bgColor: "bg-orange-500/10",
+    iconColor: "text-orange-500",
+    leadType: "admin/leadgen-system/warm-leads",
+  },
+  {
+    title: "Cold Leads",
+    description: "Discover potential leads and start your outreach campaigns",
+    icon: Snowflake,
+    bgColor: "bg-blue-500/10",
+    iconColor: "text-blue-500",
+    leadType: "admin/leadgen-system/cold-leads",
+  },
+  {
+    title: "Appointments",
+    description: "Book, reschedule, and manage client appointments efficiently",
+    icon: CalendarClock,
+    bgColor: "bg-green-500/10",
+    iconColor: "text-green-500",
+    leadType: "appointment",
+  },
+  {
+    title: "Audits",
+    description: "Get detailed breakdowns and recommendations for your funnel",
+    icon: ShieldCheck,
+    bgColor: "bg-purple-500/10",
+    iconColor: "text-purple-500",
+    leadType: "audit",
+  },
+];
+
 /**============================================
  * Client Dashboard Subsystems Configuration.
  ============================================*/
-export const ClientDashboardSystem: SubSystemsItem[] = [
+export const clientDashboardSystem: SubSystemsItem[] = [
   {
     title: "Content Generation",
     description: "Generate and manage content with AI agents",

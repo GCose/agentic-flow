@@ -8,8 +8,6 @@ import {
   FileInput,
   Calendar,
   Clock,
-  Edit,
-  Trash2,
   ArrowLeft,
   ArrowUpRight,
   AlertCircle,
@@ -26,12 +24,13 @@ import { Button } from "@/components/ui/button";
 import StatCard from "@/components/ui/stat-card";
 import { ClientData, SystemConfigs } from "@/types/clients";
 import { AdminPageMeta } from "@/page-config/meta.config";
+import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 // Sample clients data
 const clientsData: ClientData[] = [
   {
     id: "client-1",
-    name: "NextGen Agency",
+    name: "NextGen Agency Details",
     description: "Enterprise technology solutions provider",
     systems: [
       "Content System",
@@ -50,7 +49,7 @@ const clientsData: ClientData[] = [
   },
   {
     id: "client-2",
-    name: "Aftermath Marketing",
+    name: "Aftermath Marketing Details",
     description: "Manufacturing and consumer goods company",
     systems: ["Content System", "LeadGen System"],
     stats: {
@@ -64,7 +63,7 @@ const clientsData: ClientData[] = [
   },
   {
     id: "client-3",
-    name: "Group26Consult",
+    name: "Group26Consult Details",
     description: "Research and development firm",
     systems: ["Content System", "Sales System"],
     stats: {
@@ -78,7 +77,7 @@ const clientsData: ClientData[] = [
   },
   {
     id: "client-4",
-    name: "TechStart Solutions",
+    name: "TechStart Solutions Details",
     description: "Startup technology consultancy",
     systems: ["Content System"],
     stats: {
@@ -92,7 +91,7 @@ const clientsData: ClientData[] = [
   },
   {
     id: "client-5",
-    name: "Future Enterprises",
+    name: "Future Enterprises Details",
     description: "Forward-thinking business solutions",
     systems: ["LeadGen System", "Sales System"],
     stats: {
@@ -227,36 +226,13 @@ const ClientDashboardPage: NextPage = () => {
 
   return (
     <DashboardLayout meta={AdminPageMeta.clientDashboardPage}>
+      <DashboardHeader
+        role="admin"
+        title={client.name}
+        hasBackButton={true}
+        onBackClick={() => router.push("/admin/clients")}
+      />
       <div className="flex-1 space-y-6 p-4 md:p-8 pt-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <Button
-              variant="outline"
-              onClick={() => router.push("/admin/clients")}
-              className="h-9 w-9 p-0 rounded-full"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              <span className="sr-only">Back</span>
-            </Button>
-            <div>
-              <h2 className="text-3xl font-bold tracking-tight">
-                {client.name}
-              </h2>
-              <p className="text-muted-foreground">{client.description}</p>
-            </div>
-          </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">
-              <Edit className="mr-2 h-4 w-4" />
-              Edit Client
-            </Button>
-            <Button variant="outline" size="sm" className="text-destructive">
-              <Trash2 className="mr-2 h-4 w-4" />
-              Delete
-            </Button>
-          </div>
-        </div>
-
         {/*==================== Client Stats Overview ====================*/}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <StatCard

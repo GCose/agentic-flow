@@ -1,16 +1,45 @@
-import { Bell } from "lucide-react";
+import { ArrowLeft, Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import ThemeToggle from "@/components/theme-toggle";
+import { useRouter } from "next/router";
 
 interface DashboardHeaderProps {
   title: string;
+  hasBackButton?: boolean;
+  onBackClick?: () => void;
+  pageId?: string;
+  role?: "admin" | "client";
 }
 
-const DashboardHeader = ({ title }: DashboardHeaderProps) => {
+const DashboardHeader = ({
+  title,
+  hasBackButton = false,
+  onBackClick,
+  pageId,
+  role,
+}: DashboardHeaderProps) => {
+  const router = useRouter();
+
+  const handleBack = () => {
+    if (onBackClick) {
+      onBackClick();
+    } else if (pageId) {
+      router.push(`/${role}/clients/${pageId}`);
+    } else {
+      router.push(`/${role}/leadgen-system`);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border border-slate-800 rounded-bl-4xl rounded-br-4xl bg-transparent backdrop-blur-xs px-4 sm:px-6">
       <SidebarTrigger />
+
+      {hasBackButton && (
+        <Button size="icon" variant="ghost" onClick={handleBack}>
+          <ArrowLeft className="h-5 w-5" />
+        </Button>
+      )}
       <h2 className="text-xl font-bold tracking-tight">{title}</h2>
 
       <div className="ml-auto flex items-center gap-2">

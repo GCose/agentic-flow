@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import Head from "next/head";
 import { useRouter } from "next/router";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import LeadGenHeader from "@/components/systems/leadgen-system/leadgen-header";
 import WarmLeads from "@/components/systems/leadgen-system/warm-leads";
+import DashboardHeader from "@/components/dashboard/dashboard-header";
+import { AdminPageMeta } from "@/page-config/meta.config";
 
 interface Client {
   id: string;
@@ -48,26 +48,17 @@ const AdminWarmLeadsPage = () => {
   const title = client ? `${client.name} | Warm Leads` : "Warm Leads";
 
   return (
-    <>
-      <Head>
-        <title>Agentic Flow | {title}</title>
-        <meta
-          name="description"
-          content="Manage warm leads in the lead generation system"
-        />
-      </Head>
-      <DashboardLayout>
-        <LeadGenHeader
-          role="admin"
-          title={title}
-          hasBackButton={true}
-          clientId={client?.id}
-        />
-        <div className="flex-1 space-y-6 p-8 pt-6">
-          <WarmLeads />
-        </div>
-      </DashboardLayout>
-    </>
+    <DashboardLayout meta={AdminPageMeta.leadgenPage}>
+      <DashboardHeader
+        role="admin"
+        title={title}
+        hasBackButton={true}
+        pageId={client?.id}
+      />
+      <div className="flex-1 space-y-6 px-8 pt-4">
+        <WarmLeads role="admin" />
+      </div>
+    </DashboardLayout>
   );
 };
 

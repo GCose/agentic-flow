@@ -1,12 +1,6 @@
 import { useState } from "react";
-import { Search, MoreHorizontal, ArrowUpDown, FileText } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Search, MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -28,74 +22,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { WarmLead } from "@/types/leads";
+import { generateWarmLeads } from "@/data/leads-data";
 
-// Mock data for warm leads
-const generateWarmLeads = (): (WarmLead & { report?: string })[] => {
-  return [
-    {
-      id: "wl-1",
-      company: "Acme Inc.",
-      leadScore: 87,
-      strategy: "Direct outreach",
-      salePitch: "ROI-focused solution",
-      status: "qualified",
-      lastContact: "2025-04-20",
-      assignedTo: "John Smith",
-      createdAt: "2025-04-15",
-      report: "Q1 Sales Report - 95% Conversion Rate",
-    },
-    {
-      id: "wl-2",
-      company: "TechCorp",
-      leadScore: 92,
-      strategy: "Demo + Case study",
-      salePitch: "Cost reduction focus",
-      status: "contacted",
-      lastContact: "2025-04-22",
-      assignedTo: "Sarah Johnson",
-      createdAt: "2025-04-16",
-      report: "Q1 Sales Report - 87% Conversion Rate",
-    },
-    {
-      id: "wl-3",
-      company: "Global Services",
-      leadScore: 76,
-      strategy: "Consultative approach",
-      salePitch: "Efficiency improvement",
-      status: "new",
-      lastContact: "2025-04-19",
-      assignedTo: "Michael Brown",
-      createdAt: "2025-04-14",
-      report: "Monthly Sales Report - 72% Conversion Rate",
-    },
-    {
-      id: "wl-4",
-      company: "Innovative Solutions",
-      leadScore: 94,
-      strategy: "Product demo",
-      salePitch: "Competitive advantage",
-      status: "qualified",
-      lastContact: "2025-04-21",
-      assignedTo: "Emily Davis",
-      createdAt: "2025-04-18",
-      report: "Q1 Sales Report - 91% Conversion Rate",
-    },
-    {
-      id: "wl-5",
-      company: "Future Tech",
-      leadScore: 81,
-      strategy: "Solution presentation",
-      salePitch: "Growth opportunity",
-      status: "contacted",
-      lastContact: "2025-04-23",
-      assignedTo: "David Wilson",
-      createdAt: "2025-04-17",
-      report: "Monthly Sales Report - 78% Conversion Rate",
-    },
-  ];
-};
-
-const WarmLeads = () => {
+const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof WarmLead>("leadScore");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
@@ -140,53 +69,32 @@ const WarmLeads = () => {
 
   // Navigate to lead details page
   const handleViewDetails = (leadId: string) => {
-    router.push(`/admin/leadgen-system/lead/${leadId}`);
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "new":
-        return "bg-blue-500/10 text-blue-500";
-      case "contacted":
-        return "bg-yellow-500/10 text-yellow-500";
-      case "qualified":
-        return "bg-green-500/10 text-green-500";
-      case "converted":
-        return "bg-purple-500/10 text-purple-500";
-      case "lost":
-        return "bg-red-500/10 text-red-500";
-      default:
-        return "bg-slate-500/10 text-slate-500";
-    }
+    router.push(`/${role}/leadgen-system/lead/${leadId}`);
   };
 
   return (
-    <Card className=" border-slate-800 bg-transparent">
-      <CardHeader>
-        <CardTitle>Warm Leads</CardTitle>
-        <CardDescription>
+    <Card className=" border-none bg-transparent">
+      <CardHeader className="flex gap-4 items-center justify-between">
+        <CardTitle className="font-medium text-md">
           Manage and track leads that have shown interest in your products or
           services
-        </CardDescription>
-
-        <div className="flex flex-col sm:flex-row gap-2 pt-4">
-          <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              value={searchTerm}
-              placeholder="Search leads..."
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-8 bg-transparent border-slate-800"
-            />
-          </div>
+        </CardTitle>
+        <div>
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+          <Input
+            value={searchTerm}
+            placeholder="Search leads..."
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="pl-8 bg-transparent border-slate-800"
+          />
         </div>
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border-none">
+        <div className="rounded-md border border-slate-800">
           <Table>
             <TableHeader>
               <TableRow className="border-slate-800">
-                <TableHead className="w-[180px]">
+                <TableHead>
                   <Button
                     variant="ghost"
                     className="font-medium"
@@ -207,15 +115,9 @@ const WarmLeads = () => {
                   </Button>
                 </TableHead>
                 <TableHead className="hidden lg:table-cell">
-                  Sales Report
+                  Sales Call
                 </TableHead>
-                <TableHead className="hidden md:table-cell">
-                  Sales Strategy
-                </TableHead>
-                <TableHead className="hidden md:table-cell">
-                  Sales Pitch
-                </TableHead>
-                <TableHead className="hidden sm:table-cell">Status</TableHead>
+                <TableHead className="hidden lg:table-cell">Industry</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -235,28 +137,11 @@ const WarmLeads = () => {
                       {lead.leadScore}
                     </Badge>
                   </TableCell>
-                  <TableCell className="hidden lg:table-cell">
-                    {lead.report && (
-                      <div className="flex items-center">
-                        <FileText className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span className="text-sm">{lead.report}</span>
-                      </div>
-                    )}
+                  <TableCell className="hidden md:table-cell">
+                    {lead.salesCall}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {lead.strategy}
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    {lead.salePitch}
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">
-                    <Badge
-                      variant="outline"
-                      className={getStatusBadge(lead.status)}
-                    >
-                      {lead.status.charAt(0).toUpperCase() +
-                        lead.status.slice(1)}
-                    </Badge>
+                    {lead.industry}
                   </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>

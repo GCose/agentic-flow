@@ -6,18 +6,17 @@ import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import { FileText, Users, ShoppingBag, UserPlus } from "lucide-react";
 import { fetchSystemsOverview } from "@/lib/api/agent-management-api";
 import SystemCard from "@/components/agent-management/agent-system-card";
-import AgentManagementHeader from "@/components/agent-management/agent-management-header";
 import {
   SystemOverview,
   SystemOverviewWithVisuals,
 } from "@/types/agent-systems";
 import { AdminPageMeta } from "@/page-config/meta.config";
+import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 const AgentManagementPage: NextPage = () => {
   const router = useRouter();
   const [systems, setSystems] = useState<SystemOverview[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [updateTime, setUpdateTime] = useState<Date>(new Date());
 
   // Load systems data
   useEffect(() => {
@@ -38,7 +37,6 @@ const AgentManagementPage: NextPage = () => {
     // Simulate real-time updates
     const interval = setInterval(() => {
       loadData();
-      setUpdateTime(new Date());
     }, 30000); // Update every 30 seconds
 
     return () => clearInterval(interval);
@@ -81,24 +79,8 @@ const AgentManagementPage: NextPage = () => {
 
   return (
     <DashboardLayout meta={AdminPageMeta.agentManagementPage}>
-      <AgentManagementHeader />
+      <DashboardHeader title="Agent Management" />
       <div className="flex-1 space-y-6 p-8 pt-6">
-        {/*==================== Agent Management Title ====================*/}
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight">
-              Agent Management
-            </h2>
-            <p className="text-muted-foreground pt-2">
-              Monitor and manage your AI agent crews
-            </p>
-          </div>
-          <div className="text-sm text-muted-foreground">
-            Last updated: {updateTime.toLocaleTimeString()}
-          </div>
-        </div>
-        {/*==================== End of Agent Management Title ====================*/}
-
         {/*==================== System Cards ====================*/}
         <div className="grid gap-6 grid-cols-1 md:grid-cols-2 mt-8">
           {loading

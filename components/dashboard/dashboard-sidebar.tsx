@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  Search,
   Settings,
   LogOut,
   LayoutDashboard,
@@ -28,7 +27,6 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarSeparator,
-  SidebarInput,
 } from "@/components/ui/sidebar";
 import Image from "next/image";
 import { useAuth } from "@/contexts/auth-context";
@@ -232,16 +230,6 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           </div>
           <span className="text-xl font-bold">Agentic Flow</span>
         </div>
-        <div className="px-2 py-2">
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <SidebarInput
-              type="search"
-              placeholder="Search..."
-              className="w-full bg-transparent pl-8 border-slate-800"
-            />
-          </div>
-        </div>
       </SidebarHeader>
 
       <SidebarContent className="overflow-x-hidden">
@@ -257,13 +245,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
                     isActive={isMenuItemActive(item.href)}
                   >
                     <Link href={item.href} className="group">
-                      <div
-                        className={`flex h-6 w-6 items-center justify-center rounded transition-colors ${
-                          isMenuItemActive(item.href)
-                            ? "bg-blue-600 text-white"
-                            : "bg-transparent group-hover:bg-primary/10"
-                        }`}
-                      >
+                      <div className="flex h-6 w-6 items-center justify-center rounded transition-colors bg-transparent">
                         <item.icon className="h-5 w-5" />
                       </div>
                       <span>{item.title}</span>
@@ -290,13 +272,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
                         isActive={isMenuItemActive(item.href)}
                       >
                         <Link href={item.href} className="group">
-                          <div
-                            className={`flex h-6 w-6 items-center justify-center rounded transition-colors ${
-                              isMenuItemActive(item.href)
-                                ? "bg-primary text-primary-foreground"
-                                : "bg-transparent group-hover:bg-primary/10"
-                            }`}
-                          >
+                          <div className="flex h-6 w-6 items-center justify-center rounded transition-colors bg-transparent">
                             <item.icon className="h-5 w-5" />
                           </div>
                           <span>{item.title}</span>
@@ -333,13 +309,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
                       </div>
                     ) : (
                       <Link href={item.href} className="group">
-                        <div
-                          className={`flex h-6 w-6 items-center justify-center rounded transition-colors ${
-                            isMenuItemActive(item.href)
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-transparent group-hover:bg-primary/10"
-                          }`}
-                        >
+                        <div className="flex h-6 w-6 items-center justify-center rounded transition-colors bg-transparent">
                           <item.icon className="h-5 w-5" />
                         </div>
                         <span>{item.title}</span>

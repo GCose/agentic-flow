@@ -4,6 +4,7 @@ export interface BaseLead {
   leadScore: number;
   createdAt: string;
   industry: string;
+  leadEntry: string;
   salesCall: string;
 }
 

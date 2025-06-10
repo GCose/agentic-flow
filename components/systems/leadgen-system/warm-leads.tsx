@@ -77,7 +77,7 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
       <CardHeader className="flex gap-4 items-center justify-between">
         <CardTitle className="font-medium text-md">
           Manage and track leads that have shown interest in your products or
-          services
+          services.
         </CardTitle>
         <div>
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -90,10 +90,10 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
         </div>
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border border-slate-800">
+        <div className="rounded-md border border-slate-800 p-2">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-800">
+              <TableRow className="border-slate-800 hover:bg-transparent">
                 <TableHead>
                   <Button
                     variant="ghost"
@@ -118,6 +118,9 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
                   Sales Call
                 </TableHead>
                 <TableHead className="hidden lg:table-cell">Industry</TableHead>
+                <TableHead className="hidden lg:table-cell">
+                  Lead Captured
+                </TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -132,7 +135,7 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
                   <TableCell>
                     <Badge
                       variant="outline"
-                      className="bg-indigo-500/10 text-indigo-500"
+                      className="bg-green-500/10 text-green-500 font-medium text-md"
                     >
                       {lead.leadScore}
                     </Badge>
@@ -142,6 +145,9 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
                     {lead.industry}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {lead.leadEntry}
                   </TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>

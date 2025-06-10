@@ -117,97 +117,101 @@ const ClientDashboardPage: NextPage = () => {
       <div className="flex-1 p-4 py-2">
         <Card className="border-none bg-transparent ">
           <CardHeader className="flex flex-col gap-4 md:flex-row items-center justify-between">
-            <Input
-              value={searchTerm}
-              placeholder="Search clients..."
-              className="w-full md:w-64 border-slate-800"
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-              <DialogTrigger asChild>
-                <Button className="w-full md:w-auto">
-                  <PlusCircle className="mr-2 h-4 w-4" />
-                  New Client
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle>Create New Client</DialogTitle>
-                  <DialogDescription>
-                    Add a new client to Agentic Flow. Fill in the details below.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Client Name</Label>
-                    <Input
-                      id="name"
-                      placeholder="Enter client name"
-                      value={newClient.name}
-                      onChange={(e) =>
-                        setNewClient((prev) => ({
-                          ...prev,
-                          name: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="description">Description</Label>
-                    <Textarea
-                      id="description"
-                      placeholder="Brief description of the client"
-                      value={newClient.description}
-                      onChange={(e) =>
-                        setNewClient((prev) => ({
-                          ...prev,
-                          description: e.target.value,
-                        }))
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label>Systems</Label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {["Content", "LeadGen", "Sales", "Onboarding"].map(
-                        (system) => (
-                          <div
-                            key={system}
-                            className="flex items-center space-x-2"
-                          >
-                            <Button
-                              type="button"
-                              variant={
-                                newClient.systems.includes(system)
-                                  ? "default"
-                                  : "outline"
-                              }
-                              size="sm"
-                              className="w-full justify-start"
-                              onClick={() => handleSystemToggle(system)}
+            <h2 className="font-medium">Clients using Agentic Flow</h2>
+            <div className="flex gap-4">
+              <Input
+                value={searchTerm}
+                placeholder="Search clients..."
+                className="w-full md:w-64 border-slate-800"
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                <DialogTrigger asChild>
+                  <Button className="w-full md:w-auto">
+                    <PlusCircle className="mr-2 h-4 w-4" />
+                    New Client
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[500px]">
+                  <DialogHeader>
+                    <DialogTitle>Create New Client</DialogTitle>
+                    <DialogDescription>
+                      Add a new client to Agentic Flow. Fill in the details
+                      below.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="space-y-4 py-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Client Name</Label>
+                      <Input
+                        id="name"
+                        placeholder="Enter client name"
+                        value={newClient.name}
+                        onChange={(e) =>
+                          setNewClient((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="description">Description</Label>
+                      <Textarea
+                        id="description"
+                        placeholder="Brief description of the client"
+                        value={newClient.description}
+                        onChange={(e) =>
+                          setNewClient((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Systems</Label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {["Content", "LeadGen", "Sales", "Onboarding"].map(
+                          (system) => (
+                            <div
+                              key={system}
+                              className="flex items-center space-x-2"
                             >
-                              {newClient.systems.includes(system) ? (
-                                <Check className="mr-2 h-4 w-4" />
-                              ) : null}
-                              {system}
-                            </Button>
-                          </div>
-                        )
-                      )}
+                              <Button
+                                type="button"
+                                variant={
+                                  newClient.systems.includes(system)
+                                    ? "default"
+                                    : "outline"
+                                }
+                                size="sm"
+                                className="w-full justify-start"
+                                onClick={() => handleSystemToggle(system)}
+                              >
+                                {newClient.systems.includes(system) ? (
+                                  <Check className="mr-2 h-4 w-4" />
+                                ) : null}
+                                {system}
+                              </Button>
+                            </div>
+                          )
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-                <DialogFooter>
-                  <Button
-                    variant="outline"
-                    onClick={() => setIsModalOpen(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button onClick={handleCreateClient}>Create Client</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+                  <DialogFooter>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsModalOpen(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button onClick={handleCreateClient}>Create Client</Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </div>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-slate-800">

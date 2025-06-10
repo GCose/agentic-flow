@@ -7,6 +7,17 @@ export interface StatCardProps {
   icon: LucideIcon;
   color: "blue" | "purple" | "green" | "cyan" | "orange" | "red";
 }
+export interface StatCardData {
+  value: string;
+  icon: LucideIcon;
+  color: "blue" | "purple" | "green" | "cyan" | "orange";
+  title: string;
+  change: string;
+}
+
+export interface DashboardStatsProps {
+  stats: StatCardData[];
+}
 
 export interface SubSystemCardProps {
   title: string;

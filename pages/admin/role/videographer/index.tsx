@@ -4,7 +4,7 @@ import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import VideographerHeader from "./videographer-header";
 import DashboardStats from "@/components/dashboard/admin-dashboard-stats";
 import { Brain } from "lucide-react";
-import SystemCards from "@/components/shared/cards/system-cards";
+import SystemCards from "@/components/cards/system-cards";
 
 const VideographerDashboard: NextPage = () => {
   return (

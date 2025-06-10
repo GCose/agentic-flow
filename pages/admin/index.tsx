@@ -1,18 +1,18 @@
-import type { NextPage } from "next";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import DashboardStats from "@/components/dashboard/admin-dashboard-stats";
-import SystemCards from "@/components/shared/cards/system-cards";
+import SystemCards from "@/components/cards/system-cards";
 import { AdminPageMeta } from "@/page-config/meta.config";
+import DashboardStatCard from "@/components/dashboard/dashboard-stats-card";
+import { adminDashboardStats } from "@/data/stats-card-data";
 
-const DashboardPage: NextPage = () => {
+const DashboardPage = () => {
   return (
     <DashboardLayout meta={AdminPageMeta.dashboardPage}>
       <DashboardHeader title="Overview" />
       <div className="flex-1 p-8 pt-6">
         {/*==================== Stats Overview ====================*/}
         <div className="mb-10">
-          <DashboardStats />
+          <DashboardStatCard stats={adminDashboardStats} />
         </div>
         {/*==================== End of Stats Overview ====================*/}
 

@@ -170,9 +170,7 @@ const leadDetails: Record<
     leadScore: 87,
     strategy: "Direct outreach",
     salePitch: "ROI-focused solution",
-    status: "qualified",
-    lastContact: "2025-04-20",
-    assignedTo: "John Smith",
+    leadEntry: "2025-04-20",
     createdAt: "2025-04-15",
     report: "Q1 Sales Report - 95% Conversion Rate",
     email: "contact@acmeinc.com",
@@ -217,9 +215,7 @@ const leadDetails: Record<
     leadScore: 92,
     strategy: "Demo + Case study",
     salePitch: "Cost reduction focus",
-    status: "contacted",
-    lastContact: "2025-04-22",
-    assignedTo: "Sarah Johnson",
+    leadEntry: "2025-04-22",
     createdAt: "2025-04-16",
     report: "Q1 Sales Report - 87% Conversion Rate",
     email: "info@techcorp.com",
@@ -255,9 +251,7 @@ const leadDetails: Record<
     leadScore: 76,
     strategy: "Consultative approach",
     salePitch: "Efficiency improvement",
-    status: "new",
-    lastContact: "2025-04-19",
-    assignedTo: "Michael Brown",
+    leadEntry: "2025-04-19",
     createdAt: "2025-04-14",
     report: "Monthly Sales Report - 72% Conversion Rate",
     email: "inquiries@globalservices.com",
@@ -469,8 +463,6 @@ const LeadDetailPage = () => {
     );
   }
 
-  const statusBadge = getStatusBadge(lead.status);
-
   return (
     <DashboardLayout role="client" meta={meta}>
       <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-slate-800 rounded-br-4xl rounded-bl-4xl bg-transparent backdrop-blur-sm px-4 sm:px-6">
@@ -491,16 +483,6 @@ const LeadDetailPage = () => {
             <p className="text-sm text-muted-foreground">({lead.industry})</p>
           </div>
         </div>
-        <Badge
-          variant="outline"
-          className={cn(
-            "flex items-center px-3 py-1.5 rounded-full",
-            statusBadge.className
-          )}
-        >
-          {statusBadge.icon}
-          {statusBadge.label}
-        </Badge>
       </header>
 
       <div className="flex-1 p-6 md:p-8 pt-6 space-y-8">
@@ -610,17 +592,7 @@ const LeadDetailPage = () => {
                         Last Contact
                       </span>
                     </div>
-                    <p className="text-sm font-medium">{lead.lastContact}</p>
-                  </div>
-
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-1.5">
-                      <User className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span className="text-xs text-muted-foreground">
-                        Assigned To
-                      </span>
-                    </div>
-                    <p className="text-sm font-medium">{lead.assignedTo}</p>
+                    <p className="text-sm font-medium">{lead.leadEntry}</p>
                   </div>
 
                   <div className="space-y-1">

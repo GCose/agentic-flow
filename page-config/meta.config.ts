@@ -3,45 +3,49 @@
  ======================================================*/
 export const AdminPageMeta = {
   dashboardPage: {
-    title: "Aftermath Marketing | Home",
+    title: "Agentic Flow | Home",
     description: "Your dashboard for managing leads and campaigns",
   },
 
   // Agent Management Page
   agentManagementPage: {
-    title: "Aftermath Marketing | Agent Management",
+    title: "Agentic Flow | Agent Management",
     description: "Manage agents and their permissions in the system",
   },
   agentSystemPage: {
-    title: "Aftermath Marketing | Agent System",
+    title: "Agentic Flow | Agent System",
     description: "Manage agent systems and their configurations",
   },
 
   // Clients Dashboard Page
   clientsDashboardPage: {
-    title: "Aftermath Marketing | Client Dashboard",
+    title: "Agentic Flow | Client Dashboard",
     description: "Dashboard for managing client accounts and activities",
   },
   clientDashboardPage: {
-    title: "Aftermath Marketing | Client Dashboard",
+    title: "Agentic Flow | Client Dashboard",
     description: "Dashboard for managing client accounts and activities",
+  },
+  clientDashboardContentPage: {
+    title: "Agentic Flow | Client Dashboard Content",
+    description: "Content management for client dashboard",
   },
 
   // LeadGen Page
   leadgenPage: {
-    title: "Aftermath Marketing | LeadGen System",
+    title: "Agentic Flow | LeadGen System",
     description: "Lead generation system for tracking and managing leads",
   },
   warmLeadsSubPage: {
-    title: "Aftermath Marketing | Warm Leads",
+    title: "Agentic Flow | Warm Leads",
     description: "Manage your warm leads in the lead generation system",
   },
   coldLeadsSubPage: {
-    title: "Aftermath Marketing | Cold Leads",
+    title: "Agentic Flow | Cold Leads",
     description: "Manage your warm leads in the lead generation system",
   },
   leadDetailPage: {
-    title: "Aftermath Marketing | Lead Details",
+    title: "Agentic Flow | Lead Details",
     description: "View and manage lead details in the lead generation system",
   },
 };
@@ -51,41 +55,41 @@ export const AdminPageMeta = {
  ======================================================*/
 export const ClientPageMeta = {
   dashboardPage: {
-    title: "Aftermath Marketing | Home",
+    title: "Agentic Flow | Home",
     description: "Your dashboard for managing leads and campaigns",
   },
   contentSystemPage: {
-    title: "Aftermath Marketing | Content System",
+    title: "Agentic Flow | Content System",
     description: "Content management system for creating and managing content",
   },
 
   // Onboarding Page
   onboardingPage: {
-    title: "Aftermath Marketing | Onboarding",
+    title: "Agentic Flow | Onboarding",
     description: "Onboarding process for new clients",
   },
 
   // Feedback Page
   feedbackPage: {
-    title: "Aftermath Marketing | Feedback",
+    title: "Agentic Flow | Feedback",
     description: "Feedback system for collecting client feedback",
   },
 
   // LeadGen Page
   leadgenPage: {
-    title: "Aftermath Marketing | LeadGen System",
+    title: "Agentic Flow | LeadGen System",
     description: "Lead generation system for tracking and managing leads",
   },
   warmLeadsSubPage: {
-    title: "Aftermath Marketing | Warm Leads",
+    title: "Agentic Flow | Warm Leads",
     description: "Manage your warm leads in the lead generation system",
   },
   coldLeadsSubPage: {
-    title: "Aftermath Marketing | Cold Leads",
+    title: "Agentic Flow | Cold Leads",
     description: "Manage your warm leads in the lead generation system",
   },
   leadDetailPage: {
-    title: "Aftermath Marketing | Lead Details",
+    title: "Agentic Flow | Lead Details",
     description: "View and manage lead details in the lead generation system",
   },
 };

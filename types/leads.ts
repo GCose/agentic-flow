@@ -3,14 +3,14 @@ export interface BaseLead {
   company: string;
   leadScore: number;
   createdAt: string;
-  industry: string;
-  leadEntry: string;
-  salesCall: string;
 }
 
 export interface WarmLead extends BaseLead {
   strategy: string;
   salePitch: string;
+  industry: string;
+  leadEntry: string;
+  salesCall: string;
 }
 
 export interface ColdLead extends BaseLead {

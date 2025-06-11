@@ -8,9 +8,8 @@ import {
   FileInput,
   Calendar,
   Clock,
-  ArrowLeft,
-  ArrowUpRight,
   AlertCircle,
+  ArrowLeft,
 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import {
@@ -21,7 +20,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import StatCard from "@/components/ui/stat-card";
 import { ClientData, SystemConfigs } from "@/types/clients";
 import { AdminPageMeta } from "@/page-config/meta.config";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
@@ -31,7 +29,8 @@ const clientsData: ClientData[] = [
   {
     id: "client-1",
     name: "NextGen Agency Details",
-    description: "Enterprise technology solutions provider",
+    description:
+      "Enterprise technology solutions provider specializing in digital transformation, cloud infrastructure, and AI-powered business automation for Fortune 500 companies.",
     systems: [
       "Content System",
       "LeadGen System",
@@ -50,7 +49,8 @@ const clientsData: ClientData[] = [
   {
     id: "client-2",
     name: "Aftermath Marketing Details",
-    description: "Manufacturing and consumer goods company",
+    description:
+      "Results-driven performance marketing agency focused on manufacturing and consumer goods companies, delivering ROI-focused campaigns and lead generation.",
     systems: ["Content System", "LeadGen System"],
     stats: {
       agents: 12,
@@ -64,7 +64,8 @@ const clientsData: ClientData[] = [
   {
     id: "client-3",
     name: "Group26Consult Details",
-    description: "Research and development firm",
+    description:
+      "Strategic marketing consultancy and research development firm providing data-driven insights and market analysis for technology startups.",
     systems: ["Content System", "Sales System"],
     stats: {
       agents: 10,
@@ -78,7 +79,8 @@ const clientsData: ClientData[] = [
   {
     id: "client-4",
     name: "TechStart Solutions Details",
-    description: "Startup technology consultancy",
+    description:
+      "Innovative startup technology consultancy helping early-stage companies build scalable tech infrastructure and go-to-market strategies.",
     systems: ["Content System"],
     stats: {
       agents: 5,
@@ -92,7 +94,8 @@ const clientsData: ClientData[] = [
   {
     id: "client-5",
     name: "Future Enterprises Details",
-    description: "Forward-thinking business solutions",
+    description:
+      "Forward-thinking business solutions company focused on emerging technologies, automation, and digital workplace transformation.",
     systems: ["LeadGen System", "Sales System"],
     stats: {
       agents: 8,
@@ -110,62 +113,32 @@ const systemsConfig: SystemConfigs = {
   "Content System": {
     icon: FileText,
     color: "blue",
-    description: "Content creation and distribution across channels",
+    description: "AI-powered content creation and distribution across channels",
     bgGradient: "bg-gradient-to-br from-blue-500/10 to-blue-500/5",
     iconClassName: "text-blue-500",
   },
   "LeadGen System": {
     icon: Users,
     color: "purple",
-    description: "Lead generation and qualification pipeline",
+    description: "AI-driven lead generation and qualification pipeline",
     bgGradient: "bg-gradient-to-br from-purple-500/10 to-purple-500/5",
     iconClassName: "text-purple-500",
   },
   "Sales System": {
     icon: BarChart,
     color: "green",
-    description: "Sales process optimization and conversion",
+    description: "AI-enhanced sales process optimization and conversion",
     bgGradient: "bg-gradient-to-br from-green-500/10 to-green-500/5",
     iconClassName: "text-green-500",
   },
   "Onboarding System": {
     icon: FileInput,
     color: "orange",
-    description: "Client onboarding workflow and automation",
+    description: "Automated client onboarding workflow with AI assistance",
     bgGradient: "bg-gradient-to-br from-orange-500/10 to-orange-500/5",
     iconClassName: "text-orange-500",
   },
 };
-
-// Define typing for project items
-interface ProjectItem {
-  id: string;
-  name: string;
-  system: string;
-  startDate: string;
-}
-
-// Sample project data
-const projectItems: ProjectItem[] = [
-  {
-    id: "proj-1",
-    name: "Q2 Marketing Campaign",
-    system: "Content System",
-    startDate: "Started 2 weeks ago",
-  },
-  {
-    id: "proj-2",
-    name: "Sales Pipeline Automation",
-    system: "Sales System",
-    startDate: "Started 1 month ago",
-  },
-  {
-    id: "proj-3",
-    name: "Client Acquisition Strategy",
-    system: "LeadGen System",
-    startDate: "Started 3 weeks ago",
-  },
-];
 
 const ClientDashboardPage: NextPage = () => {
   const router = useRouter();
@@ -182,16 +155,9 @@ const ClientDashboardPage: NextPage = () => {
   }, [clientId]);
 
   const handleSystemClick = (system: string) => {
-    // Direct to the content system page for this client
-    if (system === "Content System") {
-      router.push(`/admin/content-system?clientId=${clientId}`);
-    } else if (system === "LeadGen System") {
-      router.push("/admin/leadgen-system");
-    } else {
-      // For other systems, use a slug format
-      const systemSlug = system.toLowerCase().replace(/\s+/g, "-");
-      router.push(`/admin/clients/${clientId}/${systemSlug}`);
-    }
+    const systemSlug = system.toLowerCase().replace(/\s+/g, "-");
+    // Fixed routing to keep "Clients" menu active
+    router.push(`/admin/clients/${clientId}/${systemSlug}`);
   };
 
   if (loading) {
@@ -225,7 +191,12 @@ const ClientDashboardPage: NextPage = () => {
   }
 
   return (
-    <DashboardLayout meta={AdminPageMeta.clientDashboardPage}>
+    <DashboardLayout
+      meta={{
+        title: client ? `${client.name} | Dashboard` : "Client Dashboard",
+        description: `Dashboard for ${client?.name || "client"}`,
+      }}
+    >
       <DashboardHeader
         role="admin"
         title={client.name}
@@ -233,117 +204,105 @@ const ClientDashboardPage: NextPage = () => {
         onBackClick={() => router.push("/admin/clients")}
       />
       <div className="flex-1 space-y-6 p-4 md:p-8 pt-6">
-        {/*==================== Client Stats Overview ====================*/}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <StatCard
-            icon={Users}
-            color="blue"
-            title="Active Agents"
-            value={client.stats.agents.toString()}
-            change={`Total for ${client.systems.length} systems`}
-          />
-          <StatCard
-            color="purple"
-            icon={FileText}
-            title="Projects"
-            change={`Across all systems`}
-            value={client.stats.projects.toString()}
-          />
-          <StatCard
-            icon={Users}
-            color="green"
-            title="Active Users"
-            change={`Last 30 days`}
-            value={client.stats.activeUsers.toString()}
-          />
-          <StatCard
-            color="orange"
-            icon={BarChart}
-            title="Success Rate"
-            change={`Avg. across all systems`}
-            value={`${client.stats.successRate}%`}
-          />
-        </div>
-        {/*==================== End of Client Stats Overview ====================*/}
-
-        {/*==================== Additional Client Info ====================*/}
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          <Card className="col-span-1 lg:col-span-2 -none border-slate-800 bg-transparent">
+        {/*==================== Expanded Client Information ====================*/}
+        <div className="grid gap-4 grid-cols-1">
+          <Card className="border-slate-800 bg-transparent">
             <CardHeader>
-              <CardTitle>Client Information</CardTitle>
+              <CardTitle>{client.name.replace(" Details", "")}</CardTitle>
+              <CardDescription>{client.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
-                <div className="flex flex-col gap-1">
+              <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+                <div className="flex flex-col gap-2">
                   <span className="text-sm text-muted-foreground">
                     Client Since
                   </span>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span>{client.createdAt}</span>
+                    <span className="font-medium">{client.createdAt}</span>
                   </div>
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
                   <span className="text-sm text-muted-foreground">
                     Subscription Duration
                   </span>
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-muted-foreground" />
-                    <span>{client.activeTime}</span>
+                    <span className="font-medium">{client.activeTime}</span>
                   </div>
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
                   <span className="text-sm text-muted-foreground">
-                    Subscribed Systems
+                    Active Systems
                   </span>
-                  <div className="flex items-center gap-2">
-                    <span>{client.systems.length} systems</span>
-                  </div>
+                  <span className="font-medium">
+                    {client.systems.length} of 4 systems
+                  </span>
                 </div>
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-2">
                   <span className="text-sm text-muted-foreground">
-                    Total Content Items
+                    Account Status
                   </span>
-                  <div className="flex items-center gap-2">
-                    <span>{client.stats.agents * 8} items</span>
-                  </div>
+                  <span className="text-green-500 font-medium">Active</span>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card className="col-span-1 border border-slate-800 bg-transparent">
-            <CardHeader>
-              <CardTitle>Active Projects</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-3">
-                {projectItems.map((project) => (
-                  <div key={project.id} className="flex items-start gap-2">
-                    <div
-                      className={`h-2 w-2 mt-1.5 rounded-full ${
-                        project.system === "Content System"
-                          ? "bg-blue-500"
-                          : project.system === "LeadGen System"
-                          ? "bg-purple-500"
-                          : project.system === "Sales System"
-                          ? "bg-green-500"
-                          : "bg-orange-500"
-                      }`}
-                    ></div>
-                    <div>
-                      <p className="text-sm font-medium">{project.name}</p>
-                      <p className="text-xs text-muted-foreground">
-                        {project.system} • {project.startDate}
-                      </p>
+                {/* System Performance Metrics */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Active Users
+                  </span>
+                  <span className="font-medium">
+                    {client.stats.activeUsers} users
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Success Rate
+                  </span>
+                  <span className="font-medium text-green-500">
+                    {client.stats.successRate}%
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    Active Projects
+                  </span>
+                  <span className="font-medium">
+                    {client.stats.projects} projects
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm text-muted-foreground">
+                    System Usage
+                  </span>
+                  <span className="font-medium">
+                    {client.stats.agents} operations
+                  </span>
+                </div>
+
+                {/* Subscribed Systems List */}
+                <div className="col-span-1 sm:col-span-2 lg:col-span-4">
+                  <div className="flex flex-col gap-3">
+                    <span className="text-sm text-muted-foreground">
+                      Subscribed Systems
+                    </span>
+                    <div className="flex flex-wrap gap-2">
+                      {client.systems.map((system) => (
+                        <span
+                          key={system}
+                          className="px-3 py-1 text-xs rounded-full bg-blue-500/10 text-blue-500 border border-blue-500/20"
+                        >
+                          {system}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
-        {/*==================== End of Additional Client Info ====================*/}
+        {/*==================== End of Expanded Client Information ====================*/}
 
         {/*==================== Subscribed Systems ====================*/}
         <div className="space-y-4">
@@ -358,7 +317,7 @@ const ClientDashboardPage: NextPage = () => {
               return (
                 <Card
                   key={system}
-                  className={`border-none border-slate-800 relative overflow-hidden transition-all duration-300 ${
+                  className={`border-slate-800 relative overflow-hidden transition-all duration-300 ${
                     isActive ? config.bgGradient : "bg-slate-800/20 opacity-60"
                   } cursor-pointer hover:shadow-md ${
                     isActive ? "hover:translate-y-[-2px]" : ""
@@ -388,7 +347,7 @@ const ClientDashboardPage: NextPage = () => {
                           variant="outline"
                           className="text-xs bg-slate-800/40"
                         >
-                          Add System
+                          Upgrade Plan
                         </Button>
                       )}
                     </div>
@@ -405,30 +364,25 @@ const ClientDashboardPage: NextPage = () => {
                   </CardHeader>
                   <CardContent>
                     {isActive && (
-                      <div className="text-sm">
-                        <Button
-                          variant="link"
-                          className="cursor-pointer flex items-center gap-1 text-primary hover:text-primary/80"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleSystemClick(system);
-                          }}
-                        >
-                          Go to {system}
-                          <ArrowUpRight className="h-3 w-3" />
-                        </Button>
-                      </div>
+                      <Button
+                        variant="link"
+                        className="cursor-pointer flex items-center gap-1 text-primary hover:text-primary/80 p-0"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleSystemClick(system);
+                        }}
+                      >
+                        View {system} →
+                      </Button>
                     )}
                     {!isActive && (
                       <Button
                         size="sm"
                         variant="outline"
                         className="mt-2 w-full"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                        }}
+                        disabled
                       >
-                        Subscribe to {system}
+                        Not Subscribed
                       </Button>
                     )}
                   </CardContent>

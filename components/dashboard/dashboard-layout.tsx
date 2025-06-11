@@ -50,7 +50,7 @@ const DashboardLayout = ({
         {meta.description && (
           <meta name="description" content={meta.description} />
         )}
-        <link rel="icon" href="/images/logo.jpg" />
+        <link rel="icon" href="/images/Icon.png" />
       </Head>
 
       <div className="flex h-screen w-screen overflow-hidden">

@@ -1,4 +1,3 @@
-// components/leadgen-system/cold-leads.tsx
 import { useState } from "react";
 import { Search, MoreHorizontal, ArrowUpDown, Mail } from "lucide-react";
 import {
@@ -40,7 +39,6 @@ const generateColdLeads = (): ColdLead[] => {
       personalized: true,
       outreachStage: "Initial",
       lastOutreach: null,
-      status: "new",
       createdAt: "2025-04-15",
     },
     {
@@ -51,7 +49,6 @@ const generateColdLeads = (): ColdLead[] => {
       personalized: true,
       outreachStage: "Follow-up 1",
       lastOutreach: "2025-04-18",
-      status: "contacted",
       createdAt: "2025-04-12",
     },
     {
@@ -62,7 +59,6 @@ const generateColdLeads = (): ColdLead[] => {
       personalized: false,
       outreachStage: "Initial",
       lastOutreach: null,
-      status: "new",
       createdAt: "2025-04-14",
     },
     {
@@ -73,7 +69,6 @@ const generateColdLeads = (): ColdLead[] => {
       personalized: true,
       outreachStage: "Follow-up 2",
       lastOutreach: "2025-04-21",
-      status: "contacted",
       createdAt: "2025-04-10",
     },
     {
@@ -84,7 +79,6 @@ const generateColdLeads = (): ColdLead[] => {
       personalized: false,
       outreachStage: "Initial",
       lastOutreach: "2025-04-16",
-      status: "contacted",
       createdAt: "2025-04-13",
     },
   ];

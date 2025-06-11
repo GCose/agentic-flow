@@ -41,27 +41,10 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
   const { user, logout } = useAuth();
 
   const isMenuItemActive = (href: string) => {
-    // Client role navigation highlighting
-    if (role === "client") {
-      if (href === "/client") return pathname === "/client";
-      if (href === "/client/content-system")
-        return pathname?.startsWith("/client/content-system");
+    if (href === "/admin" || href === "/client") {
       return pathname === href;
     }
-
-    // Admin client dashboard highlighting (handles content system with clientId)
-    if (href === "/admin/clients")
-      return (
-        pathname?.startsWith(href) ||
-        (pathname?.includes("/admin/content-system") &&
-          typeof window !== "undefined" &&
-          window.location.search.includes("clientId="))
-      );
-
-    // Standard path-based highlighting
-    return (
-      (href !== "/admin" && pathname?.startsWith(href)) || pathname === href
-    );
+    return pathname?.startsWith(href);
   };
 
   const getNavItems = (role: UserRole) => {

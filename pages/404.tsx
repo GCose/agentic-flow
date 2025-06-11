@@ -33,6 +33,7 @@ const NotFound = () => {
           name="description"
           content="The requested page could not be found"
         />
+        <link rel="icon" href="/images/Icon.png" />
       </Head>
 
       {/*==================== Container ====================*/}

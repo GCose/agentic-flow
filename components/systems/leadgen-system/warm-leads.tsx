@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -80,7 +80,6 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
           services.
         </CardTitle>
         <div>
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             value={searchTerm}
             placeholder="Search leads..."
@@ -129,7 +128,7 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
                 <TableRow
                   key={lead.id}
                   onClick={() => handleViewDetails(lead.id)}
-                  className="border-slate-800 hover:bg-white/5 cursor-pointer"
+                  className="border-slate-800 hover:bg-white/3 cursor-pointer"
                 >
                   <TableCell className="font-medium">{lead.company}</TableCell>
                   <TableCell>

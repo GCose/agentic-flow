@@ -82,7 +82,7 @@ const OnboardingWizard = () => {
         </TabsList>
 
         <TabsContent value="basic-info" className="mt-6">
-          <Card className="border bg-transparent ">
+          <Card className="border-slate-800 bg-transparent ">
             <CardContent className="pt-6">
               <AgentBasicInfo
                 formData={formData}
@@ -96,7 +96,7 @@ const OnboardingWizard = () => {
         </TabsContent>
 
         <TabsContent value="prompt-template" className="mt-6">
-          <Card className="border bg-transparent ">
+          <Card className="border-slate-800 bg-transparent ">
             <CardContent className="pt-6">
               <AgentPromptTemplate
                 formData={formData}
@@ -113,7 +113,7 @@ const OnboardingWizard = () => {
         </TabsContent>
 
         <TabsContent value="settings" className="mt-6">
-          <Card className="border bg-transparent ">
+          <Card className="border-slate-800 bg-transparent ">
             <CardContent className="pt-6">
               <AgentSettings
                 formData={formData}
@@ -130,7 +130,7 @@ const OnboardingWizard = () => {
         </TabsContent>
 
         <TabsContent value="summary" className="mt-6">
-          <Card className="border bg-transparent ">
+          <Card className="border-slate-800 bg-transparent ">
             <CardContent className="pt-6">
               <AgentSummary formData={formData} />
               <div className="mt-6 flex justify-between">

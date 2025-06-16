@@ -6,8 +6,8 @@ const BackgroundElements = () => {
       gradient: "pathGradient1",
       strokeWidth: 2.2,
       dashArray: "20 80",
-      glowColor: "rgba(0,255,255,0.6)",
-      animationDuration: "6s",
+      glowColor: "rgba(0,255,259)",
+      animationDuration: "4s",
       animationDirection: "normal",
     },
     {
@@ -16,8 +16,8 @@ const BackgroundElements = () => {
       gradient: "pathGradient2",
       strokeWidth: 1.8,
       dashArray: "15 85",
-      glowColor: "rgba(147,51,234,0.5)",
-      animationDuration: "18s",
+      glowColor: "rgba(147,51,239)",
+      animationDuration: "4s",
       animationDirection: "reverse",
     },
     {
@@ -26,8 +26,8 @@ const BackgroundElements = () => {
       gradient: "pathGradient3",
       strokeWidth: 1.5,
       dashArray: "25 75",
-      glowColor: "rgba(59,130,246,0.4)",
-      animationDuration: "12s",
+      glowColor: "rgba(59,130,249)",
+      animationDuration: "4s",
       animationDirection: "normal",
     },
     {
@@ -36,8 +36,8 @@ const BackgroundElements = () => {
       gradient: "pathGradient2",
       strokeWidth: 2.4,
       dashArray: "30 70",
-      glowColor: "rgba(147,51,234,0.7)",
-      animationDuration: "22s",
+      glowColor: "rgba(147,51,239)",
+      animationDuration: "4s",
       animationDirection: "normal",
     },
     {
@@ -46,8 +46,8 @@ const BackgroundElements = () => {
       gradient: "pathGradient1",
       strokeWidth: 1.4,
       dashArray: "16 84",
-      glowColor: "rgba(0,255,255,0.3)",
-      animationDuration: "10s",
+      glowColor: "rgba(0,255,259)",
+      animationDuration: "4s",
       animationDirection: "reverse",
     },
     {
@@ -56,8 +56,8 @@ const BackgroundElements = () => {
       gradient: "pathGradient3",
       strokeWidth: 1.9,
       dashArray: "14 86",
-      glowColor: "rgba(59,130,246,0.5)",
-      animationDuration: "7s",
+      glowColor: "rgba(59,130,249)",
+      animationDuration: "4s",
       animationDirection: "reverse",
     },
     {
@@ -66,8 +66,8 @@ const BackgroundElements = () => {
       gradient: "pathGradient1",
       strokeWidth: 1.3,
       dashArray: "12 88",
-      glowColor: "rgba(0,255,255,0.3)",
-      animationDuration: "20s",
+      glowColor: "rgba(0,255,259)",
+      animationDuration: "4s",
       animationDirection: "normal",
     },
     {
@@ -76,8 +76,8 @@ const BackgroundElements = () => {
       gradient: "pathGradient3",
       strokeWidth: 1.6,
       dashArray: "18 82",
-      glowColor: "rgba(59,130,246,0.4)",
-      animationDuration: "14s",
+      glowColor: "rgba(59,130,249)",
+      animationDuration: "4s",
       animationDirection: "normal",
     },
   ];
@@ -106,9 +106,9 @@ const BackgroundElements = () => {
               x2="100%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="cyan" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="blue" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="purple" stopOpacity="0.4" />
+              <stop offset="0%" stopColor="cyan" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="blue" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="purple" stopOpacity="0.9" />
             </linearGradient>
             <linearGradient
               id="pathGradient2"
@@ -117,9 +117,9 @@ const BackgroundElements = () => {
               x2="100%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="purple" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="blue" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="cyan" stopOpacity="0.4" />
+              <stop offset="0%" stopColor="purple" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="blue" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="cyan" stopOpacity="0.9" />
             </linearGradient>
             <linearGradient
               id="pathGradient3"
@@ -128,9 +128,9 @@ const BackgroundElements = () => {
               x2="100%"
               y2="100%"
             >
-              <stop offset="0%" stopColor="blue" stopOpacity="0.8" />
-              <stop offset="50%" stopColor="cyan" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="purple" stopOpacity="0.4" />
+              <stop offset="0%" stopColor="blue" stopOpacity="0.9" />
+              <stop offset="50%" stopColor="cyan" stopOpacity="0.9" />
+              <stop offset="100%" stopColor="purple" stopOpacity="0.9" />
             </linearGradient>
           </defs>
 
@@ -142,7 +142,7 @@ const BackgroundElements = () => {
               strokeWidth={pathway.strokeWidth}
               fill="none"
               style={{
-                filter: `drop-shadow(0 0 6px ${pathway.glowColor})`,
+                filter: `drop-shadow(0 0 2px ${pathway.glowColor})`,
                 strokeDasharray: pathway.dashArray,
                 strokeDashoffset: 0,
                 animation: `dash-flow-${pathway.animationDirection} ${pathway.animationDuration} ease-in-out infinite`,

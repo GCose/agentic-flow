@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
+import { AdminPageMeta } from "@/page-config/meta.config";
 
 const DesignerDashboard: NextPage = () => {
   return (
@@ -13,7 +14,10 @@ const DesignerDashboard: NextPage = () => {
           content="Designer dashboard for Agentic Flow"
         />
       </Head>
-      <DashboardLayout role="designer">
+      <DashboardLayout
+        role="designer"
+        meta={AdminPageMeta.graphicsDesignerPage}
+      >
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-bold tracking-tight">

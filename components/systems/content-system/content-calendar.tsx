@@ -8,13 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
-// Mock data for content calendar
 const generateCalendarData = () => {
   const today = new Date();
   const currentMonth = today.getMonth();
   const currentYear = today.getFullYear();
 
-  // Content types with colors for visual differentiation
   const contentTypes = [
     { type: "Blog Post", color: "bg-blue-500/10 text-blue-500" },
     { type: "Social Post", color: "bg-purple-500/10 text-purple-500" },
@@ -24,7 +22,6 @@ const generateCalendarData = () => {
     { type: "Infographic", color: "bg-indigo-500/10 text-indigo-500" },
   ];
 
-  // Channels
   const channels = [
     "Website Blog",
     "Twitter",
@@ -34,17 +31,14 @@ const generateCalendarData = () => {
     "Newsletter",
   ];
 
-  // Generate some random content events for the calendar
   const events = [];
 
-  // Add events for the current month (+/- 1 month)
   for (let i = 0; i < 25; i++) {
     const randomDay = Math.floor(Math.random() * 28) + 1;
     const randomMonth = currentMonth + Math.floor(Math.random() * 3) - 1;
 
     const eventDate = new Date(currentYear, randomMonth, randomDay);
 
-    // Don't add events in the past
     if (eventDate < today) continue;
 
     const randomContentType =
@@ -79,21 +73,18 @@ const ContentCalendar = () => {
     1
   ).getDay();
 
-  // Move to previous month
   const prevMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1)
     );
   };
 
-  // Move to next month
   const nextMonth = () => {
     setCurrentDate(
       new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1)
     );
   };
 
-  // Get events for a specific day
   const getEventsForDay = (day: number) => {
     return events.filter(
       (event) =>
@@ -103,12 +94,10 @@ const ContentCalendar = () => {
     );
   };
 
-  // Format date as Month Year
   const formatMonthYear = (date: Date) => {
     return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
   };
 
-  // Generate calendar grid
   const generateCalendarGrid = () => {
     const today = new Date();
     const calendar = [];
@@ -165,14 +154,14 @@ const ContentCalendar = () => {
               key={`day-${dayCounter}`}
               className={`border p-1 rounded-md min-h-28 transition-colors ${
                 isToday
-                  ? "border-primary/50 bg-primary/5"
-                  : "border-border/30 hover:bg-muted/10"
+                  ? "border-blue-900/30 bg-blue-900/40"
+                  : "border-blue-900/30 hover:bg-blue-900/20"
               }`}
             >
               <div className="text-right mb-1">
                 <span
                   className={`text-sm inline-block rounded-full w-6 h-6 text-center leading-6 ${
-                    isToday ? "bg-primary text-primary-foreground" : ""
+                    isToday ? "bg-blue-500 text-primary-foreground" : ""
                   }`}
                 >
                   {dayCounter}
@@ -199,7 +188,7 @@ const ContentCalendar = () => {
           weekCells.push(
             <div
               key={`empty-end-${cellIndex}`}
-              className="border border-border/30 bg-muted/10 rounded-md min-h-28"
+              className="border border-blue-900/30 bg-muted/10 rounded-md min-h-28"
             />
           );
         }
@@ -237,7 +226,7 @@ const ContentCalendar = () => {
         </div>
       </div>
 
-      <Card className="border bg-transparent">
+      <Card className="bg-transparent border-blue-900/30">
         <CardContent className="p-4">{generateCalendarGrid()}</CardContent>
       </Card>
 

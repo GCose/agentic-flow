@@ -110,11 +110,11 @@ export const ClientLeadGenSubSystems: SubSystemsItem[] = [
   },
   {
     title: "Appointments",
-    description: "Book, reschedule, and manage client appointments efficiently",
+    description: "View your scheduled appointments",
     icon: CalendarClock,
     bgColor: "bg-green-500/10",
     iconColor: "text-green-500",
-    leadType: "appointment",
+    leadType: "client/leadgen-system/appointments",
   },
   {
     title: "Audits",

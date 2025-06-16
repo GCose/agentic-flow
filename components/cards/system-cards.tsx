@@ -21,7 +21,7 @@ const SystemCard = ({
 }: SystemCardProps) => {
   return (
     <Card
-      className={`border-slate-800 ${color} hover:-translate-y-2 transition-all duration-500 h-full bg-transparent`}
+      className={`border-blue-900/30 ${color} hover:-translate-y-2 transition-all duration-500 h-full bg-transparent`}
     >
       <CardContent className="p-6 flex flex-col items-center text-center">
         <div className={`rounded-full ${iconBg} p-4 mb-4`}>

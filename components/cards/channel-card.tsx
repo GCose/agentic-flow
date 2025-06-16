@@ -1,17 +1,13 @@
 import { LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
-interface ContentChannelCardProps {
+interface ChannelCardProps {
   name: string;
   icon: LucideIcon;
   color: string;
 }
 
-const ContentChannelCard = ({
-  name,
-  icon: Icon,
-  color,
-}: ContentChannelCardProps) => {
+const ChannelCard = ({ name, icon: Icon, color }: ChannelCardProps) => {
   const colorMap = {
     blue: {
       bg: "bg-transparent",
@@ -73,7 +69,7 @@ const ContentChannelCard = ({
 
   return (
     <Card
-      className={`border border-slate-800  overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.1] hover:shadow-md ${colors.bg}`}
+      className={`border border-blue-900/30 hover:bg-blue-600/10 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.1] hover:shadow-md ${colors.bg}`}
     >
       <CardContent>
         <div className="flex items-center justify-between mb-4">
@@ -87,4 +83,4 @@ const ContentChannelCard = ({
   );
 };
 
-export default ContentChannelCard;
+export default ChannelCard;

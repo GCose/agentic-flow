@@ -167,7 +167,7 @@ const ClientDashboardPage: NextPage = () => {
   if (!client) {
     return (
       <DashboardLayout meta={AdminPageMeta.clientDashboardPage}>
-        <div className="flex-1 space-y-4 p-8 pt-6">
+        <div className="flex-1 h-screen space-y-4 p-8 pt-6 ">
           <div className="flex items-center">
             <Button
               className="mr-4"
@@ -203,10 +203,10 @@ const ClientDashboardPage: NextPage = () => {
         hasBackButton={true}
         onBackClick={() => router.push("/admin/clients")}
       />
-      <div className="flex-1 space-y-6 p-4 md:p-8 pt-6">
+      <div className="flex-1 h-screen space-y-6 p-4 md:p-8 pt-6 ">
         {/*==================== Expanded Client Information ====================*/}
         <div className="grid gap-4 grid-cols-1">
-          <Card className="border-slate-800 bg-transparent">
+          <Card className="border-blue-900/30 bg-transparent">
             <CardHeader>
               <CardTitle>{client.name.replace(" Details", "")}</CardTitle>
               <CardDescription>{client.description}</CardDescription>
@@ -317,7 +317,7 @@ const ClientDashboardPage: NextPage = () => {
               return (
                 <Card
                   key={system}
-                  className={`border-slate-800 relative overflow-hidden transition-all duration-300 ${
+                  className={`border-blue-900/30 relative overflow-hidden transition-all duration-300 ${
                     isActive ? config.bgGradient : "bg-slate-800/20 opacity-60"
                   } cursor-pointer hover:shadow-md ${
                     isActive ? "hover:translate-y-[-2px]" : ""

@@ -10,7 +10,7 @@ const SubSystemCard = ({
 }: SubSystemCardProps) => (
   <Card
     onClick={onClick}
-    className="border-slate-800 bg-transparent cursor-pointer transition-all duration-300 hover:bg-blue-800/10 hover:-translate-y-1"
+    className="border-blue-900/30 bg-transparent  cursor-pointer transition-all duration-300 hover:bg-blue-800/10 hover:-translate-y-1"
   >
     <CardContent className="p-6 flex flex-col items-center text-center">
       <div className={`rounded-full p-4 mb-4 ${bgColor}`}>{icon}</div>

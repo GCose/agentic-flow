@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
+import { MoreHorizontal, ArrowUpDown, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -24,16 +24,29 @@ import {
 import { WarmLead } from "@/types/leads";
 import { generateWarmLeads } from "@/data/leads-data";
 
-const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
+const WarmLeads = ({
+  role,
+  clientId,
+}: {
+  role: "admin" | "client";
+  clientId?: string;
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof WarmLead>("leadScore");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
-  const [warmLeads] = useState<(WarmLead & { report?: string })[]>(
-    generateWarmLeads()
-  );
+  const [warmLeads, setWarmLeads] = useState<
+    (WarmLead & { report?: string })[]
+  >(generateWarmLeads());
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const router = useRouter();
 
-  // Filter leads based on search term
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    setWarmLeads(generateWarmLeads());
+    setIsRefreshing(false);
+  };
+
   const filteredLeads = warmLeads.filter(
     (lead) =>
       lead.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -42,7 +55,6 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
         lead.report.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
-  // Sort leads based on sort field and direction
   const sortedLeads = [...filteredLeads].sort((a, b) => {
     if (typeof a[sortField] === "string" && typeof b[sortField] === "string") {
       const aValue = a[sortField] as string;
@@ -57,7 +69,6 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
     }
   });
 
-  // Handle sorting when column header is clicked
   const handleSort = (field: keyof WarmLead) => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -67,9 +78,13 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
     }
   };
 
-  // Navigate to lead details page
   const handleViewDetails = (leadId: string) => {
-    router.push(`/${role}/leadgen-system/lead/${leadId}`);
+    const path =
+      role === "admin"
+        ? `/admin/clients/${clientId}/leadgen-system/warm-leads/${leadId}`
+        : `/client/leadgen-system/warm-leads/${leadId}`;
+
+    router.push(path);
   };
 
   return (
@@ -79,20 +94,31 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
           Manage and track leads that have shown interest in your products or
           services.
         </CardTitle>
-        <div>
+        <div className="flex gap-2 items-center">
           <Input
             value={searchTerm}
             placeholder="Search leads..."
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8 bg-transparent border-slate-800"
+            className="pl-8 bg-transparent border-blue-900/30"
           />
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="bg-transparent border-blue-900/30 hover:bg-gradient-to-r hover:from-blue-800/30 hover:via-blue-700/20 hover:to-blue-500/25 hover:text-white hover:border-blue-600/50"
+          >
+            <RefreshCw
+              className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
+            />
+          </Button>
         </div>
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border border-slate-800 p-2">
+        <div className="rounded-md border border-blue-900/30 p-2">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-800 hover:bg-transparent">
+              <TableRow className="border-blue-900/30 hover:bg-transparent">
                 <TableHead>
                   <Button
                     variant="ghost"
@@ -113,13 +139,9 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
                     <ArrowUpDown className="h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="hidden lg:table-cell">
-                  Sales Call
-                </TableHead>
-                <TableHead className="hidden lg:table-cell">Industry</TableHead>
-                <TableHead className="hidden lg:table-cell">
-                  Lead Captured
-                </TableHead>
+                <TableHead className="table-cell">Sales Call</TableHead>
+                <TableHead className="table-cell">Industry</TableHead>
+                <TableHead className="table-cell">Lead Captured</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -128,7 +150,7 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
                 <TableRow
                   key={lead.id}
                   onClick={() => handleViewDetails(lead.id)}
-                  className="border-slate-800 hover:bg-white/3 cursor-pointer"
+                  className="border-blue-900/30 hover:bg-blue-600/10 cursor-pointer"
                 >
                   <TableCell className="font-medium">{lead.company}</TableCell>
                   <TableCell>
@@ -139,15 +161,9 @@ const WarmLeads = ({ role }: { role: "admin" | "client" }) => {
                       {lead.leadScore}
                     </Badge>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    {lead.salesCall}
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    {lead.industry}
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    {lead.leadEntry}
-                  </TableCell>
+                  <TableCell className="table-cell">{lead.salesCall}</TableCell>
+                  <TableCell className="table-cell">{lead.industry}</TableCell>
+                  <TableCell className="table-cell">{lead.leadEntry}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

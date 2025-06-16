@@ -5,7 +5,7 @@ import ThemeToggle from "@/components/theme-toggle";
 
 const VideographerHeader = () => {
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent backdrop-blur-xs px-4 sm:px-6 border-slate-800">
+    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent  px-4 sm:px-6 border-blue-900/30">
       <SidebarTrigger />
 
       <div className="ml-auto flex items-center gap-2">

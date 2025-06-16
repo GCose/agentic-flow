@@ -114,15 +114,15 @@ const ClientDashboardPage: NextPage = () => {
       <DashboardHeader title="Clients" />
 
       {/*==================== Client Content ====================*/}
-      <div className="flex-1 p-4 py-2">
-        <Card className="border-none bg-transparent ">
+      <div className="flex-1 p-4 py-2 ">
+        <Card className="border-none bg-transparent  ">
           <CardHeader className="flex flex-col gap-4 md:flex-row items-center justify-between">
             <h2 className="font-medium">Clients using Agentic Flow</h2>
             <div className="flex gap-4">
               <Input
                 value={searchTerm}
                 placeholder="Search clients..."
-                className="w-full md:w-64 border-slate-800"
+                className="w-full md:w-64 border-blue-900/30"
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -214,10 +214,10 @@ const ClientDashboardPage: NextPage = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-slate-800">
+            <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-blue-900/30">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-slate-800 hover:bg-transparent">
+                  <TableRow className="border-b border-blue-900/30 hover:bg-transparent">
                     <TableHead>Client</TableHead>
                     <TableHead>Systems</TableHead>
                     <TableHead className="hidden md:table-cell">
@@ -234,7 +234,7 @@ const ClientDashboardPage: NextPage = () => {
                     <TableRow
                       key={client.id}
                       onClick={() => navigateToClientDashboard(client.id)}
-                      className="cursor-pointer border-b border-slate-800 hover:bg-white/3 hover:rounded-md"
+                      className="cursor-pointer border-b border-blue-900/30 hover:bg-blue-600/10 hover:rounded-md"
                     >
                       <TableCell className="font-medium">
                         {client.name}

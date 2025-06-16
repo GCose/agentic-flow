@@ -139,7 +139,7 @@ const AgentPerformanceForChannel = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Average Views by Agent */}
-        <Card className="border bg-transparent">
+        <Card className="border border-blue-900/30 bg-transparent">
           <CardContent className="p-6">
             <h3 className="text-lg font-medium mb-4">Average Views by Agent</h3>
             <div className="space-y-4">
@@ -173,7 +173,7 @@ const AgentPerformanceForChannel = () => {
         </Card>
 
         {/* Success Rate by Agent */}
-        <Card className="border bg-transparent">
+        <Card className="border border-blue-900/30 bg-transparent">
           <CardContent className="p-6">
             <h3 className="text-lg font-medium mb-4">Success Rate by Agent</h3>
             <div className="space-y-4">
@@ -184,7 +184,7 @@ const AgentPerformanceForChannel = () => {
                     : agent.successRate >= 80
                     ? "bg-yellow-500"
                     : "bg-red-500";
-                
+
                 return (
                   <div key={agent.name}>
                     <div className="flex justify-between items-center mb-1">

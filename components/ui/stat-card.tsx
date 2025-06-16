@@ -44,7 +44,7 @@ const StatCard = ({
   const colors = colorMap[color];
 
   return (
-    <Card className={`border-none overflow-hidden border ${colors.bg}`}>
+    <Card className={`border-none  overflow-hidden border ${colors.bg}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-md font-medium">{title}</CardTitle>
         <Icon className={`h-7 w-7 ${colors.iconColor}`} />

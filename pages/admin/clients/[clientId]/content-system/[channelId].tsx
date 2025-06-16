@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import {
-  ArrowLeft,
   Facebook,
   Twitter,
   Instagram,
   Linkedin,
   Youtube,
   LucideIcon,
-  Filter,
   Download,
   Eye,
   MousePointer,
@@ -33,8 +31,32 @@ import AgentPerformanceForChannel from "@/components/systems/content-system/agen
 import ChannelAnalytics from "@/components/systems/content-system/channel-analytics";
 import ChannelContentList from "@/components/systems/content-system/channel-content-list";
 import ContentViewer from "@/components/systems/content-system/content-viewer";
-import { SidebarTrigger } from "@/components/ui/sidebar";
 import { ClientPageMeta } from "@/page-config/meta.config";
+import DashboardHeader from "@/components/dashboard/dashboard-header";
+
+interface Client {
+  id: string;
+  name: string;
+  description: string;
+}
+
+const clients: Record<string, Client> = {
+  "client-1": {
+    id: "client-1",
+    name: "Nextgen Agency",
+    description: "Forward-thinking digital marketing solutions",
+  },
+  "client-2": {
+    id: "client-2",
+    name: "Aftermath Marketing",
+    description: "Results-driven performance marketing",
+  },
+  "client-3": {
+    id: "client-3",
+    name: "Group26Consult",
+    description: "Strategic marketing consultancy",
+  },
+};
 
 export type ChannelId =
   | "facebook"
@@ -98,20 +120,17 @@ function isValidChannelId(id: string | string[] | undefined): id is ChannelId {
   return Object.keys(platformData).includes(id as ChannelId);
 }
 
-const ChannelDetailPage = () => {
+const AdminChannelsPage = () => {
   const router = useRouter();
-  const { channelId } = router.query;
+  const { channelId, clientId } = router.query;
   const [activeTab, setActiveTab] = useState("content");
   const [selectedContent, setSelectedContent] = useState<ContentData | null>(
     null
   );
   const [isApproving, setIsApproving] = useState(false);
-  const [isFiltering, setIsFiltering] = useState(false);
-
-  // Handle filtering
-  const handleFilter = () => {
-    setIsFiltering(!isFiltering);
-  };
+  const [isFiltering] = useState(false);
+  const client =
+    clientId && typeof clientId === "string" ? clients[clientId] : null;
 
   // Reset content viewer when closing
   const handleCloseViewer = () => {
@@ -155,11 +174,10 @@ const ChannelDetailPage = () => {
 
   // channelId is a valid key
   const platform = platformData[channelId];
-  const PlatformIcon = platform.icon;
 
   return (
     <DashboardLayout
-      role="client"
+      role="admin"
       meta={{
         title: platform
           ? `${platform.name} | Agentic Flow`
@@ -167,36 +185,14 @@ const ChannelDetailPage = () => {
         description: `Dashboard for ${platform?.name || "platform"}`,
       }}
     >
-      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-blue-900/30 rounded-bl-4xl rounded-br-4xl bg-transparent  px-4 sm:px-6">
-        <SidebarTrigger />
-        <Button
-          size="icon"
-          variant="ghost"
-          onClick={() => router.push("/client/content-system")}
-        >
-          <ArrowLeft className="h-5 w-5" />
-        </Button>
-        <div className="flex items-center gap-2">
-          <div className={`rounded-full bg-${platform.color}-500/10 p-1.5`}>
-            <PlatformIcon className={`h-5 w-5 text-${platform.color}-500`} />
-          </div>
-          <h2 className="text-xl font-semibold">{platform.name}</h2>
-        </div>
-
-        <div className="ml-auto flex items-center gap-2">
-          <Button
-            variant={isFiltering ? "default" : "outline"}
-            onClick={handleFilter}
-          >
-            <Filter className="mr-2 h-4 w-4" />
-            {isFiltering ? "Filters Applied" : "Filter"}
-          </Button>
-          <Button variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Export Reports
-          </Button>
-        </div>
-      </header>
+      <DashboardHeader
+        role="client"
+        hasBackButton
+        onBackClick={() =>
+          router.push(`/admin/clients/${clientId}/content-system`)
+        }
+        title={client ? `${client.name} | ${platform.name}` : platform.name}
+      />
 
       <div className="flex-1 space-y-4 p-8">
         {selectedContent ? (
@@ -352,7 +348,7 @@ const ChannelDetailPage = () => {
               </TabsContent>
 
               <TabsContent value="analytics" className="space-y-4 ">
-                <Card className="border bg-transparent">
+                <Card className="border border-blue-900/30 bg-transparent">
                   <CardHeader>
                     <CardTitle>Content Performance</CardTitle>
                     <CardDescription>
@@ -366,7 +362,7 @@ const ChannelDetailPage = () => {
               </TabsContent>
 
               <TabsContent value="agents" className="space-y-4">
-                <Card className="border bg-transparent ">
+                <Card className="border border-blue-900/30 bg-transparent ">
                   <CardHeader>
                     <CardTitle>Agent Performance</CardTitle>
                     <CardDescription>
@@ -386,4 +382,4 @@ const ChannelDetailPage = () => {
   );
 };
 
-export default ChannelDetailPage;
+export default AdminChannelsPage;

@@ -199,7 +199,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
   const roleTitle = role.charAt(0).toUpperCase() + role.slice(1);
 
   return (
-    <Sidebar className=" border-slate-800">
+    <Sidebar className=" border-blue-900/30 ">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-4 py-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-transparent">

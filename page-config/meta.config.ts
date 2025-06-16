@@ -31,6 +31,11 @@ export const AdminPageMeta = {
     description: "Content management for client dashboard",
   },
 
+  onboardingPage: {
+    title: "Agentic Flow | Onboarding",
+    description: "Onboarding process for new clients",
+  },
+
   // LeadGen Page
   leadgenPage: {
     title: "Agentic Flow | LeadGen System",
@@ -48,6 +53,35 @@ export const AdminPageMeta = {
     title: "Agentic Flow | Lead Details",
     description: "View and manage lead details in the lead generation system",
   },
+
+  // Videographer role
+  videographerPage: {
+    title: "Agentic Flow | Videographer",
+    description:
+      "Create, manage, upload and view content for a specific client",
+  },
+  videographerContentPage: {
+    title: "Agentic Flow | Videographer Content",
+    description: "Create content for a specific client",
+  },
+  videographerUploadPage: {
+    title: "Agentic Flow | Videographer Upload",
+    description: "Upload content to Agentic Flow",
+  },
+
+  // Graphics Desiger Role
+  graphicsDesignerPage: {
+    title: "Agentic Flow | Graphics Designer",
+    description: "Create flyers and logos for a specific client",
+  },
+  graphicsDesignerContentPage: {
+    title: "Agentic Flow | Graphics Designer Content",
+    description: "Create content for a specific client",
+  },
+  graphicsDesignerUploadPage: {
+    title: "Agentic Flow | Graphics Designer Upload",
+    description: "Upload content to Agentic Flow",
+  },
 };
 
 /**======================================================
@@ -61,6 +95,10 @@ export const ClientPageMeta = {
   contentSystemPage: {
     title: "Agentic Flow | Content System",
     description: "Content management system for creating and managing content",
+  },
+  contentSystemDetailPage: {
+    title: "Agentic Flow | Content System Details",
+    description: "Channel details",
   },
 
   // Onboarding Page
@@ -91,5 +129,13 @@ export const ClientPageMeta = {
   leadDetailPage: {
     title: "Agentic Flow | Lead Details",
     description: "View and manage lead details in the lead generation system",
+  },
+  appointmentsPage: {
+    title: "Agentic Flow | Appointments",
+    description: "View and manage your booked appointments",
+  },
+  appointmentDetailPage: {
+    title: "Agentic Flow | Appointment Details",
+    description: "View detailed information about a specific appointment",
   },
 };

@@ -54,7 +54,7 @@ const AdminWarmLeadsPage = () => {
         hasBackButton={true}
       />
       <div className="flex-1 space-y-6 px-8 pt-4">
-        <WarmLeads role="admin" clientId={client?} />
+        <WarmLeads role="admin" clientId={client?.id} />
       </div>
     </DashboardLayout>
   );

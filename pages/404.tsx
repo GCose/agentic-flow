@@ -39,7 +39,6 @@ const NotFound = () => {
       {/*==================== Container ====================*/}
       <div className="flex min-h-screen w-screen items-center justify-center">
         <BackgroundElements />
-
         {/*==================== Main Content ====================*/}
         <main className=" flex-col justify-center relative z-10 w-full max-w-lg py-8 mx-auto text-center">
           {/*==================== 404 Message ====================*/}
@@ -61,7 +60,7 @@ const NotFound = () => {
             </p>
 
             {/*==================== Terminal-style box - responsive ====================*/}
-            <div className="mt-6 p-3 sm:p-4 bg-slate-900/50 border border-slate-700/50 rounded-lg text-left mx-auto max-w-sm sm:max-w-md">
+            <div className="mt-6 p-3 sm:p-4 bg-transparent border border-blue-800 rounded-lg text-left mx-auto max-w-sm sm:max-w-md">
               <div className="flex items-center mb-2">
                 <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-500 mr-2" />
                 <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-500 mr-2" />
@@ -103,7 +102,7 @@ const NotFound = () => {
             </Button>
 
             <Button
-              onClick={() => router.push("/")}
+              onClick={() => router.back()}
               className="w-full sm:w-auto sm:min-w-[120px] gap-2"
             >
               <Home className="h-4 w-4" />

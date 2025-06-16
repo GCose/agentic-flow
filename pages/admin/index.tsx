@@ -2,14 +2,14 @@ import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import SystemCards from "@/components/cards/system-cards";
 import { AdminPageMeta } from "@/page-config/meta.config";
-import DashboardStatCard from "@/components/dashboard/dashboard-stats-card";
+import DashboardStatCard from "@/components/cards/dashboard-stats-card";
 import { adminDashboardStats } from "@/data/stats-card-data";
 
 const DashboardPage = () => {
   return (
     <DashboardLayout meta={AdminPageMeta.dashboardPage}>
       <DashboardHeader title="Overview" />
-      <div className="flex-1 p-8 pt-6">
+      <div className="flex-1 p-8 pt-6 ">
         {/*==================== Stats Overview ====================*/}
         <div className="mb-10">
           <DashboardStatCard stats={adminDashboardStats} />

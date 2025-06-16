@@ -269,7 +269,7 @@ const ContentLibrary = ({ userRole }: ContentLibraryProps) => {
                         )}
                       </div>
 
-                      <div className="flex justify-between items-center mt-4 pt-2 border-t border-slate-800/30 text-xs text-muted-foreground">
+                      <div className="flex justify-between items-center mt-4 pt-2 border-t border-blue-900/30/30 text-xs text-muted-foreground">
                         <div>Created: {formatDate(item.createdAt)}</div>
                         <div>Updated: {formatDate(item.updatedAt)}</div>
                       </div>

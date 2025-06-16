@@ -7,7 +7,7 @@ const ClientWarmLeadsPage = () => {
   return (
     <DashboardLayout role="client" meta={ClientPageMeta.warmLeadsSubPage}>
       <DashboardHeader title="Warm Leads" hasBackButton={true} role="client" />
-      <div className="flex-1 px-8 py-2">
+      <div className="flex-1 px-8 pt-2">
         <WarmLeads role="client" />
       </div>
     </DashboardLayout>

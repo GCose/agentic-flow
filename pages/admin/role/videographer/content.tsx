@@ -3,6 +3,7 @@ import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import { NextPage } from "next";
 import Head from "next/head";
 import VideographerHeader from "./videographer-header";
+import { AdminPageMeta } from "@/page-config/meta.config";
 
 const ContentLibraryPage: NextPage = () => {
   return (
@@ -11,7 +12,10 @@ const ContentLibraryPage: NextPage = () => {
         <title>Agentic Flow | Content Library</title>
         <meta name="description" content="View content tasks and AI research" />
       </Head>
-      <DashboardLayout role="videographer">
+      <DashboardLayout
+        role="videographer"
+        meta={AdminPageMeta.videographerContentPage}
+      >
         <VideographerHeader />
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between">

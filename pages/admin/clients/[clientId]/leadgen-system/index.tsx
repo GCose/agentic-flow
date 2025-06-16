@@ -4,7 +4,7 @@ import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import { AdminPageMeta } from "@/page-config/meta.config";
 import { useEffect } from "react";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
-import DashboardStatCard from "@/components/dashboard/dashboard-stats-card";
+import DashboardStatCard from "@/components/cards/dashboard-stats-card";
 import { adminWarmLeadDashboardStats } from "@/data/stats-card-data";
 import SubSystemComponent from "@/components/sub-system-component";
 import { adminLeadGenSubSystems } from "@/data/sub-systems";
@@ -68,7 +68,7 @@ const LeadGenSystemPage = () => {
 
         {/*==================== SubSystem Component ====================*/}
         <SubSystemComponent
-          title="Sub-Systems"
+          title="Subscribed Sub-Systems"
           systems={adminLeadGenSubSystems}
         />
         {/*==================== End of SubSystem Component ====================*/}

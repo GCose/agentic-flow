@@ -19,20 +19,18 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ContentCalendar from "@/components/systems/content-system/content-calendar";
-import ContentChannelCard from "@/components/systems/content-system/content-channel";
 import RecentContent from "@/components/systems/content-system/recent-content";
 import ContentAgentPerformance from "@/components/systems/content-system/content-agent-performance";
 import { AdminPageMeta } from "@/page-config/meta.config";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
+import ChannelCard from "@/components/cards/channel-card";
 
-// Client interface
 interface Client {
   id: string;
   name: string;
   description: string;
 }
 
-// Sample client data for lookup
 const clients: Record<string, Client> = {
   "client-1": {
     id: "client-1",
@@ -49,7 +47,6 @@ const clients: Record<string, Client> = {
     name: "Group26Consult",
     description: "Strategic marketing consultancy",
   },
-  // Add more clients for the mapping
 };
 
 const ContentSystemPage = () => {
@@ -62,7 +59,6 @@ const ContentSystemPage = () => {
   useEffect(() => {
     const { clientId } = router.query;
     if (clientId && typeof clientId === "string") {
-      // In a real app, this would be an API call
       const clientData = clients[clientId];
       if (clientData) {
         setClient(clientData);
@@ -150,11 +146,9 @@ const ContentSystemPage = () => {
               {filteredPlatforms.map((platform) => (
                 <Link
                   key={platform.id}
-                  href={`/admin/content-system/channels/${platform.id}${
-                    client ? `?clientId=${client.id}` : ""
-                  }`}
+                  href={`/admin/clients/${client?.id}/content-system/${platform.id}`}
                 >
-                  <ContentChannelCard
+                  <ChannelCard
                     name={platform.name}
                     icon={platform.icon}
                     color={platform.color}
@@ -165,7 +159,7 @@ const ContentSystemPage = () => {
           </TabsContent>
 
           <TabsContent value="agents" className="space-y-4">
-            <Card className="border bg-transparent">
+            <Card className="border border-blue-900/30 bg-transparent">
               <CardHeader>
                 <CardTitle>Agent Performance</CardTitle>
                 <CardDescription>
@@ -179,7 +173,7 @@ const ContentSystemPage = () => {
           </TabsContent>
 
           <TabsContent value="calendar" className="space-y-4">
-            <Card className="border bg-transparent ">
+            <Card className="border border-blue-900/30 bg-transparent ">
               <CardHeader>
                 <CardTitle>Content Calendar</CardTitle>
                 <CardDescription>
@@ -194,7 +188,7 @@ const ContentSystemPage = () => {
         </Tabs>
 
         {activeTab === "channels" && (
-          <Card className="border border-slate-800 bg-transparent ">
+          <Card className="border border-blue-900/30 bg-transparent ">
             <CardHeader>
               <CardTitle>Recent Agent-Generated Content</CardTitle>
               <CardDescription>

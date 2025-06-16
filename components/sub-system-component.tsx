@@ -17,10 +17,10 @@ const SubSystemComponent = ({ systems, title }: SubSystemComponentProps) => {
           <SubSystemCard
             key={i}
             title={item.title}
-            description={item.description}
-            icon={<item.icon className={`h-8 w-8 ${item.iconColor}`} />}
             bgColor={item.bgColor}
+            description={item.description}
             onClick={() => handleClick(item.leadType)}
+            icon={<item.icon className={`h-8 w-8 ${item.iconColor}`} />}
           />
         ))}
       </div>

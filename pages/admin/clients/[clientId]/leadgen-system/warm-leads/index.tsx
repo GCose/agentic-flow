@@ -11,7 +11,6 @@ interface Client {
   description: string;
 }
 
-// Sample client data for lookup
 const clients: Record<string, Client> = {
   "client-1": {
     id: "client-1",
@@ -35,7 +34,6 @@ const AdminWarmLeadsPage = () => {
   const { clientId } = router.query;
   const [client, setClient] = useState<Client | null>(null);
 
-  // If clientId is provided, look up the client data
   useEffect(() => {
     if (clientId && typeof clientId === "string") {
       const clientData = clients[clientId];
@@ -52,11 +50,11 @@ const AdminWarmLeadsPage = () => {
       <DashboardHeader
         role="admin"
         title={title}
-        hasBackButton={true}
         pageId={client?.id}
+        hasBackButton={true}
       />
       <div className="flex-1 space-y-6 px-8 pt-4">
-        <WarmLeads role="admin" />
+        <WarmLeads role="admin" clientId={client?} />
       </div>
     </DashboardLayout>
   );

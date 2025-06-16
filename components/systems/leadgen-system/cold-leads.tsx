@@ -123,7 +123,7 @@ const ColdLeads = () => {
   };
 
   return (
-    <Card className="border border-slate-800 bg-transparent ">
+    <Card className="border border-blue-900/30 bg-transparent ">
       <CardHeader>
         <CardTitle>Cold Leads</CardTitle>
         <CardDescription>
@@ -136,7 +136,7 @@ const ColdLeads = () => {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search cold leads..."
-              className="pl-8 bg-transparent border-slate-800"
+              className="pl-8 bg-transparent border-blue-900/30"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -148,7 +148,7 @@ const ColdLeads = () => {
         <div className="rounded-md border-none">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-800">
+              <TableRow className="border-blue-900/30">
                 <TableHead className="w-[200px]">
                   <Button
                     variant="ghost"
@@ -181,7 +181,7 @@ const ColdLeads = () => {
               {sortedLeads.map((lead) => (
                 <TableRow
                   key={lead.id}
-                  className="border-slate-800 hover:bg-white/5"
+                  className="border-blue-900/30 hover:bg-white/5"
                 >
                   <TableCell className="font-medium">{lead.company}</TableCell>
                   <TableCell>

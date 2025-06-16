@@ -3,6 +3,7 @@ import FileUpload from "@/components/upload/file-upload";
 import { NextPage } from "next";
 import Head from "next/head";
 import VideographerHeader from "./videographer-header";
+import { AdminPageMeta } from "@/page-config/meta.config";
 const UploadVideosPage: NextPage = () => {
   return (
     <>
@@ -10,7 +11,10 @@ const UploadVideosPage: NextPage = () => {
         <title>Agentic Flow | Upload Videos</title>
         <meta name="description" content="Upload videos for Agentic Flow" />
       </Head>
-      <DashboardLayout role="videographer">
+      <DashboardLayout
+        role="videographer"
+        meta={AdminPageMeta.videographerUploadPage}
+      >
         <VideographerHeader />
         <div className="flex-1 space-y-4 p-8 pt-6">
           <div className="flex items-center justify-between">

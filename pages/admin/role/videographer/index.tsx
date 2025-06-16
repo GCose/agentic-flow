@@ -2,9 +2,9 @@ import { NextPage } from "next";
 import Head from "next/head";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import VideographerHeader from "./videographer-header";
-import DashboardStats from "@/components/dashboard/admin-dashboard-stats";
 import { Brain } from "lucide-react";
 import SystemCards from "@/components/cards/system-cards";
+import { AdminPageMeta } from "@/page-config/meta.config";
 
 const VideographerDashboard: NextPage = () => {
   return (
@@ -16,7 +16,10 @@ const VideographerDashboard: NextPage = () => {
           content="Videographer dashboard for Agentic Flow"
         />
       </Head>
-      <DashboardLayout role="videographer">
+      <DashboardLayout
+        role="videographer"
+        meta={AdminPageMeta.videographerPage}
+      >
         <VideographerHeader />
         <div className="flex-1 p-8 pt-6">
           {/*==================== Welcome Section ====================*/}
@@ -58,15 +61,6 @@ const VideographerDashboard: NextPage = () => {
             </div>
           </div>
           {/*==================== End of Welcome Section ====================*/}
-
-          {/*==================== Stats Overview ====================*/}
-          <div className="mb-10">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">
-              System Overview
-            </h2>
-            <DashboardStats />
-          </div>
-          {/*==================== End of Stats Overview ====================*/}
 
           {/*==================== Core Systems ====================*/}
           <div>

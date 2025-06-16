@@ -125,7 +125,7 @@ const RecentContent = () => {
       {recentContent.map((content) => (
         <div
           key={content.id}
-          className="flex items-start gap-4 p-4 rounded-lg bg-transparent hover:bg-white/10 transition-colors"
+          className="flex items-start gap-4 p-4 rounded-lg bg-transparent hover:bg-blue-600/10 transition-colors"
         >
           <Avatar className="h-10 w-10">
             <AvatarFallback>

@@ -1,7 +1,23 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { SystemCardProps } from "@/types/agent-systems";
+
+interface SystemCardProps {
+  system: {
+    name: string;
+    description: string;
+    icon: React.ElementType;
+    agentCount: number;
+    activeAgentCount: number;
+    successRate: number;
+    bgGradient: string;
+    iconColor: string;
+    metrics: {
+      tasksCompleted: number;
+    };
+  };
+  onClick: () => void;
+}
 
 const SystemCard: React.FC<SystemCardProps> = ({ system, onClick }) => {
   const {

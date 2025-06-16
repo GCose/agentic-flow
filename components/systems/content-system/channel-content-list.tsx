@@ -258,7 +258,6 @@ const ChannelContentList = ({
     return sortDirection === "asc" ? comparison : -comparison;
   });
 
-  // Handle sorting
   const handleSort = (field: string) => {
     if (sortField === field) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
@@ -268,9 +267,7 @@ const ChannelContentList = ({
     }
   };
 
-  // View content details
   const handleViewContent = (content: ContentData) => {
-    // Call the parent component's handler
     onViewContent(content);
   };
 
@@ -303,8 +300,8 @@ const ChannelContentList = ({
         <div className="rounded-md border-none pt-5">
           <Table>
             <TableHeader>
-              <TableRow>
-                <TableHead className="w-[30%] border-t border-slate-800">
+              <TableRow className="border border-blue-900/30 rounded-tl-smS">
+                <TableHead className="w-[30%]">
                   <Button
                     variant="ghost"
                     className="p-0 font-medium"
@@ -314,10 +311,8 @@ const ChannelContentList = ({
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="border-t border-slate-800">
-                  Type
-                </TableHead>
-                <TableHead className="border-t border-slate-800">
+                <TableHead>Type</TableHead>
+                <TableHead>
                   <Button
                     variant="ghost"
                     className="p-0 font-medium"
@@ -327,10 +322,8 @@ const ChannelContentList = ({
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="border-t border-slate-800">
-                  Agent
-                </TableHead>
-                <TableHead className="border-t border-slate-800">
+                <TableHead>Agent</TableHead>
+                <TableHead>
                   <Button
                     variant="ghost"
                     className="p-0 font-medium"
@@ -340,14 +333,15 @@ const ChannelContentList = ({
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="text-right border-t border-slate-800">
-                  Actions
-                </TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {sortedContent.map((content) => (
-                <TableRow key={content.id} className="border-none">
+                <TableRow
+                  key={content.id}
+                  className="border border-blue-900/30"
+                >
                   <TableCell className="font-medium">{content.title}</TableCell>
                   <TableCell>{content.type}</TableCell>
                   <TableCell>{content.date}</TableCell>

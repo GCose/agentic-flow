@@ -63,24 +63,3 @@ body {
 ::selection {
   background-color: var(--white-alpha-8);
 }
-
-/**=======================
- * PATHWAY ANIMATIONS
-=======================*/
-@keyframes dash-flow-normal {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: 100;
-  }
-}
-
-@keyframes dash-flow-reverse {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -100;
-  }
-}

@@ -4,7 +4,7 @@ export const getServerSideProps = async ({ req }: { req: NextApiRequest }) => {
   console.log(req);
   return {
     redirect: {
-      destination: "/admin",
+      destination: "/auth",
       permanent: false,
     },
   };

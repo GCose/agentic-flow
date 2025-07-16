@@ -11,7 +11,7 @@
 }
 
 .dark {
-  --background: 250 100% 4%;
+  --background: 224 71% 4%;
   --foreground: 210 20% 98%;
   --card: 224 71% 4%;
   --card-foreground: 210 20% 98%;
@@ -62,25 +62,4 @@ body {
 
 ::selection {
   background-color: var(--white-alpha-8);
-}
-
-/**=======================
- * PATHWAY ANIMATIONS
-=======================*/
-@keyframes dash-flow-normal {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: 100;
-  }
-}
-
-@keyframes dash-flow-reverse {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  100% {
-    stroke-dashoffset: -100;
-  }
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; 
 import { MoreHorizontal, ArrowUpDown, RefreshCw } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { WarmLead } from "@/types/leads";
-import { generateWarmLeads } from "@/data/leads-data";
+import axios from "axios"; // Import axios for API requests
+// import { generateWarmLeads } from "@/data/leads-data"; // Not needed
 
 const WarmLeads = ({
   role,
@@ -34,16 +35,51 @@ const WarmLeads = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof WarmLead>("leadScore");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
+
   const [warmLeads, setWarmLeads] = useState<
-    (WarmLead & { report?: string })[]
-  >(generateWarmLeads());
+    (WarmLead & { report?: string; strategy?: string })[]
+  >([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  const fetchLeads = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("/api/leads");
+      // const response = await axios.get("http://10.42.0.168:5500/api/leads/");
+      // if (!response.ok) throw new Error("Failed to fetch leads");
+      const data = await response.data
+
+      console.log("Fetched leads:", data); 
+
+      const mappedLeads = data.map((item: any) => ({
+        id: item.id,
+        company: item.company_name,
+        leadScore: item.lead_analysis?.lead_score || 0,
+        salesCall: "",
+        industry: "",
+        leadEntry: item.created_at,
+        strategy: item.lead_analysis?.buyer_profile ?? "",
+        report: item.lead_analysis?.summary ?? "",
+      }));
+      setWarmLeads(mappedLeads);
+    } catch (error) {
+      console.error("Error fetching leads:", error);
+      setWarmLeads([]);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchLeads();
+  }, []);
+
+  
 
   const handleRefresh = async () => {
     setIsRefreshing(true);
-    await new Promise((resolve) => setTimeout(resolve, 500));
-    setWarmLeads(generateWarmLeads());
+    await fetchLeads();
     setIsRefreshing(false);
   };
 
@@ -88,13 +124,13 @@ const WarmLeads = ({
   };
 
   return (
-    <Card className=" border-none bg-transparent">
-      <CardHeader className="flex gap-4 items-center justify-between">
+    <Card className="bg-transparent border-none ">
+      <CardHeader className="flex items-center justify-between gap-4">
         <CardTitle className="font-medium text-md">
           Manage and track leads that have shown interest in your products or
           services.
         </CardTitle>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <Input
             value={searchTerm}
             placeholder="Search leads..."
@@ -115,7 +151,7 @@ const WarmLeads = ({
         </div>
       </CardHeader>
       <CardContent>
-        <div className="rounded-md border border-blue-900/30 p-2">
+        <div className="p-2 border rounded-md border-blue-900/30">
           <Table>
             <TableHeader>
               <TableRow className="border-blue-900/30 hover:bg-transparent">
@@ -126,7 +162,7 @@ const WarmLeads = ({
                     onClick={() => handleSort("company")}
                   >
                     Company
-                    <ArrowUpDown className="h-4 w-4" />
+                    <ArrowUpDown className="w-4 h-4" />
                   </Button>
                 </TableHead>
                 <TableHead>
@@ -136,7 +172,7 @@ const WarmLeads = ({
                     onClick={() => handleSort("leadScore")}
                   >
                     Lead Score
-                    <ArrowUpDown className="h-4 w-4" />
+                    <ArrowUpDown className="w-4 h-4" />
                   </Button>
                 </TableHead>
                 <TableHead className="table-cell">Sales Call</TableHead>
@@ -146,54 +182,64 @@ const WarmLeads = ({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortedLeads.map((lead) => (
-                <TableRow
-                  key={lead.id}
-                  onClick={() => handleViewDetails(lead.id)}
-                  className="border-blue-900/30 hover:bg-blue-600/10 cursor-pointer"
-                >
-                  <TableCell className="font-medium">{lead.company}</TableCell>
-                  <TableCell>
-                    <Badge
-                      variant="outline"
-                      className="bg-green-500/10 text-green-500 font-medium text-md"
-                    >
-                      {lead.leadScore}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="table-cell">{lead.salesCall}</TableCell>
-                  <TableCell className="table-cell">{lead.industry}</TableCell>
-                  <TableCell className="table-cell">{lead.leadEntry}</TableCell>
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => handleViewDetails(lead.id)}
-                        >
-                          View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">
-                          Delete Lead
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
-                </TableRow>
-              ))}
-              {filteredLeads.length === 0 && (
+              {loading ? (
                 <TableRow>
                   <TableCell colSpan={7} className="h-24 text-center">
-                    No leads found.
+                    Loading leads...
                   </TableCell>
                 </TableRow>
+              ) : (
+                <>
+                  {sortedLeads.map((lead) => (
+                    <TableRow
+                      key={lead.id}
+                      onClick={() => handleViewDetails(lead.id)}
+                      className="cursor-pointer border-blue-900/30 hover:bg-blue-600/10"
+                    >
+                      <TableCell className="font-medium">{lead.company}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant="outline"
+                          className="font-medium text-green-500 bg-green-500/10 text-md"
+                        >
+                          {lead.leadScore}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="table-cell">{lead.salesCall}</TableCell>
+                      <TableCell className="table-cell">{lead.industry}</TableCell>
+                      <TableCell className="table-cell">{lead.leadEntry}</TableCell>
+                      <TableCell className="text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="w-8 h-8 p-0">
+                              <span className="sr-only">Open menu</span>
+                              <MoreHorizontal className="w-4 h-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                              onClick={() => handleViewDetails(lead.id)}
+                            >
+                              View Details
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="text-destructive">
+                              Delete Lead
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {filteredLeads.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={7} className="h-24 text-center">
+                        No leads found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </>
               )}
             </TableBody>
           </Table>

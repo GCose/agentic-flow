@@ -296,7 +296,7 @@ const LeadDetailImproved = () => {
           title="Loading Lead Details..."
           onBackClick={() => router.push("/client/leadgen-system/warm-leads")}
         />
-        <div className="flex-1 p-8 flex items-center justify-center h-screen ">
+        <div className="flex items-center justify-center flex-1 h-screen p-8 ">
           <p>Loading lead details...</p>
         </div>
       </DashboardLayout>
@@ -311,11 +311,11 @@ const LeadDetailImproved = () => {
           title="Lead Not Found..."
           onBackClick={() => router.push("/client/leadgen-system/warm-leads")}
         />
-        <div className="flex-1 p-8 flex flex-col items-center justify-center w-full">
-          <h2 className="text-2xl font-bold mb-2">
+        <div className="flex flex-col items-center justify-center flex-1 w-full p-8">
+          <h2 className="mb-2 text-2xl font-bold">
             Unable to load lead details
           </h2>
-          <p className="text-muted-foreground mb-4">
+          <p className="mb-4 text-muted-foreground">
             The lead you are looking for does not exist or has been removed.
           </p>
         </div>
@@ -331,13 +331,13 @@ const LeadDetailImproved = () => {
         onBackClick={() => router.push("/client/sales-system/airo")}
       />
 
-      <div className="flex-1 p-6 md:p-8 pt-6 space-y-8 ">
+      <div className="flex-1 p-6 pt-6 space-y-8 md:p-8 ">
         {/*==================== Lead Score & Company Overview ====================*/}
-        <div className="bg-gradient-to-r from-blue-800/10 to-blue-900/20 rounded-xl border-none overflow-hidden ">
+        <div className="overflow-hidden border-none bg-gradient-to-r from-blue-800/10 to-blue-900/20 rounded-xl ">
           <div className="p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
               {/*====================  Lead Score Section ==================== */}
-              <div className="lg:col-span-1 flex flex-col items-center justify-center text-center">
+              <div className="flex flex-col items-center justify-center text-center lg:col-span-1">
                 <div className="mb-4">
                   <div
                     className={cn(
@@ -347,15 +347,15 @@ const LeadDetailImproved = () => {
                   >
                     {lead.leadScore}
                   </div>
-                  <p className="text-slate-300 text-sm font-medium">
+                  <p className="text-sm font-medium text-slate-300">
                     Lead Score
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 gap-4 w-full">
-                  <div className="bg-slate-800/30 rounded-lg p-3 ">
-                    <div className="flex items-center gap-2 justify-center">
-                      <Calendar className="h-4 w-4 text-primary" />
+                <div className="grid w-full grid-cols-1 gap-4">
+                  <div className="p-3 rounded-lg bg-slate-800/30 ">
+                    <div className="flex items-center justify-center gap-2">
+                      <Calendar className="w-4 h-4 text-primary" />
                       <div className="text-center">
                         <p className="text-xs text-muted-foreground">
                           Lead Captured
@@ -365,9 +365,9 @@ const LeadDetailImproved = () => {
                     </div>
                   </div>
 
-                  <div className="bg-slate-800/30 rounded-lg p-3 ">
-                    <div className="flex items-center gap-2 justify-center">
-                      <Clock className="h-4 w-4 text-primary" />
+                  <div className="p-3 rounded-lg bg-slate-800/30 ">
+                    <div className="flex items-center justify-center gap-2">
+                      <Clock className="w-4 h-4 text-primary" />
                       <div className="text-center">
                         <p className="text-xs text-muted-foreground">
                           Last Contact
@@ -382,19 +382,19 @@ const LeadDetailImproved = () => {
 
               {/*====================  Company Description ==================== */}
               <div className="lg:col-span-2">
-                <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                  <Building className="h-5 w-5 text-primary" />
+                <h3 className="flex items-center gap-2 mb-4 text-xl font-semibold">
+                  <Building className="w-5 h-5 text-primary" />
                   About {lead.company}
                 </h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
+                <p className="mb-6 leading-relaxed text-muted-foreground">
                   {lead.description}
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="bg-slate-800/50 h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0 ">
-                        <Mail className="h-4 w-4 text-blue-400" />
+                      <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-lg bg-slate-800/50 ">
+                        <Mail className="w-4 h-4 text-blue-400" />
                       </div>
                       <div>
                         <p className="text-xs text-muted-foreground">Email</p>
@@ -403,8 +403,8 @@ const LeadDetailImproved = () => {
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="bg-slate-800/50 h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0 ">
-                        <Phone className="h-4 w-4 text-purple-400" />
+                      <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-lg bg-slate-800/50 ">
+                        <Phone className="w-4 h-4 text-purple-400" />
                       </div>
                       <div>
                         <p className="text-xs text-muted-foreground">Phone</p>
@@ -415,8 +415,8 @@ const LeadDetailImproved = () => {
 
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
-                      <div className="bg-slate-800/50 h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0 ">
-                        <Globe className="h-4 w-4 text-purple-400" />
+                      <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-lg bg-slate-800/50 ">
+                        <Globe className="w-4 h-4 text-purple-400" />
                       </div>
                       <div>
                         <p className="text-xs text-muted-foreground">Website</p>
@@ -424,17 +424,17 @@ const LeadDetailImproved = () => {
                           href={lead.website}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm font-medium flex items-center hover:text-primary"
+                          className="flex items-center text-sm font-medium hover:text-primary"
                         >
                           {lead.website?.replace(/(^\w+:|^)\/\//, "")}
-                          <ExternalLink className="ml-1 h-3 w-3" />
+                          <ExternalLink className="w-3 h-3 ml-1" />
                         </a>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="bg-slate-800/50 h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0 ">
-                        <MapPin className="h-4 w-4 text-orange-400" />
+                      <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-lg bg-slate-800/50 ">
+                        <MapPin className="w-4 h-4 text-orange-400" />
                       </div>
                       <div>
                         <p className="text-xs text-muted-foreground">Address</p>
@@ -448,13 +448,13 @@ const LeadDetailImproved = () => {
 
               {/*====================  Company Stats ==================== */}
               <div className="lg:col-span-1">
-                <h4 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wide">
+                <h4 className="mb-4 text-sm font-semibold tracking-wide uppercase text-muted-foreground">
                   Company Details
                 </h4>
                 <div className="space-y-4">
-                  <div className="bg-slate-800/30 rounded-lg p-4 ">
+                  <div className="p-4 rounded-lg bg-slate-800/30 ">
                     <div className="flex items-center gap-2 mb-2">
-                      <Users className="h-4 w-4 text-blue-400" />
+                      <Users className="w-4 h-4 text-blue-400" />
                       <span className="text-xs text-muted-foreground">
                         Company Size
                       </span>
@@ -462,9 +462,9 @@ const LeadDetailImproved = () => {
                     <p className="font-medium">{lead.size}</p>
                   </div>
 
-                  <div className="bg-slate-800/30 rounded-lg p-4 ">
+                  <div className="p-4 rounded-lg bg-slate-800/30 ">
                     <div className="flex items-center gap-2 mb-2">
-                      <DollarSign className="h-4 w-4 text-purple-400" />
+                      <DollarSign className="w-4 h-4 text-purple-400" />
                       <span className="text-xs text-muted-foreground">
                         Annual Revenue
                       </span>
@@ -472,9 +472,9 @@ const LeadDetailImproved = () => {
                     <p className="font-medium">{lead.revenue}</p>
                   </div>
 
-                  <div className="bg-slate-800/30 rounded-lg p-4 ">
+                  <div className="p-4 rounded-lg bg-slate-800/30 ">
                     <div className="flex items-center gap-2 mb-2">
-                      <Briefcase className="h-4 w-4 text-purple-400" />
+                      <Briefcase className="w-4 h-4 text-purple-400" />
                       <span className="text-xs text-muted-foreground">
                         Industry
                       </span>
@@ -491,7 +491,7 @@ const LeadDetailImproved = () => {
           <div className="grid grid-cols-2 border-t border-blue-900/30">
             <div className="p-6 text-center border-r border-blue-900/30">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Target className="h-4 w-4 text-primary" />
+                <Target className="w-4 h-4 text-primary" />
                 <p className="text-sm font-medium text-muted-foreground">
                   Strategy
                 </p>
@@ -501,7 +501,7 @@ const LeadDetailImproved = () => {
 
             <div className="p-6 text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
-                <Lightbulb className="h-4 w-4 text-primary" />
+                <Lightbulb className="w-4 h-4 text-primary" />
                 <p className="text-sm font-medium text-muted-foreground">
                   Sale Pitch
                 </p>
@@ -520,28 +520,28 @@ const LeadDetailImproved = () => {
           onValueChange={setActiveTab}
         >
           <div className="flex justify-center">
-            <TabsList className="grid w-full max-w-2xl grid-cols-4 bg-slate-800/30  p-1">
+            <TabsList className="grid w-full max-w-2xl grid-cols-4 p-1 bg-slate-800/30">
               <TabsTrigger value="overview" className="rounded-md">
                 <div className="flex items-center gap-2">
-                  <Building className="h-4 w-4 text-blue-400" />
+                  <Building className="w-4 h-4 text-blue-400" />
                   <span className="hidden sm:inline">Overview</span>
                 </div>
               </TabsTrigger>
               <TabsTrigger value="report" className="rounded-md">
                 <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-purple-400" />
+                  <FileText className="w-4 h-4 text-purple-400" />
                   <span className="hidden sm:inline">Report</span>
                 </div>
               </TabsTrigger>
               <TabsTrigger value="strategy" className="rounded-md">
                 <div className="flex items-center gap-2">
-                  <Target className="h-4 w-4 text-orange-400" />
+                  <Target className="w-4 h-4 text-orange-400" />
                   <span className="hidden sm:inline">Strategy</span>
                 </div>
               </TabsTrigger>
               <TabsTrigger value="pitch" className="rounded-md">
                 <div className="flex items-center gap-2">
-                  <Lightbulb className="h-4 w-4 text-green-400" />
+                  <Lightbulb className="w-4 h-4 text-green-400" />
                   <span className="hidden sm:inline">Pitch</span>
                 </div>
               </TabsTrigger>
@@ -550,20 +550,20 @@ const LeadDetailImproved = () => {
 
           {/*==================== Overview Tab ====================*/}
           <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
               {/*==================== Business Intelligence ====================*/}
-              <Card className="border-blue-900/30 bg-transparent ">
+              <Card className="bg-transparent border-blue-900/30 ">
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Target className="h-5 w-5 text-blue-400" />
+                    <Target className="w-5 h-5 text-blue-400" />
                     Business Intelligence
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="grid grid-cols-1 gap-4">
-                    <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                    <div className="p-4 border rounded-lg bg-slate-800/30 border-slate-700/50">
                       <div className="flex items-center gap-2 mb-2">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
                         <span className="text-sm font-medium text-emerald-400">
                           Decision Timeline
                         </span>
@@ -574,9 +574,9 @@ const LeadDetailImproved = () => {
                       </p>
                     </div>
 
-                    <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                    <div className="p-4 border rounded-lg bg-slate-800/30 border-slate-700/50">
                       <div className="flex items-center gap-2 mb-2">
-                        <DollarSign className="h-4 w-4 text-blue-400" />
+                        <DollarSign className="w-4 h-4 text-blue-400" />
                         <span className="text-sm font-medium text-blue-400">
                           Budget Range
                         </span>
@@ -587,9 +587,9 @@ const LeadDetailImproved = () => {
                       </p>
                     </div>
 
-                    <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                    <div className="p-4 border rounded-lg bg-slate-800/30 border-slate-700/50">
                       <div className="flex items-center gap-2 mb-2">
-                        <AlertCircle className="h-4 w-4 text-amber-400" />
+                        <AlertCircle className="w-4 h-4 text-amber-400" />
                         <span className="text-sm font-medium text-amber-400">
                           Competitive Landscape
                         </span>
@@ -605,21 +605,21 @@ const LeadDetailImproved = () => {
               {/*==================== End of Business Intelligence ====================*/}
 
               {/*==================== Sales Activities & Next Steps ====================*/}
-              <Card className="border-blue-900/30 bg-transparent ">
+              <Card className="bg-transparent border-blue-900/30 ">
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Calendar className="h-5 w-5 text-purple-400" />
+                    <Calendar className="w-5 h-5 text-purple-400" />
                     Sales Activities & Next Steps
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-3">
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
-                      <div className="bg-slate-700/50 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Phone className="h-4 w-4 text-blue-400" />
+                    <div className="flex items-start gap-3 p-3 border rounded-lg bg-slate-800/30 border-slate-700/50">
+                      <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-full bg-slate-700/50">
+                        <Phone className="w-4 h-4 text-blue-400" />
                       </div>
                       <div>
-                        <p className="font-medium text-sm text-blue-400">
+                        <p className="text-sm font-medium text-blue-400">
                           Technical Demo Scheduled
                         </p>
                         <p className="text-xs text-muted-foreground">
@@ -628,12 +628,12 @@ const LeadDetailImproved = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
-                      <div className="bg-slate-700/50 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
-                        <FileText className="h-4 w-4 text-purple-400" />
+                    <div className="flex items-start gap-3 p-3 border rounded-lg bg-slate-800/30 border-slate-700/50">
+                      <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-full bg-slate-700/50">
+                        <FileText className="w-4 h-4 text-purple-400" />
                       </div>
                       <div>
-                        <p className="font-medium text-sm text-purple-400">
+                        <p className="text-sm font-medium text-purple-400">
                           ROI Analysis Prepared
                         </p>
                         <p className="text-xs text-muted-foreground">
@@ -642,12 +642,12 @@ const LeadDetailImproved = () => {
                       </div>
                     </div>
 
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
-                      <div className="bg-slate-700/50 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Users className="h-4 w-4 text-purple-400" />
+                    <div className="flex items-start gap-3 p-3 border rounded-lg bg-slate-800/30 border-slate-700/50">
+                      <div className="flex items-center justify-center flex-shrink-0 w-8 h-8 rounded-full bg-slate-700/50">
+                        <Users className="w-4 h-4 text-purple-400" />
                       </div>
                       <div>
-                        <p className="font-medium text-sm text-purple-400">
+                        <p className="text-sm font-medium text-purple-400">
                           Stakeholder Mapping
                         </p>
                         <p className="text-xs text-muted-foreground">
@@ -663,19 +663,19 @@ const LeadDetailImproved = () => {
             </div>
 
             {/*==================== Lead Notes ====================*/}
-            <Card className="border-blue-900/30 bg-transparent ">
+            <Card className="bg-transparent border-blue-900/30 ">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-lg">
-                  <MessageCircle className="h-5 w-5 text-orange-400" />
+                  <MessageCircle className="w-5 h-5 text-orange-400" />
                   Lead Notes & Insights
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 ">
+                <div className="p-4 border rounded-lg bg-slate-800/30 border-slate-700/50 ">
                   <ul className="space-y-3">
                     {lead.notes?.map((note, index) => (
                       <li key={index} className="flex items-start gap-3">
-                        <div className="rounded-full h-2 w-2 bg-blue-400 mt-2 flex-shrink-0"></div>
+                        <div className="flex-shrink-0 w-2 h-2 mt-2 bg-blue-400 rounded-full"></div>
                         <span className="text-sm leading-relaxed">{note}</span>
                       </li>
                     ))}
@@ -689,11 +689,11 @@ const LeadDetailImproved = () => {
 
           {/*==================== Sales Report Tab ====================*/}
           <TabsContent value="report">
-            <Card className="border-blue-900/30 bg-transparent ">
+            <Card className="bg-transparent border-blue-900/30 ">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <div>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <FileText className="h-5 w-5 text-purple-400" />
+                    <FileText className="w-5 h-5 text-purple-400" />
                     Sales Intelligence Report
                   </CardTitle>
                   <CardDescription>
@@ -709,12 +709,12 @@ const LeadDetailImproved = () => {
                 >
                   {downloading === "report" ? (
                     <>
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                      <div className="w-4 h-4 mr-2 border-2 border-current rounded-full border-t-transparent animate-spin"></div>
                       Downloading...
                     </>
                   ) : (
                     <>
-                      <Download className="mr-2 h-4 w-4" />
+                      <Download className="w-4 h-4 mr-2" />
                       Download Report
                     </>
                   )}
@@ -725,21 +725,21 @@ const LeadDetailImproved = () => {
                   {lead.salesReport?.map((section, index) => (
                     <div
                       key={index}
-                      className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
+                      className="overflow-hidden transition-colors duration-200 group hover:bg-blue-800/10 rounded-xl bg-slate-900/30 "
                     >
-                      <div className="bg-gradient-to-r from-purple-800/30 to-purple-900/20 px-6 py-4 ">
+                      <div className="px-6 py-4 bg-gradient-to-r from-purple-800/30 to-purple-900/20 ">
                         <div className="flex items-center justify-between">
-                          <h3 className="font-semibold text-white flex items-center gap-2">
-                            <FileText className="h-4 w-4 text-purple-400" />
+                          <h3 className="flex items-center gap-2 font-semibold text-white">
+                            <FileText className="w-4 h-4 text-purple-400" />
                             {section.title}
                           </h3>
-                          <div className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded">
+                          <div className="px-2 py-1 text-xs rounded text-slate-400 bg-slate-700/50">
                             Section {index + 1}
                           </div>
                         </div>
                       </div>
                       <div className="p-6">
-                        <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                        <div className="text-sm leading-relaxed whitespace-pre-line text-slate-300">
                           {section.content}
                         </div>
                       </div>
@@ -753,11 +753,11 @@ const LeadDetailImproved = () => {
 
           {/*==================== Sales Strategy Tab ====================*/}
           <TabsContent value="strategy">
-            <Card className="border-blue-900/30 bg-transparent ">
+            <Card className="bg-transparent border-blue-900/30 ">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <div>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Target className="h-5 w-5 text-orange-400" />
+                    <Target className="w-5 h-5 text-orange-400" />
                     Sales Strategy
                   </CardTitle>
                   <CardDescription>
@@ -772,12 +772,12 @@ const LeadDetailImproved = () => {
                 >
                   {downloading === "strategy" ? (
                     <>
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                      <div className="w-4 h-4 mr-2 border-2 border-current rounded-full border-t-transparent animate-spin"></div>
                       Downloading...
                     </>
                   ) : (
                     <>
-                      <Download className="mr-2 h-4 w-4" />
+                      <Download className="w-4 h-4 mr-2" />
                       Download Strategy
                     </>
                   )}
@@ -788,21 +788,21 @@ const LeadDetailImproved = () => {
                   {lead.salesStrategy?.map((section, index) => (
                     <div
                       key={index}
-                      className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
+                      className="overflow-hidden transition-colors duration-200 group hover:bg-blue-800/10 rounded-xl bg-slate-900/30 "
                     >
-                      <div className="bg-gradient-to-r from-orange-500/50 to-orange-500/50 px-6 py-4 ">
+                      <div className="px-6 py-4 bg-gradient-to-r from-orange-500/50 to-orange-500/50 ">
                         <div className="flex items-center justify-between">
-                          <h3 className="font-semibold text-white flex items-center gap-2">
-                            <Target className="h-4 w-4 text-orange-400" />
+                          <h3 className="flex items-center gap-2 font-semibold text-white">
+                            <Target className="w-4 h-4 text-orange-400" />
                             {section.title}
                           </h3>
-                          <div className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded">
+                          <div className="px-2 py-1 text-xs rounded text-slate-400 bg-slate-700/50">
                             Step {index + 1}
                           </div>
                         </div>
                       </div>
                       <div className="p-6">
-                        <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                        <div className="text-sm leading-relaxed whitespace-pre-line text-slate-300">
                           {section.content}
                         </div>
                       </div>
@@ -816,11 +816,11 @@ const LeadDetailImproved = () => {
 
           {/*==================== Sales Pitch Tab ====================*/}
           <TabsContent value="pitch">
-            <Card className="border-blue-900/30 bg-transparent ">
+            <Card className="bg-transparent border-blue-900/30 ">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <div>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <Lightbulb className="h-5 w-5 text-orange-400" />
+                    <Lightbulb className="w-5 h-5 text-orange-400" />
                     Sales Pitch
                   </CardTitle>
                   <CardDescription>
@@ -835,12 +835,12 @@ const LeadDetailImproved = () => {
                 >
                   {downloading === "pitch" ? (
                     <>
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                      <div className="w-4 h-4 mr-2 border-2 border-current rounded-full border-t-transparent animate-spin"></div>
                       Downloading...
                     </>
                   ) : (
                     <>
-                      <Download className="mr-2 h-4 w-4" />
+                      <Download className="w-4 h-4 mr-2" />
                       Download Pitch
                     </>
                   )}
@@ -851,28 +851,28 @@ const LeadDetailImproved = () => {
                   {lead.salesPitch?.map((section, index) => (
                     <div
                       key={index}
-                      className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
+                      className="overflow-hidden transition-colors duration-200 group hover:bg-blue-800/10 rounded-xl bg-slate-900/30 "
                     >
-                      <div className="bg-gradient-to-r from-green-500/30 to-green-700/20 px-6 py-4 ">
+                      <div className="px-6 py-4 bg-gradient-to-r from-green-500/30 to-green-700/20 ">
                         <div className="flex items-center justify-between">
-                          <h3 className="font-semibold text-white flex items-center gap-2">
+                          <h3 className="flex items-center gap-2 font-semibold text-white">
                             <div className="w-2 h-2 bg-green-400 rounded-full"></div>
                             {section.title}
                           </h3>
                           <div className="flex items-center gap-2">
                             {index === 0 && (
-                              <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
+                              <Badge className="text-xs text-green-400 bg-green-500/20 border-green-500/30">
                                 Start Here
                               </Badge>
                             )}
-                            <div className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded">
+                            <div className="px-2 py-1 text-xs rounded text-slate-400 bg-slate-700/50">
                               Step {index + 1}
                             </div>
                           </div>
                         </div>
                       </div>
                       <div className="p-6">
-                        <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                        <div className="text-sm leading-relaxed whitespace-pre-line text-slate-300">
                           {section.content}
                         </div>
                       </div>

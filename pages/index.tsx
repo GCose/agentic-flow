@@ -6,3 +6,9 @@ export const getServerSideProps = async () => {
     },
   };
 };
+
+const Root = () => {
+  return null;
+};
+
+export default Root;

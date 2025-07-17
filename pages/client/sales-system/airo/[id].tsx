@@ -175,7 +175,7 @@ const leadDetails: Record<string, LeadData> = {
   },
 };
 
-const LeadDetailImproved = () => {
+const AiroLead = () => {
   const router = useRouter();
   const { id } = router.query;
   const [lead, setLead] = useState<LeadData | null>(null);
@@ -890,4 +890,4 @@ const LeadDetailImproved = () => {
   );
 };
 
-export default LeadDetailImproved;
+export default AiroLead;

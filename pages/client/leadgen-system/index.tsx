@@ -1,5 +1,5 @@
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import SubSystemComponent from "@/components/sub-system-component";
+import SubSystemComponent from "@/components/sub-system";
 import { ClientLeadGenSubSystems } from "@/data/sub-systems";
 import { ClientPageMeta } from "@/page-config/meta.config";
 import DashboardHeader from "@/components/dashboard/dashboard-header";

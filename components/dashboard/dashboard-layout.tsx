@@ -19,11 +19,7 @@ interface DashboardLayoutProps {
   meta: Meta;
 }
 
-const DashboardLayout = ({
-  children,
-  role = "admin",
-  meta,
-}: DashboardLayoutProps) => {
+const DashboardLayout = ({ children, role, meta }: DashboardLayoutProps) => {
   const { user, isAuthenticated, loading } = useAuth();
   const router = useRouter();
 
@@ -40,6 +36,7 @@ const DashboardLayout = ({
       else if (user?.role === "videographer")
         router.push("/admin/videographer");
       else if (user?.role === "designer") router.push("/admin/designer");
+      else if (user?.role === "client") router.push("/client");
     }
   }, [loading, isAuthenticated, user, router, role]);
 

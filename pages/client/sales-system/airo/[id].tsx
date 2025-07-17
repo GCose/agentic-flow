@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import axios from "axios";
 import jsPDF from "jspdf";
 import {
   Building,
@@ -188,14 +189,11 @@ const LeadDetailImproved = () => {
       setLoading(true);
 
       // Simulate API fetch
-      setTimeout(() => {
-        const leadData = leadDetails[id as keyof typeof leadDetails];
-        if (leadData) {
-          setLead(leadData);
-        }
+      axios.get(`http://178.63.40.80:5500/api/leads/${id}`).then(res => {
+        console.log(res.data);
         setLoading(false);
-      }, 500);
-    }
+      });
+          }
   }, [id]);
 
   const handleDownload = (type: string) => {
@@ -294,7 +292,7 @@ const LeadDetailImproved = () => {
         <DashboardHeader
           hasBackButton={true}
           title="Loading Lead Details..."
-          onBackClick={() => router.push("/client/sales-system/airo")}
+          onBackClick={() => router.push("/client/leadgen-system/warm-leads")}
         />
         <div className="flex items-center justify-center flex-1 h-screen p-8 ">
           <p>Loading lead details...</p>
@@ -309,7 +307,7 @@ const LeadDetailImproved = () => {
         <DashboardHeader
           hasBackButton={true}
           title="Lead Not Found..."
-          onBackClick={() => router.push("/client/sales-system/airo")}
+          onBackClick={() => router.push("/client/leadgen-system/warm-leads")}
         />
         <div className="flex flex-col items-center justify-center flex-1 w-full p-8">
           <h2 className="mb-2 text-2xl font-bold">

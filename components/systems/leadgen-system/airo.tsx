@@ -40,16 +40,16 @@ const AiroLeads = () => {
   const fetchLeads = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("/api/leads");
+      const response = await axios.get("http://178.63.40.80:5500/api/leads/");
 
-      const data = await response.data
+      const data =  response.data
 
       console.log("Fetched leads:", data); 
 
       const mappedLeads = data.map((item: any) => ({
         id: item.id,
         company: item.company_name,
-        leadScore: item.lead_analysis?.lead_score || 0,
+        leadScore: item.lead_analysis?.lead_score * 2 || 0,
         salesCall: "",
         industry: "",
         leadEntry: item.created_at,
@@ -57,6 +57,8 @@ const AiroLeads = () => {
         report: item.lead_analysis?.summary ?? "",
       }));
       setWarmLeads(mappedLeads);
+
+      console.log("Mapped leads:",); // Log the mapped leads
     } catch (error) {
       console.error("Error fetching leads:", error);
       setWarmLeads([]);
@@ -237,8 +239,4 @@ const AiroLeads = () => {
   );
 };
 
-<<<<<<< HEAD:components/systems/leadgen-system/warm-leads.tsx
-export default WarmLeads;
-=======
 export default AiroLeads;
->>>>>>> 4182f6ea0182eca76d8d3c91c8fa99070a8774f4:components/systems/leadgen-system/airo.tsx

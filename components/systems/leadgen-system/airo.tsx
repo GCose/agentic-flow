@@ -128,9 +128,9 @@ const AiroLeads = () => {
                     <ArrowUpDown className="h-4 w-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="table-cell">Sales Call</TableHead>
-                <TableHead className="table-cell">Industry</TableHead>
                 <TableHead className="table-cell">Lead Captured</TableHead>
+                <TableHead className="table-cell">Industry</TableHead>
+                <TableHead className="table-cell">Sales Call</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -150,9 +150,9 @@ const AiroLeads = () => {
                       {lead.leadScore}
                     </Badge>
                   </TableCell>
-                  <TableCell className="table-cell">{lead.salesCall}</TableCell>
-                  <TableCell className="table-cell">{lead.industry}</TableCell>
                   <TableCell className="table-cell">{lead.leadEntry}</TableCell>
+                  <TableCell className="table-cell">{lead.industry}</TableCell>
+                  <TableCell className="table-cell">{lead.salesCall}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

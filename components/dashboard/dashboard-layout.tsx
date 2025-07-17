@@ -36,6 +36,7 @@ const DashboardLayout = ({ children, role, meta }: DashboardLayoutProps) => {
       else if (user?.role === "videographer")
         router.push("/admin/videographer");
       else if (user?.role === "designer") router.push("/admin/designer");
+      else if (user?.role === "client") router.push("/client");
     }
   }, [loading, isAuthenticated, user, router, role]);
 

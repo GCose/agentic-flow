@@ -294,7 +294,7 @@ const LeadDetailImproved = () => {
         <DashboardHeader
           hasBackButton={true}
           title="Loading Lead Details..."
-          onBackClick={() => router.push("/client/leadgen-system/warm-leads")}
+          onBackClick={() => router.push("/client/sales-system/airo")}
         />
         <div className="flex-1 p-8 flex items-center justify-center h-screen ">
           <p>Loading lead details...</p>
@@ -309,7 +309,7 @@ const LeadDetailImproved = () => {
         <DashboardHeader
           hasBackButton={true}
           title="Lead Not Found..."
-          onBackClick={() => router.push("/client/leadgen-system/warm-leads")}
+          onBackClick={() => router.push("/client/sales-system/airo")}
         />
         <div className="flex-1 p-8 flex flex-col items-center justify-center w-full">
           <h2 className="text-2xl font-bold mb-2">

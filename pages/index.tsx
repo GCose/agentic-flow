@@ -1,7 +1,4 @@
-import { NextApiRequest } from "next";
-
-export const getServerSideProps = async ({ req }: { req: NextApiRequest }) => {
-  console.log(req);
+export const getServerSideProps = async () => {
   return {
     redirect: {
       destination: "/auth",

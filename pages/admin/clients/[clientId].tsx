@@ -24,7 +24,7 @@ import { ClientData, SystemConfigs } from "@/types/clients";
 import { AdminPageMeta } from "@/page-config/meta.config";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 
-// Sample clients data
+// Dummy clients data
 const clientsData: ClientData[] = [
   {
     id: "client-1",
@@ -154,12 +154,6 @@ const ClientDashboardPage: NextPage = () => {
     }
   }, [clientId]);
 
-  const handleSystemClick = (system: string) => {
-    const systemSlug = system.toLowerCase().replace(/\s+/g, "-");
-    // Fixed routing to keep "Clients" menu active
-    router.push(`/admin/clients/${clientId}/${systemSlug}`);
-  };
-
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -246,7 +240,7 @@ const ClientDashboardPage: NextPage = () => {
                   <span className="text-green-500 font-medium">Active</span>
                 </div>
 
-                {/* System Performance Metrics */}
+                {/*==================== System Performance Metrics ====================*/}
                 <div className="flex flex-col gap-2">
                   <span className="text-sm text-muted-foreground">
                     Active Users
@@ -279,8 +273,9 @@ const ClientDashboardPage: NextPage = () => {
                     {client.stats.agents} operations
                   </span>
                 </div>
+                {/*==================== End of System Performance Metrics ====================*/}
 
-                {/* Subscribed Systems List */}
+                {/*==================== Subscribed Systems List ====================*/}
                 <div className="col-span-1 sm:col-span-2 lg:col-span-4">
                   <div className="flex flex-col gap-3">
                     <span className="text-sm text-muted-foreground">
@@ -298,6 +293,7 @@ const ClientDashboardPage: NextPage = () => {
                     </div>
                   </div>
                 </div>
+                {/*==================== End of Subscribed Systems List ====================*/}
               </div>
             </CardContent>
           </Card>
@@ -319,12 +315,9 @@ const ClientDashboardPage: NextPage = () => {
                   key={system}
                   className={`border-blue-900/30 relative overflow-hidden transition-all duration-300 ${
                     isActive ? config.bgGradient : "bg-slate-800/20 opacity-60"
-                  } cursor-pointer hover:shadow-md ${
+                  }  hover:shadow-md ${
                     isActive ? "hover:translate-y-[-2px]" : ""
                   }`}
-                  onClick={
-                    isActive ? () => handleSystemClick(system) : undefined
-                  }
                 >
                   <CardHeader>
                     <div className="flex justify-between items-start">
@@ -367,12 +360,8 @@ const ClientDashboardPage: NextPage = () => {
                       <Button
                         variant="link"
                         className="cursor-pointer flex items-center gap-1 text-primary hover:text-primary/80 p-0"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSystemClick(system);
-                        }}
                       >
-                        View {system} →
+                        3 months left
                       </Button>
                     )}
                     {!isActive && (

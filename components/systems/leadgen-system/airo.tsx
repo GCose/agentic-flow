@@ -25,13 +25,7 @@ import { WarmLead } from "@/types/leads";
 import axios from "axios"; // Import axios for API requests
 // import { generateWarmLeads } from "@/data/leads-data"; // Not needed
 
-const WarmLeads = ({
-  role,
-  clientId,
-}: {
-  role: "admin" | "client";
-  clientId?: string;
-}) => {
+const AiroLeads = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof WarmLead>("leadScore");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
@@ -115,12 +109,7 @@ const WarmLeads = ({
   };
 
   const handleViewDetails = (leadId: string) => {
-    const path =
-      role === "admin"
-        ? `/admin/clients/${clientId}/leadgen-system/warm-leads/${leadId}`
-        : `/client/sales-system/airo/${leadId}`;
-
-    router.push(path);
+    router.push(`/client/sales-system/airo/${leadId}`);
   };
 
   return (
@@ -249,4 +238,8 @@ const WarmLeads = ({
   );
 };
 
+<<<<<<< HEAD:components/systems/leadgen-system/warm-leads.tsx
 export default WarmLeads;
+=======
+export default AiroLeads;
+>>>>>>> 4182f6ea0182eca76d8d3c91c8fa99070a8774f4:components/systems/leadgen-system/airo.tsx

@@ -8,10 +8,10 @@ import {
   Video,
   Brush,
   Users,
-  BarChart,
-  MessageSquare,
+  // BarChart,
+  // MessageSquare,
   DollarSign,
-  Briefcase,
+  // Briefcase,
 } from "lucide-react";
 
 import {
@@ -56,11 +56,11 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
             href: "/client",
             icon: LayoutDashboard,
           },
-          {
-            title: "Content System",
-            href: "/client/content-system",
-            icon: FileText,
-          },
+          // {
+          //   title: "Content System",
+          //   href: "/client/content-system",
+          //   icon: FileText,
+          // },
           {
             title: "Leadgen System",
             href: "/client/leadgen-system",
@@ -71,21 +71,21 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
             href: "/client/sales-system",
             icon: DollarSign,
           },
-          {
-            title: "Onboarding System",
-            href: "/client/onboarding",
-            icon: Briefcase,
-          },
-          {
-            title: "Reports",
-            href: "/client/reporting",
-            icon: BarChart,
-          },
-          {
-            title: "Feedback & Optimization",
-            href: "/client/feedback",
-            icon: MessageSquare,
-          },
+          // {
+          //   title: "Onboarding System",
+          //   href: "/client/onboarding",
+          //   icon: Briefcase,
+          // },
+          // {
+          //   title: "Reports",
+          //   href: "/client/reporting",
+          //   icon: BarChart,
+          // },
+          // {
+          //   title: "Feedback & Optimization",
+          //   href: "/client/feedback",
+          //   icon: MessageSquare,
+          // },
         ],
         contentCreationItems: [], // No content creation items for clients
       };

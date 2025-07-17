@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/card";
 import BackgroundElements from "@/components/ui/background-elements";
 import { NextPage } from "next";
-// import { loggedInUser } from "@/utils/auth";
 
 const LoginPage: NextPage = () => {
   const [email, setEmail] = useState("");
@@ -66,7 +65,7 @@ const LoginPage: NextPage = () => {
       <div className="flex min-h-screen w-screen items-center justify-center">
         <BackgroundElements />
 
-        <Card className="w-full max-w-md border border-blue-500/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_1px_3px_rgba(0,0,0,0.3)] bg-transparent  min-[600px]: m-4 z-10">
+        <Card className="w-full max-w-md border border-blue-500/20 bg-transparent min-[600px]: m-4 z-10">
           <CardHeader className="space-y-1">
             <div className="flex items-center justify-center mb-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full">
@@ -157,24 +156,3 @@ const LoginPage: NextPage = () => {
 };
 
 export default LoginPage;
-
-// export const getServerSideProps = async ({ req }: { req: NextApiRequest }) => {
-//   console.log(req);
-
-//   const user = loggedInUser();
-
-//   if (!user) {
-//     return {
-//       redirect: {
-//         destination: "/auth",
-//         permanent: false
-//       }
-//     }
-//   }
-//   return {
-//     redirect: {
-//       destination: "/admin",
-//       permanent: false,
-//     },
-//   };
-// };

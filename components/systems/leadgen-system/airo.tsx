@@ -41,8 +41,7 @@ const AiroLeads = () => {
     setLoading(true);
     try {
       const response = await axios.get("/api/leads");
-      // const response = await axios.get("http://10.42.0.168:5500/api/leads/");
-      // if (!response.ok) throw new Error("Failed to fetch leads");
+
       const data = await response.data
 
       console.log("Fetched leads:", data); 

@@ -24,13 +24,7 @@ import {
 import { WarmLead } from "@/types/leads";
 import { generateWarmLeads } from "@/data/leads-data";
 
-const WarmLeads = ({
-  role,
-  clientId,
-}: {
-  role: "admin" | "client";
-  clientId?: string;
-}) => {
+const AiroLeads = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof WarmLead>("leadScore");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
@@ -79,12 +73,7 @@ const WarmLeads = ({
   };
 
   const handleViewDetails = (leadId: string) => {
-    const path =
-      role === "admin"
-        ? `/admin/clients/${clientId}/leadgen-system/warm-leads/${leadId}`
-        : `/client/sales-system/airo/${leadId}`;
-
-    router.push(path);
+    router.push(`/client/sales-system/airo/${leadId}`);
   };
 
   return (
@@ -203,4 +192,4 @@ const WarmLeads = ({
   );
 };
 
-export default WarmLeads;
+export default AiroLeads;

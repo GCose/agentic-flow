@@ -1,7 +1,7 @@
 import {
   Users,
-  FileText,
-  UserPlus,
+  // FileText,
+  // UserPlus,
   Snowflake,
   ShieldCheck,
   ShoppingBag,
@@ -14,14 +14,14 @@ import { SubSystemsItem } from "@/types";
  * Client Dashboard Subsystems Configuration.
  ============================================*/
 export const clientDashboardSystem: SubSystemsItem[] = [
-  {
-    title: "Content Generation",
-    description: "Generate and manage content with AI agents",
-    icon: FileText,
-    bgColor: "bg-blue-500/10",
-    iconColor: "text-blue-500",
-    leadType: "client/content-system",
-  },
+  // {
+  //   title: "Content Generation",
+  //   description: "Generate and manage content with AI agents",
+  //   icon: FileText,
+  //   bgColor: "bg-blue-500/10",
+  //   iconColor: "text-blue-500",
+  //   leadType: "client/content-system",
+  // },
   {
     title: "LeadGen System",
     description: "Identify and nurture potential clients",
@@ -38,14 +38,14 @@ export const clientDashboardSystem: SubSystemsItem[] = [
     iconColor: "text-green-500",
     leadType: "appointment",
   },
-  {
-    title: "Onboarding System",
-    description: "Streamline client onboarding process",
-    icon: UserPlus,
-    bgColor: "bg-orange-500/10",
-    iconColor: "text-orange-500",
-    leadType: "client/onboarding",
-  },
+  // {
+  //   title: "Onboarding System",
+  //   description: "Streamline client onboarding process",
+  //   icon: UserPlus,
+  //   bgColor: "bg-orange-500/10",
+  //   iconColor: "text-orange-500",
+  //   leadType: "client/onboarding",
+  // },
 ];
 
 /**=================================================

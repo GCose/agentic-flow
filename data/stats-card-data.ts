@@ -48,40 +48,6 @@ export const adminDashboardStats: StatCardData[] = [
   },
 ];
 
-/**===================================================
- * Stat card data for the admin warm lead dashboard.
- ===================================================*/
-export const adminWarmLeadDashboardStats: StatCardData[] = [
-  {
-    value: "28",
-    icon: Thermometer,
-    color: "orange",
-    title: "Warm Leads",
-    change: "+5 from last month",
-  },
-  {
-    value: "63",
-    icon: Snowflake,
-    color: "blue",
-    title: "Cold Leads",
-    change: "+14 from last month",
-  },
-  {
-    value: "19",
-    icon: CalendarClock,
-    color: "green",
-    title: "Appointments Set",
-    change: "+3 from last month",
-  },
-  {
-    value: "11",
-    icon: ShieldCheck,
-    color: "purple",
-    title: "Audits Done",
-    change: "+2 from last month",
-  },
-];
-
 /**============================================
  * Stat card data for the client dashboard.
  ============================================*/

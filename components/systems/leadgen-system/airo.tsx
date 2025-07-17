@@ -165,71 +165,61 @@ const AiroLeads = () => {
                     <ArrowUpDown className="w-4 h-4" />
                   </Button>
                 </TableHead>
-                <TableHead className="table-cell">Sales Call</TableHead>
-                <TableHead className="table-cell">Industry</TableHead>
                 <TableHead className="table-cell">Lead Captured</TableHead>
+                <TableHead className="table-cell">Industry</TableHead>
+                <TableHead className="table-cell">Sales Call</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {loading ? (
-                <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center">
-                    Loading leads...
+              {sortedLeads.map((lead) => (
+                <TableRow
+                  key={lead.id}
+                  onClick={() => handleViewDetails(lead.id)}
+                  className="cursor-pointer border-blue-900/30 hover:bg-blue-600/10"
+                >
+                  <TableCell className="font-medium">{lead.company}</TableCell>
+                  <TableCell>
+                    <Badge
+                      variant="outline"
+                      className="font-medium text-green-500 bg-green-500/10 text-md"
+                    >
+                      {lead.leadScore}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="table-cell">{lead.salesCall}</TableCell>
+                  <TableCell className="table-cell">{lead.industry}</TableCell>
+                  <TableCell className="table-cell">{lead.leadEntry}</TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="w-8 h-8 p-0">
+                          <span className="sr-only">Open menu</span>
+                          <MoreHorizontal className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          onClick={() => handleViewDetails(lead.id)}
+                        >
+                          View Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive">
+                          Delete Lead
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </TableCell>
                 </TableRow>
-              ) : (
-                <>
-                  {sortedLeads.map((lead) => (
-                    <TableRow
-                      key={lead.id}
-                      onClick={() => handleViewDetails(lead.id)}
-                      className="cursor-pointer border-blue-900/30 hover:bg-blue-600/10"
-                    >
-                      <TableCell className="font-medium">{lead.company}</TableCell>
-                      <TableCell>
-                        <Badge
-                          variant="outline"
-                          className="font-medium text-green-500 bg-green-500/10 text-md"
-                        >
-                          {lead.leadScore}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="table-cell">{lead.salesCall}</TableCell>
-                      <TableCell className="table-cell">{lead.industry}</TableCell>
-                      <TableCell className="table-cell">{lead.leadEntry}</TableCell>
-                      <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="w-8 h-8 p-0">
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="w-4 h-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() => handleViewDetails(lead.id)}
-                            >
-                              View Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-destructive">
-                              Delete Lead
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                  {filteredLeads.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={7} className="h-24 text-center">
-                        No leads found.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </>
+              ))}
+              {filteredLeads.length === 0 && (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    No leads found.
+                  </TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>

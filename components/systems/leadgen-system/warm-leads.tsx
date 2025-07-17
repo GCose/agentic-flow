@@ -82,7 +82,7 @@ const WarmLeads = ({
     const path =
       role === "admin"
         ? `/admin/clients/${clientId}/leadgen-system/warm-leads/${leadId}`
-        : `/client/leadgen-system/warm-leads/${leadId}`;
+        : `/client/sales-system/airo/${leadId}`;
 
     router.push(path);
   };

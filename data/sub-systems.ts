@@ -92,13 +92,12 @@ export const clientDashboardSystem: SubSystemsItem[] = [
  =================================================*/
 export const ClientLeadGenSubSystems: SubSystemsItem[] = [
   {
-    title: "Warm Leads",
-    description:
-      "Manage leads that have shown interest in your products or services",
-    icon: Thermometer,
-    bgColor: "bg-orange-500/10",
-    iconColor: "text-orange-500",
-    leadType: "client/leadgen-system/warm-leads",
+    title: "Kairo",
+    description: "Get detailed breakdowns and recommendations for your funnel",
+    icon: ShieldCheck,
+    bgColor: "bg-purple-500/10",
+    iconColor: "text-purple-500",
+    leadType: "client/leadgen-system/kairo",
   },
   {
     title: "Cold Leads",
@@ -116,12 +115,19 @@ export const ClientLeadGenSubSystems: SubSystemsItem[] = [
     iconColor: "text-green-500",
     leadType: "client/leadgen-system/appointments",
   },
+];
+
+/**=================================================
+ * Client Sales System Subsystems Configuration.
+ =================================================*/
+export const ClientSalesSystemSubSystems: SubSystemsItem[] = [
   {
-    title: "Audits",
-    description: "Get detailed breakdowns and recommendations for your funnel",
-    icon: ShieldCheck,
-    bgColor: "bg-purple-500/10",
-    iconColor: "text-purple-500",
-    leadType: "audit",
+    title: "Airo",
+    description:
+      "Manage leads that have shown interest in your products or services",
+    icon: Thermometer,
+    bgColor: "bg-orange-500/10",
+    iconColor: "text-orange-500",
+    leadType: "client/sales-system/airo",
   },
 ];

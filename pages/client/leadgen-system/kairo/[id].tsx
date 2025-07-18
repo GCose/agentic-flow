@@ -315,7 +315,6 @@ const AiroLeadDetailsPage = () => {
         hasBackButton={true}
         onBackClick={() => router.push("/client/leadgen-system/kairo")}
       />
-
       <div className="flex-1 p-6 md:p-8 pt-6 space-y-8 ">
         {/*==================== Lead Score & Company Overview ====================*/}
         <LeadOverviewCard lead={lead} />

@@ -52,7 +52,7 @@ const AiroLeads = () => {
         company: item.company_name,
         leadScore: item.lead_analysis?.lead_score * 2 || 0,
         salesCall: "",
-        industry: "",
+        industry: item.lead_analysis?.industry || "",
         leadEntry: format(new Date(item.created_at), 'MMMM dd, yyyy'),
         strategy: item.lead_analysis?.buyer_profile ?? "",
         report: item.lead_analysis?.summary ?? "",
@@ -188,9 +188,9 @@ const AiroLeads = () => {
                       {lead.leadScore}
                     </Badge>
                   </TableCell>
-                  <TableCell className="table-cell">{lead.salesCall}</TableCell>
-                  <TableCell className="table-cell">{lead.industry}</TableCell>
                   <TableCell className="table-cell">{lead.leadEntry}</TableCell>
+                  <TableCell className="table-cell">{lead.industry}</TableCell>
+                  <TableCell className="table-cell">{lead.salesCall}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>

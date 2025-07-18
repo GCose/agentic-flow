@@ -202,14 +202,14 @@ const AiroLead = () => {
           salePitch: data.lead_analysis?.cta_recommendation || "",
           leadEntry: format(new Date(data.created_at), 'EEEE, do MMM yyyy'),
           createdAt: format(new Date(data.created_at), 'EEEE, do MMM yyyy'),
-          industry: "", // Not in API response
+          industry: data.lead_analysis?.industry || "",
           salesCall: data.lead_analysis?.handoff_message || "",
           email: data.email,
           phone: data.phone,
           website: data.website_url,
-          address: "", // Not in API response
-          size: "", // Not in API response  
-          revenue: "", // Not in API response
+          address: data.lead_analysis?.address || "",
+          size: data.lead_analysis?.company_size || "",
+          revenue: data.lead_analysis?.annual_revenue || "",
           description: data.lead_analysis?.summary || "",
           notes: [
             data.lead_analysis?.memory_log || "",
@@ -572,7 +572,7 @@ const AiroLead = () => {
                         Company Size
                       </span>
                     </div>
-                    <p className="font-medium">{lead.size}</p>
+                    <p className="font-medium">{lead.size} Employees</p>
                   </div>
 
                   <div className="p-4 rounded-lg bg-slate-800/30 ">

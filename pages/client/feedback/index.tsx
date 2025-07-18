@@ -3,7 +3,7 @@ import FeedbackOverview from "@/components/feedback/feedback-overview";
 import OptimizationSuggestions from "@/components/feedback/optimization-suggestions";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import type { NextPage } from "next";
-import { ClientPageMeta } from "@/page-config/meta.config";
+import { ClientPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 const FeedbackPage: NextPage = () => {

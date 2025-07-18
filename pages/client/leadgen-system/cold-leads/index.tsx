@@ -1,6 +1,6 @@
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import ColdLeads from "@/components/systems/leadgen-system/cold-leads";
-import { ClientPageMeta } from "@/page-config/meta.config";
+import { ClientPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 const ClientColdLeadsPage = () => {

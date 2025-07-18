@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import ContentLibrary from "@/components/content/content-library";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import { AdminPageMeta } from "@/page-config/meta.config";
+import { AdminPageMeta } from "@/page-meta/meta";
 
 const DesignerContentPage: NextPage = () => {
   return (

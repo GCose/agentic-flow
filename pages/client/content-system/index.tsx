@@ -20,7 +20,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import ContentAgentPerformance from "@/components/systems/content-system/content-agent-performance";
 import ContentCalendar from "@/components/systems/content-system/content-calendar";
 import RecentContent from "@/components/systems/content-system/recent-content";
-import { ClientPageMeta } from "@/page-config/meta.config";
+import { ClientPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import ChannelCard from "@/components/cards/channel-card";
 

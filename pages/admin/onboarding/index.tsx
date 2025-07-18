@@ -1,7 +1,7 @@
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import OnboardingWizard from "@/components/onboarding/onboarding-wizard";
-import { AdminPageMeta } from "@/page-config/meta.config";
+import { AdminPageMeta } from "@/page-meta/meta";
 import type { NextPage } from "next";
 
 const OnboardingPage: NextPage = () => {

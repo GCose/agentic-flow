@@ -34,7 +34,7 @@ import ChannelAnalytics from "@/components/systems/content-system/channel-analyt
 import ChannelContentList from "@/components/systems/content-system/channel-content-list";
 import ContentViewer from "@/components/systems/content-system/content-viewer";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { ClientPageMeta } from "@/page-config/meta.config";
+import { ClientPageMeta } from "@/page-meta/meta";
 
 export type ChannelId =
   | "facebook"

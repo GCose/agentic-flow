@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import { AdminPageMeta } from "@/page-config/meta.config";
+import { AdminPageMeta } from "@/page-meta/meta";
 
 const DesignerDashboard: NextPage = () => {
   return (

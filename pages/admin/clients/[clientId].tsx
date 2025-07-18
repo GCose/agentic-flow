@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ClientData, SystemConfigs } from "@/types/clients";
-import { AdminPageMeta } from "@/page-config/meta.config";
+import { AdminPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 // Dummy clients data

@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import { AdminPageMeta } from "@/page-config/meta.config";
+import { AdminPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import ComingSoon from "@/components/coming-soon";
 

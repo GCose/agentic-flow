@@ -1,7 +1,7 @@
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import KairoLeads from "@/components/systems/leadgen-system/kairo";
-import { ClientPageMeta } from "@/page-config/meta.config";
+import { ClientPageMeta } from "@/page-meta/meta";
 import router from "next/router";
 
 const KairoSubPage = () => {
@@ -9,8 +9,8 @@ const KairoSubPage = () => {
     <DashboardLayout role="client" meta={ClientPageMeta.kairoSubPage}>
       <DashboardHeader
         role="client"
-        title="Kairo Lead Audits"
         hasBackButton={true}
+        title="Kairo Lead Audits"
         onBackClick={() => router.push("/client/leadgen-system")}
       />
       <div className="flex-1 px-8 pt-2">

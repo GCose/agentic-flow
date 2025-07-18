@@ -3,7 +3,7 @@ import FileUpload from "@/components/upload/file-upload";
 import { NextPage } from "next";
 import Head from "next/head";
 import VideographerHeader from "./videographer-header";
-import { AdminPageMeta } from "@/page-config/meta.config";
+import { AdminPageMeta } from "@/page-meta/meta";
 const UploadVideosPage: NextPage = () => {
   return (
     <>

@@ -14,7 +14,7 @@ import {
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import { Button } from "@/components/ui/button";
-import { ClientPageMeta } from "@/page-config/meta.config";
+import { ClientPageMeta } from "@/page-meta/meta";
 
 interface AppointmentDetail {
   id: string;
@@ -109,9 +109,7 @@ const ClientAppointmentDetailPage = () => {
         <DashboardHeader
           title="Appointment Details"
           hasBackButton={true}
-          onBackClick={() =>
-            router.push("/client/leadgen-system/appointments")
-          }
+          onBackClick={() => router.push("/client/leadgen-system/appointments")}
           role="client"
         />
         <div className="flex-1 px-8 py-2 flex items-center justify-center">

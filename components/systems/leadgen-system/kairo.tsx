@@ -91,8 +91,8 @@ const KairoLeads = () => {
             className="pl-8 bg-transparent border-blue-900/30"
           />
           <Button
-            variant="outline"
             size="sm"
+            variant="outline"
             onClick={handleRefresh}
             disabled={isRefreshing}
             className="bg-transparent border-blue-900/30 hover:bg-gradient-to-r hover:from-blue-800/30 hover:via-blue-700/20 hover:to-blue-500/25 hover:text-white hover:border-blue-600/50"

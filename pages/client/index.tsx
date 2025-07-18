@@ -1,6 +1,6 @@
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import { ClientPageMeta } from "@/page-config/meta.config";
+import { ClientPageMeta } from "@/page-meta/meta";
 import SubSystemComponent from "@/components/sub-system";
 import { clientDashboardSystem } from "@/data/sub-systems";
 import DashboardStatCard from "@/components/cards/dashboard-stats-card";

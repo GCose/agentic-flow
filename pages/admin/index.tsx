@@ -1,7 +1,7 @@
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import SystemCards from "@/components/cards/system-cards";
-import { AdminPageMeta } from "@/page-config/meta.config";
+import { AdminPageMeta } from "@/page-meta/meta";
 import DashboardStatCard from "@/components/cards/dashboard-stats-card";
 import { adminDashboardStats } from "@/data/stats-card-data";
 

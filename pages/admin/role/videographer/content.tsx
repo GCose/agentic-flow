@@ -3,7 +3,7 @@ import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import { NextPage } from "next";
 import Head from "next/head";
 import VideographerHeader from "./videographer-header";
-import { AdminPageMeta } from "@/page-config/meta.config";
+import { AdminPageMeta } from "@/page-meta/meta";
 
 const ContentLibraryPage: NextPage = () => {
   return (

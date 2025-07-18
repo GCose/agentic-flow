@@ -1,7 +1,7 @@
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import SubSystemComponent from "@/components/sub-system";
 import { ClientSalesSystemSubSystems } from "@/data/sub-systems";
-import { ClientPageMeta } from "@/page-config/meta.config";
+import { ClientPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardStatCard from "@/components/cards/dashboard-stats-card";
 import { clientWarmLeadDashboardStats } from "@/data/stats-card-data";

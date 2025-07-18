@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import FileUpload from "@/components/upload/file-upload";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import { AdminPageMeta } from "@/page-config/meta.config";
+import { AdminPageMeta } from "@/page-meta/meta";
 
 const UploadDesignsPage: NextPage = () => {
   return (

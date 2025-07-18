@@ -1,7 +1,7 @@
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import Appointments from "@/components/systems/leadgen-system/appointments";
-import { ClientPageMeta } from "@/page-config/meta.config";
+import { ClientPageMeta } from "@/page-meta/meta";
 
 const ClientAppointmentsPage = () => {
   return (

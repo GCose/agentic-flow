@@ -13,8 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
-import LeadOverviewCard from "@/components/cards/lead-overview.card";
 import { ClientPageMeta } from "@/page-meta/meta";
+import LeadOverviewCard from "@/components/cards/lead-overview-card";
 
 interface ReportSection {
   title: string;

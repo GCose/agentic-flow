@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import jsPDF from "jspdf";
+import { format } from 'date-fns';
+
 import {
   Building,
   FileText,
@@ -36,6 +38,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { AdminPageMeta } from "@/page-config/meta.config";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
+import { title } from "process";
 
 interface ReportSection {
   title: string;
@@ -189,8 +192,120 @@ const AiroLead = () => {
       setLoading(true);
 
       // Simulate API fetch
-      axios.get(`http://178.63.40.80:5500/api/leads/${id}`).then(res => {
-        console.log(res.data);
+      axios.get(`http://178.63.40.80:5500/api/leads/${id}/`).then(res => {
+        const data = res.data;
+        const mappedData = {
+          id: data.id,
+          company: data.company_name,
+          leadScore: data.lead_analysis?.lead_score * 2 || 0,
+          strategy: data.lead_analysis?.buyer_profile || "",
+          salePitch: data.lead_analysis?.cta_recommendation || "",
+          leadEntry: format(new Date(data.created_at), 'EEEE, do MMM yyyy'),
+          createdAt: format(new Date(data.created_at), 'EEEE, do MMM yyyy'),
+          industry: "", // Not in API response
+          salesCall: data.lead_analysis?.handoff_message || "",
+          email: data.email,
+          phone: data.phone,
+          website: data.website_url,
+          address: "", // Not in API response
+          size: "", // Not in API response  
+          revenue: "", // Not in API response
+          description: data.lead_analysis?.summary || "",
+          notes: [
+            data.lead_analysis?.memory_log || "",
+            data.lead_analysis?.objection_forecast || "",
+            data.system_match?.handoff_message || "",
+            data.sales_strategy?.handoff_message || "",
+            `Status: ${data.lead_analysis?.status || "Unknown"}`
+          ].filter(note => note), // Remove empty strings
+          salesReport: [
+            {
+              title: "Executive Summary",
+              content: data.lead_analysis?.summary || ""
+            },
+
+                        {
+              title: "Lead Score",
+              content: `Score: ${data.lead_analysis?.lead_score * 2 || 0}`
+            },
+            {
+              title: "Buyer Profile", 
+              content: data.lead_analysis?.buyer_profile || ""
+            },
+
+            {
+              title: "Sales Tone",
+              content: data.lead_analysis?.sales_tone || ""
+            },
+
+            {
+              title: "Status",
+              content: data.lead_analysis?.status || "Unknown"
+            },
+
+
+
+            {
+              title: "System Gap Analysis",
+              content: data.lead_analysis?.system_gap || ""
+            },
+            {
+              title: "Objection Forecast",
+              content: data.lead_analysis?.objection_forecast || ""
+            },
+            {
+              title: "CTA Recommendation",
+              content: data.lead_analysis?.cta_recommendation || ""
+
+            },
+              {
+              title: "Handoff Message",
+              content: data.system_match?.handoff_message || ""
+
+            }
+          ],
+          salesStrategy: [
+            {
+              title: "Strategy Overview",
+              content: data.sales_strategy?.handoff_message || ""
+            },
+            {
+              title: "Memory Log",
+              content: data.sales_strategy?.memory_log || ""
+            },
+            {
+              title: "CTA Decision",
+              content: `${data.sales_strategy?.cta_decision?.cta_tier || ""}\nFunnel Path: ${data.sales_strategy?.cta_decision?.funnel_path || ""}\nUrgency Logic: ${data.sales_strategy?.cta_decision?.urgency_logic || ""}`
+            },
+            {
+              title: "System Recommendation",
+              content: data.system_match?.system_recommendation || ""
+            },
+
+
+          ],
+          salesPitch: [
+            {
+              title: "Opening",
+              content: data.sales_pitch?.call_opening || ""
+            },
+            {
+              title: "Agenda Points",
+              content: data.sales_pitch?.agenda_points?.join("\n• ") || ""
+            },
+            {
+              title: "Objection Handling",
+              content: data.sales_pitch?.objection_anticipated?.map((obj: any) => 
+                `Objection: ${obj.objection}\nResponse: ${obj.counter}`
+              ).join("\n\n") || ""
+            },
+            {
+              title: "Closing Script",
+              content: data.sales_pitch?.closing_script || ""
+            }
+          ]
+        };
+        setLead(mappedData)
         setLoading(false);
       });
           }

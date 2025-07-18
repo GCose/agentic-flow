@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/router";
+import {format} from 'date-fns';
 import {
   Table,
   TableBody,
@@ -52,7 +53,7 @@ const AiroLeads = () => {
         leadScore: item.lead_analysis?.lead_score * 2 || 0,
         salesCall: "",
         industry: "",
-        leadEntry: item.created_at,
+        leadEntry: format(new Date(item.created_at), 'MMMM dd, yyyy'),
         strategy: item.lead_analysis?.buyer_profile ?? "",
         report: item.lead_analysis?.summary ?? "",
       }));

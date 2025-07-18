@@ -56,10 +56,10 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
 
   return (
     <div className="bg-gradient-to-r from-blue-800/10 to-blue-900/20 rounded-xl border-none overflow-hidden">
-      <div className="p-8">
+      <div className="px-8 pt-8">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/*====================  Lead Score Section ==================== */}
-          <div className="lg:col-span-1 flex flex-col items-center justify-center text-center">
+          <div className="lg:col-span-1 flex border-r pr-6 border-blue-900/30 flex-col items-center justify-center text-center">
             <div className="mb-4">
               <div
                 className={cn(
@@ -101,12 +101,12 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
           {/*====================  End of Lead Score Section ==================== */}
 
           {/*====================  Company Description ==================== */}
-          <div className="lg:col-span-2">
-            <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <div className="lg:col-span-2 border-r border-blue-900/30">
+            <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
               <Building className="h-5 w-5 text-primary" />
               About {lead.company}
             </h3>
-            <p className="text-muted-foreground mb-6 leading-relaxed">
+            <p className="text-muted-foreground mb-8 leading-relaxed">
               {lead.description}
             </p>
 

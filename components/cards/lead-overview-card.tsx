@@ -103,10 +103,10 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
           {/*====================  Company Description ==================== */}
           <div className="lg:col-span-2 border-r border-blue-900/30">
             <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
-              <Building className="h-5 w-5 text-primary" />
+              <Building className="h-5 w-5" />
               About {lead.company}
             </h3>
-            <p className="text-muted-foreground mb-8 leading-relaxed">
+            <p className="text-muted-foreground mb-8 leading-relaxed text-slate-300">
               {lead.description}
             </p>
 

@@ -13,6 +13,8 @@ import {
   Phone,
   Users,
   DollarSign,
+  Badge,
+  Lightbulb,
 } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import {
@@ -26,7 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import LeadOverviewCard from "@/components/cards/lead-overview.card";
-import { AdminPageMeta } from "@/page-meta/meta";
+import { ClientPageMeta } from "@/page-meta/meta";
 
 interface ReportSection {
   title: string;
@@ -89,6 +91,52 @@ const reportSections = [
   },
 ];
 
+const strategySections = [
+  {
+    title: "Value Proposition Alignment",
+    content:
+      "Our solution directly addresses Acme Inc.'s five identified pain points with our workflow automation platform. We should emphasize our unique integration capabilities with legacy systems, which is a key differentiator against CompetitorX and CompetitorY. Position our offering as the optimal balance of implementation speed, cost-effectiveness, and technical sophistication.",
+  },
+  {
+    title: "Stakeholder Approach",
+    content:
+      "For Jane Cooper (CTO):\n- Focus on technical advantages and API flexibility\n- Demonstrate our integration capabilities with their existing tech stack\n- Emphasize our solution's scalability for future needs\n\nFor Robert Garcia (Procurement):\n- Highlight our competitive TCO compared to alternatives\n- Present clear ROI calculations and payback period\n- Detail our implementation timeline advantages\n\nIdentify and engage additional stakeholders in IT and Operations to build broader internal support.",
+  },
+  {
+    title: "Risk Mitigation Plan",
+    content:
+      "1. Budget concerns: Prepare a phased implementation option that fits within their current budget constraints while allowing for expansion\n\n2. Technical concerns: Offer a proof-of-concept demonstration with their actual data to validate integration feasibility\n\n3. Competitive relationships: Provide case studies of clients who switched from CompetitorY to our solution\n\n4. Timeline pressure: Develop an accelerated implementation plan with dedicated resources",
+  },
+  {
+    title: "Sales Process",
+    content:
+      "1. Technical Deep-Dive (Week 1): Schedule a technical workshop focusing on API integration capabilities\n\n2. Executive Presentation (Week 2): Present ROI analysis and competitive advantages to decision-makers\n\n3. Proposal Submission (Week 3): Deliver customized proposal with phased implementation options\n\n4. Proof-of-Concept Demo (Week 4): Demonstrate integration with their systems using sample data\n\n5. Contract Negotiation (Week 5-6): Prepare for procurement discussions and contract terms",
+  },
+];
+
+const pitchSections = [
+  {
+    title: "Opening",
+    content:
+      "Based on our understanding of Acme Inc.'s challenges with operational efficiency and system integration, I believe our workflow automation platform offers precisely the solution you're looking for. We specialize in helping companies like yours reduce manual processes while seamlessly connecting legacy systems with modern cloud applications.",
+  },
+  {
+    title: "Problem Validation",
+    content:
+      "We recognize that your team is dealing with several key challenges:\n\n• Your customer support workflow has manual bottlenecks causing delays\n• Data processing across departments is costly and error-prone\n• Your legacy systems don't integrate well with newer cloud applications\n• Approval processes are reducing employee productivity\n• Compliance reporting creates significant overhead\n\nAre these challenges aligned with what you're experiencing?",
+  },
+  {
+    title: "Solution Presentation",
+    content:
+      "Our platform addresses these challenges through:\n\n1. Automated workflow orchestration that eliminates manual handoffs\n2. Intelligent data processing that reduces errors by 87%\n3. Pre-built connectors for legacy and cloud systems\n4. No-code approval flows that reduce bottlenecks\n5. Automated compliance reporting dashboards\n\nUnlike alternatives, our solution combines enterprise-grade security with rapid implementation and superior integration capabilities.",
+  },
+  {
+    title: "Call to Action",
+    content:
+      "I recommend we schedule a technical deep-dive session with your IT team to demonstrate our integration capabilities with your specific systems. Following that, we can present a customized ROI analysis to your executive team.\n\nWould next Tuesday work for an initial technical workshop with your team?",
+  },
+];
+
 const leadDetails: Record<string, LeadData> = {
   "wl-1": {
     id: "wl-1",
@@ -116,8 +164,8 @@ const leadDetails: Record<string, LeadData> = {
       "Implementation timeline aligns with their Q3 operational goals",
     ],
     salesReport: reportSections,
-    salesStrategy: [],
-    salesPitch: [],
+    salesStrategy: strategySections,
+    salesPitch: pitchSections,
   },
 };
 
@@ -223,7 +271,7 @@ const AiroLeadDetailsPage = () => {
         title: `Agentic Flow | ${lead.company} Lead Details`,
         description: `View detailed information about ${lead.company}`,
       }
-    : AdminPageMeta.leadDetailPage;
+    : ClientPageMeta.leadDetailPage;
 
   if (loading) {
     return (
@@ -280,7 +328,7 @@ const AiroLeadDetailsPage = () => {
           onValueChange={setActiveTab}
         >
           <div className="flex justify-center">
-            <TabsList className="grid w-full max-w-2xl grid-cols-2 bg-slate-800/30 p-1">
+            <TabsList className="grid w-full max-w-2xl grid-cols-4 bg-slate-800/30  p-1">
               <TabsTrigger value="overview" className="rounded-md">
                 <div className="flex items-center gap-2">
                   <Building className="h-4 w-4 text-blue-400" />
@@ -293,6 +341,18 @@ const AiroLeadDetailsPage = () => {
                   <span className="hidden sm:inline">Report</span>
                 </div>
               </TabsTrigger>
+              <TabsTrigger value="strategy" className="rounded-md">
+                <div className="flex items-center gap-2">
+                  <Target className="h-4 w-4 text-orange-400" />
+                  <span className="hidden sm:inline">Strategy</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger value="pitch" className="rounded-md">
+                <div className="flex items-center gap-2">
+                  <Lightbulb className="h-4 w-4 text-green-400" />
+                  <span className="hidden sm:inline">Pitch</span>
+                </div>
+              </TabsTrigger>
             </TabsList>
           </div>
 
@@ -300,7 +360,7 @@ const AiroLeadDetailsPage = () => {
           <TabsContent value="overview" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/*==================== Business Intelligence ====================*/}
-              <Card className="border-blue-900/30 bg-transparent">
+              <Card className="border-blue-900/30 bg-transparent ">
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Target className="h-5 w-5 text-blue-400" />
@@ -353,7 +413,7 @@ const AiroLeadDetailsPage = () => {
               {/*==================== End of Business Intelligence ====================*/}
 
               {/*==================== Sales Activities & Next Steps ====================*/}
-              <Card className="border-blue-900/30 bg-transparent">
+              <Card className="border-blue-900/30 bg-transparent ">
                 <CardHeader className="pb-3">
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <Calendar className="h-5 w-5 text-purple-400" />
@@ -411,7 +471,7 @@ const AiroLeadDetailsPage = () => {
             </div>
 
             {/*==================== Lead Notes ====================*/}
-            <Card className="border-blue-900/30 bg-transparent">
+            <Card className="border-blue-900/30 bg-transparent ">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <MessageCircle className="h-5 w-5 text-orange-400" />
@@ -419,7 +479,7 @@ const AiroLeadDetailsPage = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
+                <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 ">
                   <ul className="space-y-3">
                     {lead.notes?.map((note, index) => (
                       <li key={index} className="flex items-start gap-3">
@@ -437,7 +497,7 @@ const AiroLeadDetailsPage = () => {
 
           {/*==================== Sales Report Tab ====================*/}
           <TabsContent value="report">
-            <Card className="border-blue-900/30 bg-transparent">
+            <Card className="border-blue-900/30 bg-transparent ">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
                 <div>
                   <CardTitle className="flex items-center gap-2 text-lg">
@@ -453,7 +513,7 @@ const AiroLeadDetailsPage = () => {
                   variant="outline"
                   disabled={downloading === "report"}
                   onClick={() => handleDownload("report")}
-                  className="bg-slate-800/50 border-slate-700"
+                  className="bg-slate-800/50 border-slate-700 "
                 >
                   {downloading === "report" ? (
                     <>
@@ -473,9 +533,9 @@ const AiroLeadDetailsPage = () => {
                   {lead.salesReport?.map((section, index) => (
                     <div
                       key={index}
-                      className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30"
+                      className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
                     >
-                      <div className="bg-gradient-to-r from-purple-800/30 to-purple-900/20 px-6 py-4">
+                      <div className="bg-gradient-to-r from-purple-800/30 to-purple-900/20 px-6 py-4 ">
                         <div className="flex items-center justify-between">
                           <h3 className="font-semibold text-white flex items-center gap-2">
                             <FileText className="h-4 w-4 text-purple-400" />
@@ -498,6 +558,139 @@ const AiroLeadDetailsPage = () => {
             </Card>
           </TabsContent>
           {/*==================== End of Sales Report Tab ====================*/}
+
+          {/*==================== Sales Strategy Tab ====================*/}
+          <TabsContent value="strategy">
+            <Card className="border-blue-900/30 bg-transparent ">
+              <CardHeader className="flex flex-row items-center justify-between pb-3">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Target className="h-5 w-5 text-orange-400" />
+                    Sales Strategy
+                  </CardTitle>
+                  <CardDescription>
+                    Strategic approach to convert {lead.company} into a client
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="outline"
+                  disabled={downloading === "strategy"}
+                  onClick={() => handleDownload("strategy")}
+                  className="bg-slate-800/50 border-slate-700 "
+                >
+                  {downloading === "strategy" ? (
+                    <>
+                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Downloading...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="mr-2 h-4 w-4" />
+                      Download Strategy
+                    </>
+                  )}
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {lead.salesStrategy?.map((section, index) => (
+                    <div
+                      key={index}
+                      className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
+                    >
+                      <div className="bg-gradient-to-r from-orange-500/50 to-orange-500/50 px-6 py-4 ">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-semibold text-white flex items-center gap-2">
+                            <Target className="h-4 w-4 text-orange-400" />
+                            {section.title}
+                          </h3>
+                          <div className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded">
+                            Step {index + 1}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-6">
+                        <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                          {section.content}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          {/*==================== End of Sales Strategy Tab ====================*/}
+
+          {/*==================== Sales Pitch Tab ====================*/}
+          <TabsContent value="pitch">
+            <Card className="border-blue-900/30 bg-transparent ">
+              <CardHeader className="flex flex-row items-center justify-between pb-3">
+                <div>
+                  <CardTitle className="flex items-center gap-2 text-lg">
+                    <Lightbulb className="h-5 w-5 text-orange-400" />
+                    Sales Pitch
+                  </CardTitle>
+                  <CardDescription>
+                    Persuasive script for engaging with {lead.company}
+                  </CardDescription>
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={() => handleDownload("pitch")}
+                  disabled={downloading === "pitch"}
+                  className="bg-slate-800/50 border-slate-700 "
+                >
+                  {downloading === "pitch" ? (
+                    <>
+                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                      Downloading...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="mr-2 h-4 w-4" />
+                      Download Pitch
+                    </>
+                  )}
+                </Button>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {lead.salesPitch?.map((section, index) => (
+                    <div
+                      key={index}
+                      className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
+                    >
+                      <div className="bg-gradient-to-r from-green-500/30 to-green-700/20 px-6 py-4 ">
+                        <div className="flex items-center justify-between">
+                          <h3 className="font-semibold text-white flex items-center gap-2">
+                            <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                            {section.title}
+                          </h3>
+                          <div className="flex items-center gap-2">
+                            {index === 0 && (
+                              <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
+                                Start Here
+                              </Badge>
+                            )}
+                            <div className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded">
+                              Step {index + 1}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-6">
+                        <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
+                          {section.content}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+          {/*==================== End of Sales Pitch Tab ====================*/}
         </Tabs>
         {/*==================== End of Tabs for detailed information ====================*/}
       </div>

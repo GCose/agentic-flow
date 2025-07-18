@@ -36,24 +36,6 @@ export const AdminPageMeta = {
     description: "Onboarding process for new clients",
   },
 
-  // LeadGen Page
-  leadgenPage: {
-    title: "Agentic Flow | LeadGen System",
-    description: "Lead generation system for tracking and managing leads",
-  },
-  warmLeadsSubPage: {
-    title: "Agentic Flow | Warm Leads",
-    description: "Manage your warm leads in the lead generation system",
-  },
-  coldLeadsSubPage: {
-    title: "Agentic Flow | Cold Leads",
-    description: "Manage your warm leads in the lead generation system",
-  },
-  leadDetailPage: {
-    title: "Agentic Flow | Lead Details",
-    description: "View and manage lead details in the lead generation system",
-  },
-
   // Videographer role
   videographerPage: {
     title: "Agentic Flow | Videographer",

@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { AdminPageMeta } from "@/page-meta/meta";
+import { ClientPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import LeadOverviewCard from "@/components/cards/lead-overview.card";
 
@@ -271,7 +271,7 @@ const AiroLeadDetailsPage = () => {
         title: `Agentic Flow | ${lead.company} Lead Details`,
         description: `View detailed information about ${lead.company}`,
       }
-    : AdminPageMeta.leadDetailPage;
+    : ClientPageMeta.leadDetailPage;
 
   if (loading) {
     return (

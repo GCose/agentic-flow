@@ -1,21 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import jsPDF from "jspdf";
-import {
-  Building,
-  FileText,
-  MessageCircle,
-  Calendar,
-  CheckCircle2,
-  AlertCircle,
-  Target,
-  Download,
-  Phone,
-  Users,
-  DollarSign,
-  Badge,
-  Lightbulb,
-} from "lucide-react";
+import { FileText, Target, Download, Badge, Lightbulb } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import {
   Card,
@@ -173,7 +159,7 @@ const AiroLeadDetailsPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const [lead, setLead] = useState<LeadData | null>(null);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("report");
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState<string | null>(null);
 
@@ -328,13 +314,7 @@ const AiroLeadDetailsPage = () => {
           onValueChange={setActiveTab}
         >
           <div className="flex justify-center">
-            <TabsList className="grid w-full max-w-2xl grid-cols-4 bg-slate-800/30  p-1">
-              <TabsTrigger value="overview" className="rounded-md">
-                <div className="flex items-center gap-2">
-                  <Building className="h-4 w-4 text-blue-400" />
-                  <span className="hidden sm:inline">Overview</span>
-                </div>
-              </TabsTrigger>
+            <TabsList className="grid w-full max-w-2xl grid-cols-3 bg-slate-800/30  p-1">
               <TabsTrigger value="report" className="rounded-md">
                 <div className="flex items-center gap-2">
                   <FileText className="h-4 w-4 text-purple-400" />
@@ -355,145 +335,6 @@ const AiroLeadDetailsPage = () => {
               </TabsTrigger>
             </TabsList>
           </div>
-
-          {/*==================== Overview Tab ====================*/}
-          <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/*==================== Business Intelligence ====================*/}
-              <Card className="border-blue-900/30 bg-transparent ">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Target className="h-5 w-5 text-blue-400" />
-                    Business Intelligence
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
-                      <div className="flex items-center gap-2 mb-2">
-                        <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                        <span className="text-sm font-medium text-emerald-400">
-                          Decision Timeline
-                        </span>
-                      </div>
-                      <p className="text-sm">
-                        Budget approval expected by end of quarter. Active
-                        evaluation phase with 4-6 week decision window.
-                      </p>
-                    </div>
-
-                    <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
-                      <div className="flex items-center gap-2 mb-2">
-                        <DollarSign className="h-4 w-4 text-blue-400" />
-                        <span className="text-sm font-medium text-blue-400">
-                          Budget Range
-                        </span>
-                      </div>
-                      <p className="text-sm">
-                        $100K-$150K allocated for automation solutions. Strong
-                        ROI requirements with 6-month payback expectation.
-                      </p>
-                    </div>
-
-                    <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50">
-                      <div className="flex items-center gap-2 mb-2">
-                        <AlertCircle className="h-4 w-4 text-amber-400" />
-                        <span className="text-sm font-medium text-amber-400">
-                          Competitive Landscape
-                        </span>
-                      </div>
-                      <p className="text-sm">
-                        Evaluating 3 vendors. Our integration capabilities
-                        provide key differentiation advantage.
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              {/*==================== End of Business Intelligence ====================*/}
-
-              {/*==================== Sales Activities & Next Steps ====================*/}
-              <Card className="border-blue-900/30 bg-transparent ">
-                <CardHeader className="pb-3">
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Calendar className="h-5 w-5 text-purple-400" />
-                    Sales Activities & Next Steps
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
-                      <div className="bg-slate-700/50 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Phone className="h-4 w-4 text-blue-400" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm text-blue-400">
-                          Technical Demo Scheduled
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Next Tuesday - Integration capabilities showcase
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
-                      <div className="bg-slate-700/50 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
-                        <FileText className="h-4 w-4 text-purple-400" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm text-purple-400">
-                          ROI Analysis Prepared
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Custom calculations ready for executive presentation
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-start gap-3 p-3 rounded-lg bg-slate-800/30 border border-slate-700/50">
-                      <div className="bg-slate-700/50 h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Users className="h-4 w-4 text-purple-400" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-sm text-purple-400">
-                          Stakeholder Mapping
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          CTO and Procurement Manager identified as key decision
-                          makers
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-              {/*==================== End of Sales Activities & Next Steps ====================*/}
-            </div>
-
-            {/*==================== Lead Notes ====================*/}
-            <Card className="border-blue-900/30 bg-transparent ">
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <MessageCircle className="h-5 w-5 text-orange-400" />
-                  Lead Notes & Insights
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 ">
-                  <ul className="space-y-3">
-                    {lead.notes?.map((note, index) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <div className="rounded-full h-2 w-2 bg-blue-400 mt-2 flex-shrink-0"></div>
-                        <span className="text-sm leading-relaxed">{note}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </CardContent>
-            </Card>
-            {/*==================== End of Lead Notes ====================*/}
-          </TabsContent>
-          {/*==================== End of Overview Tab ====================*/}
 
           {/*==================== Sales Report Tab ====================*/}
           <TabsContent value="report">

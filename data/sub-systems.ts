@@ -36,7 +36,7 @@ export const clientDashboardSystem: SubSystemsItem[] = [
     icon: ShoppingBag,
     bgColor: "bg-green-500/10",
     iconColor: "text-green-500",
-    leadType: "appointment",
+    leadType: "client/sales-system",
   },
   // {
   //   title: "Onboarding System",

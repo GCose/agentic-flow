@@ -4,13 +4,6 @@
  * CSS VARIABLES
  ================*/
 :root {
-  /*=== Custom Colors ===*/
-  --hover-color: #3982dc;
-  --color-body: #0063db;
-  --white-alpha-8: rgba(255, 255, 255, 0.063);
-}
-
-.dark {
   --background: 224 71% 4%;
   --foreground: 210 20% 98%;
   --card: 224 71% 4%;
@@ -30,6 +23,10 @@
   --border: 215 27% 17%;
   --input: 215 27% 17%;
   --ring: 216 12% 84%;
+
+  --color-body: #0063db;
+  --hover-color: #3982dc;
+  --white-alpha-8: rgba(255, 255, 255, 0.063);
 }
 
 html {

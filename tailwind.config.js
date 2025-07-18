@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
     "./components/**/*.{ts,tsx}",
@@ -11,39 +10,38 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        border: "hsl(220 13% 91%)",
-        input: "hsl(220 13% 91%)",
-        ring: "hsl(224 76% 48%)",
-        background: "hsl(0 0% 100%)",
-        foreground: "hsl(224 71% 4%)",
-
+        border: "hsl(215 27% 17%)",
+        input: "hsl(215 27% 17%)",
+        ring: "hsl(216 12% 84%)",
+        background: "hsl(224 71% 4%)",
+        foreground: "hsl(210 20% 98%)",
         primary: {
-          DEFAULT: "hsl(224 76% 48%)",
-          foreground: "hsl(0 0% 100%)",
+          DEFAULT: "hsl(210 20% 98%)",
+          foreground: "hsl(220 9% 46%)",
         },
         secondary: {
-          DEFAULT: "hsl(220 14% 96%)",
-          foreground: "hsl(224 71% 4%)",
+          DEFAULT: "hsl(215 27% 17%)",
+          foreground: "hsl(210 20% 98%)",
         },
         destructive: {
           DEFAULT: "hsl(0 84% 60%)",
           foreground: "hsl(0 0% 100%)",
         },
         muted: {
-          DEFAULT: "hsl(220 14% 96%)",
-          foreground: "hsl(220 9% 46%)",
+          DEFAULT: "hsl(215 27% 17%)",
+          foreground: "hsl(217 10% 65%)",
         },
         accent: {
-          DEFAULT: "hsl(220 14% 96%)",
-          foreground: "hsl(224 71% 4%)",
+          DEFAULT: "hsl(215 27% 17%)",
+          foreground: "hsl(210 20% 98%)",
         },
         popover: {
-          DEFAULT: "hsl(0 0% 100%)",
-          foreground: "hsl(224 71% 4%)",
+          DEFAULT: "hsl(224 71% 4%)",
+          foreground: "hsl(210 20% 98%)",
         },
         card: {
-          DEFAULT: "hsl(0 0% 100%)",
-          foreground: "hsl(224 71% 4%)",
+          DEFAULT: "hsl(224 71% 4%)",
+          foreground: "hsl(210 20% 98%)",
         },
       },
       borderRadius: {

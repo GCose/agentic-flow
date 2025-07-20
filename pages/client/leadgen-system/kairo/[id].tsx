@@ -289,8 +289,8 @@ const KairoLeadDetailsPage = () => {
   return (
     <DashboardLayout role="client" meta={meta}>
       <DashboardHeader
-        title={lead.company_name}
         hasBackButton={true}
+        title={lead.company_name}
         onBackClick={() => router.push("/client/leadgen-system/kairo")}
       />
       <div className="flex-1 p-6 md:p-8 pt-6 space-y-8 ">

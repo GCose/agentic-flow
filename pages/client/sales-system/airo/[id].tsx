@@ -181,8 +181,8 @@ const AiroLeadDetailsPage = () => {
   return (
     <DashboardLayout role="client" meta={meta}>
       <DashboardHeader
-        title={lead.company_name}
         hasBackButton={true}
+        title={lead.company_name}
         onBackClick={() => router.push("/client/sales-system/airo")}
       />
 
@@ -221,7 +221,6 @@ const AiroLeadDetailsPage = () => {
           </div>
 
           {/*==================== Sales Report Tab ====================*/}
-          {/* Report Tab */}
           <TabsContent value="report">
             <Card className="border-blue-900/30 bg-transparent ">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
@@ -286,7 +285,7 @@ const AiroLeadDetailsPage = () => {
           {/*==================== End of Sales Report Tab ====================*/}
 
           {/*==================== Sales Strategy Tab ====================*/}
-          {/* Strategy Tab */}
+
           <TabsContent value="strategy">
             <Card className="border-blue-900/30 bg-transparent ">
               <CardHeader className="flex flex-row items-center justify-between pb-3">
@@ -351,7 +350,7 @@ const AiroLeadDetailsPage = () => {
           {/*==================== End of Sales Strategy Tab ====================*/}
 
           {/*==================== Sales Pitch Tab ====================*/}
-          {/* Pitch Tab */}
+
           <TabsContent value="pitch">
             <Card className="border-blue-900/30 bg-transparent ">
               <CardHeader className="flex flex-row items-center justify-between pb-3">

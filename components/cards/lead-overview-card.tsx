@@ -2,8 +2,6 @@ import {
   Building,
   Calendar,
   Clock,
-  Target,
-  Lightbulb,
   ExternalLink,
   Mail,
   Phone,
@@ -15,44 +13,14 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface ReportSection {
-  title: string;
-  content: string;
-}
-
-interface LeadData {
-  id: string;
-  company: string;
-  leadScore: number;
-  strategy: string;
-  salePitch: string;
-  leadEntry: string;
-  createdAt: string;
-  industry: string;
-  salesCall: string;
-  email: string;
-  phone: string;
-  website: string;
-  address: string;
-  size: string;
-  revenue: string;
-  description: string;
-  notes: string[];
-  salesReport: ReportSection[];
-  salesStrategy: ReportSection[];
-  salesPitch: ReportSection[];
-}
-
-interface LeadOverviewCardProps {
-  lead: LeadData;
-}
-
-const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
+const LeadOverviewCard = ({ lead }: any) => {
   const getLeadScoreColor = (score: number) => {
     if (score >= 80) return "text-emerald-500";
     if (score >= 60) return "text-amber-500";
     return "text-rose-500";
   };
+
+  console.log("Lead Overview Card Data:", lead);
 
   return (
     <div className="bg-gradient-to-r from-blue-800/10 to-blue-900/20 rounded-xl border-none overflow-hidden">
@@ -64,10 +32,16 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
               <div
                 className={cn(
                   "text-6xl font-bold mb-2",
-                  getLeadScoreColor(lead.leadScore)
+                  getLeadScoreColor(
+                    lead.lead_analysis?.lead_score ||
+                      lead.report.report_section?.audit_scorecard[0]
+                        .overall_funnel_score.score
+                  )
                 )}
               >
-                {lead.leadScore}
+                {lead.lead_analysis?.lead_score ||
+                  lead.report.report_section?.audit_scorecard[0]
+                    .overall_funnel_score.score}
               </div>
               <p className="text-slate-300 text-sm font-medium">Lead Score</p>
             </div>
@@ -80,7 +54,7 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
                     <p className="text-xs text-muted-foreground">
                       Lead Captured
                     </p>
-                    <p className="text-sm font-medium">{lead.createdAt}</p>
+                    <p className="text-sm font-medium">{lead.created_at}</p>
                   </div>
                 </div>
               </div>
@@ -92,7 +66,7 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
                     <p className="text-xs text-muted-foreground">
                       Last Contact
                     </p>
-                    <p className="text-sm font-medium">{lead.leadEntry}</p>
+                    <p className="text-sm font-medium">{lead.updated_at}</p>
                   </div>
                 </div>
               </div>
@@ -101,13 +75,14 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
           {/*====================  End of Lead Score Section ==================== */}
 
           {/*====================  Company Description ==================== */}
-          <div className="lg:col-span-2 border-r border-blue-900/30">
-            <h3 className="text-xl font-semibold mb-6 flex items-center gap-2">
-              <Building className="h-5 w-5" />
-              About {lead.company}
+          <div className="lg:col-span-2">
+            <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <Building className="h-5 w-5 text-primary" />
+              About {lead.company_name}
             </h3>
-            <p className="text-muted-foreground mb-8 leading-relaxed text-slate-300">
-              {lead.description}
+            <p className="text-muted-foreground mb-6 leading-relaxed">
+              {lead.lead_analysis?.summary ||
+                lead.summary?.writer_report?.summary}
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -141,12 +116,12 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
                   <div>
                     <p className="text-xs text-muted-foreground">Website</p>
                     <a
-                      href={lead.website}
+                      href={lead.website_url}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm font-medium flex items-center hover:text-primary"
                     >
-                      {lead.website?.replace(/(^\w+:|^)\/\//, "")}
+                      {lead.website_url?.replace(/(^\w+:|^)\/\//, "")}
                       <ExternalLink className="ml-1 h-3 w-3" />
                     </a>
                   </div>
@@ -158,7 +133,9 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
                   </div>
                   <div>
                     <p className="text-xs text-muted-foreground">Address</p>
-                    <p className="text-sm font-medium">{lead.address}</p>
+                    <p className="text-sm font-medium">
+                      {lead.lead_analysis?.address}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -172,25 +149,32 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
               Company Details
             </h4>
             <div className="space-y-4">
-              <div className="bg-slate-800/30 rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Users className="h-4 w-4 text-blue-400" />
-                  <span className="text-xs text-muted-foreground">
-                    Company Size
-                  </span>
+              {lead.lead_analysis?.company_size && (
+                <div className="bg-slate-800/30 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Users className="h-4 w-4 text-blue-400" />
+                    <span className="text-xs text-muted-foreground">
+                      Company Size
+                    </span>
+                  </div>
+                  <p className="font-medium">
+                    {lead.lead_analysis?.company_size}
+                  </p>
                 </div>
-                <p className="font-medium">{lead.size}</p>
-              </div>
-
-              <div className="bg-slate-800/30 rounded-lg p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <DollarSign className="h-4 w-4 text-purple-400" />
-                  <span className="text-xs text-muted-foreground">
-                    Annual Revenue
-                  </span>
+              )}
+              {lead.lead_analysis?.annual_revenue && (
+                <div className="bg-slate-800/30 rounded-lg p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <DollarSign className="h-4 w-4 text-green-400" />
+                    <span className="text-xs text-muted-foreground">
+                      Annual Revenue
+                    </span>
+                  </div>
+                  <p className="font-medium">
+                    {lead.lead_analysis?.annual_revenue}
+                  </p>
                 </div>
-                <p className="font-medium">{lead.revenue}</p>
-              </div>
+              )}
 
               <div className="bg-slate-800/30 rounded-lg p-4">
                 <div className="flex items-center gap-2 mb-2">
@@ -199,37 +183,15 @@ const LeadOverviewCard = ({ lead }: LeadOverviewCardProps) => {
                     Industry
                   </span>
                 </div>
-                <p className="font-medium">{lead.industry}</p>
+                <p className="font-medium">
+                  {lead.lead_analysis?.industry || lead.industry}
+                </p>
               </div>
             </div>
           </div>
           {/*====================  End of Company Stats ==================== */}
         </div>
       </div>
-
-      {/*==================== Strategy & Pitch Overview ====================*/}
-      <div className="grid grid-cols-2 border-t border-blue-900/30">
-        <div className="p-6 text-center border-r border-blue-900/30">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Target className="h-4 w-4 text-primary" />
-            <p className="text-sm font-medium text-muted-foreground">
-              Strategy
-            </p>
-          </div>
-          <p className="font-semibold">{lead.strategy}</p>
-        </div>
-
-        <div className="p-6 text-center">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Lightbulb className="h-4 w-4 text-primary" />
-            <p className="text-sm font-medium text-muted-foreground">
-              Sale Pitch
-            </p>
-          </div>
-          <p className="font-semibold">{lead.salePitch}</p>
-        </div>
-      </div>
-      {/*==================== End of Strategy & Pitch Overview ====================*/}
     </div>
   );
 };

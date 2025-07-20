@@ -308,7 +308,7 @@ const KairoLeadDetailsPage = () => {
                 Kairo Audit Report
               </CardTitle>
               <CardDescription className="text-lg pt-2 text-slate-300">
-                Comprehensive analysis of {lead.company} for sales preparation
+                Here's the detailed audit report by Kairo.
               </CardDescription>
             </div>
             <div className="flex-1 flex justify-end">

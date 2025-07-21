@@ -49,14 +49,6 @@ const ComingSoon = ({
           </div>
         </div>
         {/*==================== End of Call to Action Hint ====================*/}
-
-        {/*==================== Dots Animation ====================*/}
-        <div className="flex justify-center space-x-2">
-          <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-          <div className="w-2 h-2 bg-purple-500 rounded-full animate-pulse delay-75"></div>
-          <div className="w-2 h-2 bg-blue-400 rounded-full animate-pulse delay-150"></div>
-        </div>
-        {/*==================== End of Dots Animation ====================*/}
       </div>
     </div>
   );

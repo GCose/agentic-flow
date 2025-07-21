@@ -210,20 +210,6 @@ const KairoLeadDetailsPage = () => {
         content: getValue(report?.path_to_recovery_and_growth),
       },
       {
-        title: "Deliverables",
-        content:
-          reportData.report?.deliverables?.deliverables_list?.join(", ") ||
-          "Not available",
-      },
-      {
-        title: "PDF Report URL",
-        content: getValue(reportData.report?.deliverables?.pdf_report_url),
-      },
-      {
-        title: "Loom Video URL",
-        content: getValue(reportData.report?.deliverables?.loom_video_url),
-      },
-      {
         title: "Writer Summary",
         content: getValue(summary?.summary),
       },

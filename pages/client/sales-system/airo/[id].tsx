@@ -3,13 +3,6 @@ import { useRouter } from "next/router";
 import jsPDF from "jspdf";
 import { FileText, Target, Download, Badge, Lightbulb } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
@@ -21,7 +14,7 @@ const AiroLeadDetailsPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { lead } = useLead(id as string);
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("report");
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState<string | null>(null);
 
@@ -75,13 +68,11 @@ const AiroLeadDetailsPage = () => {
   const handleDownload = (type: string) => {
     if (!lead) return;
     setDownloading(type);
-
     const contentMap: Record<string, { title: string; content: string }[]> = {
       report: salesReport,
       strategy: salesStrategy,
       pitch: salesPitch,
     };
-
     const content = contentMap[type];
     if (!content) {
       setDownloading(null);
@@ -92,7 +83,6 @@ const AiroLeadDetailsPage = () => {
     const title = `${lead?.company_name} – ${
       type.charAt(0).toUpperCase() + type.slice(1)
     }`;
-
     const pageHeight = doc.internal.pageSize.height;
     const pageWidth = doc.internal.pageSize.width;
     const margin = 20;
@@ -104,7 +94,6 @@ const AiroLeadDetailsPage = () => {
     doc.text(title, margin, 20);
 
     let currentY = 35;
-
     content.forEach((section, sectionIndex) => {
       if (currentY > pageHeight - 40) {
         doc.addPage();
@@ -118,14 +107,12 @@ const AiroLeadDetailsPage = () => {
 
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
-
       const contentLines = doc.splitTextToSize(section.content, maxWidth);
       contentLines.forEach((line: string) => {
         if (currentY > pageHeight - 20) {
           doc.addPage();
           currentY = 20;
         }
-
         doc.text(line, margin, currentY);
         currentY += lineHeight;
       });
@@ -169,7 +156,7 @@ const AiroLeadDetailsPage = () => {
           onBackClick={() => router.push("/client/leadgen-system/kairo")}
         />
         <div className="flex-1 p-8 flex flex-col items-center justify-center w-full">
-          <h2 className="text-2xl font-bold mb-2">
+          <h2 className="text-xl font-bold mb-2">
             Unable to load lead details
           </h2>
           <p className="text-muted-foreground mb-4">
@@ -187,7 +174,6 @@ const AiroLeadDetailsPage = () => {
         hasBackButton={true}
         onBackClick={() => router.push("/client/sales-system/airo")}
       />
-
       <div className="flex-1 p-6 md:p-8 pt-6 space-y-8">
         {/*==================== Lead Score & Company Overview ====================*/}
         <LeadOverviewCard lead={lead} />
@@ -196,7 +182,7 @@ const AiroLeadDetailsPage = () => {
         {/*==================== Tabs for detailed information ====================*/}
         <Tabs
           value={activeTab}
-          className="space-y-6"
+          className="space-y-6 mt-15"
           onValueChange={setActiveTab}
         >
           <div className="flex justify-center">
@@ -224,168 +210,170 @@ const AiroLeadDetailsPage = () => {
 
           {/*==================== Sales Report Tab ====================*/}
           <TabsContent value="report">
-            <Card className="border-blue-900/30 bg-transparent ">
-              <CardHeader className="flex flex-row items-center justify-between pb-3">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <FileText className="h-5 w-5 text-purple-400" />
-                    Sales Intelligence Report
-                  </CardTitle>
-                  <CardDescription>
-                    Comprehensive analysis of {lead?.company_name} for sales
-                    preparation
-                  </CardDescription>
+            <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/30 overflow-hidden">
+              {/*==================== Report Header ====================*/}
+              <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-8 py-6 border-b border-blue-900/30">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h1 className="text-xl font-bold text-white flex items-center gap-3">
+                      <FileText className="h-6 w-6 text-purple-400" />
+                      Sales Intelligence Report
+                    </h1>
+                    <p className="text-slate-300 mt-1">
+                      Comprehensive analysis for {lead?.company_name}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    disabled={downloading === "report"}
+                    onClick={() => handleDownload("report")}
+                    className="bg-transparent border-slate-600 hover:bg-slate-700/50"
+                  >
+                    {downloading === "report" ? (
+                      <>
+                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Downloading...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="mr-2 h-4 w-4" />
+                        Download Report
+                      </>
+                    )}
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  disabled={downloading === "report"}
-                  onClick={() => handleDownload("report")}
-                  className="bg-slate-800/50 border-slate-700 "
-                >
-                  {downloading === "report" ? (
-                    <>
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-                      Downloading...
-                    </>
-                  ) : (
-                    <>
-                      <Download className="mr-2 h-4 w-4" />
-                      Download Report
-                    </>
-                  )}
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              </div>
+              {/*==================== End of Report Header ====================*/}
+
+              {/*==================== Report Content ====================*/}
+              <div className="px-8 py-8">
+                <div className="prose prose-invert max-w-none space-y-8">
                   {salesReport.map((section, index) => (
                     <div
                       key={index}
-                      className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
+                      className="border-b border-blue-900/30 pb-6 last:border-b-0 last:pb-0"
                     >
-                      <div className="bg-gradient-to-r from-purple-800/30 to-purple-900/20 px-6 py-4 ">
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-semibold text-white flex items-center gap-2">
-                            <FileText className="h-4 w-4 text-purple-400" />
-                            {section.title}
-                          </h3>
-                          <div className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded">
-                            Section {index + 1}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="p-6">
-                        <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
-                          {section.content}
-                        </div>
+                      <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <span className="text-purple-400 font-mono text-sm bg-purple-400/10 px-2 py-1 rounded-full">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        {section.title}
+                      </h2>
+                      <div className="text-slate-300 leading-10 whitespace-pre-line pl-8">
+                        {section.content}
                       </div>
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              {/*==================== End of Report Content ====================*/}
+            </div>
           </TabsContent>
           {/*==================== End of Sales Report Tab ====================*/}
 
           {/*==================== Sales Strategy Tab ====================*/}
-
           <TabsContent value="strategy">
-            <Card className="border-blue-900/30 bg-transparent ">
-              <CardHeader className="flex flex-row items-center justify-between pb-3">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Target className="h-5 w-5 text-orange-400" />
-                    Sales Strategy
-                  </CardTitle>
-                  <CardDescription>
-                    Strategic approach to convert {lead?.company_name} into a
-                    client
-                  </CardDescription>
+            <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/30 overflow-hidden">
+              {/*==================== Strategy Header ====================*/}
+              <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-8 py-6 border-b border-blue-900/30">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h1 className="text-xl font-bold text-white flex items-center gap-3">
+                      <Target className="h-6 w-6 text-orange-400" />
+                      Sales Strategy Report
+                    </h1>
+                    <p className="text-slate-300 mt-1">
+                      Strategic approach for engaging {lead?.company_name}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    disabled={downloading === "strategy"}
+                    onClick={() => handleDownload("strategy")}
+                    className="bg-transparent border-slate-600 hover:bg-slate-700/50"
+                  >
+                    {downloading === "strategy" ? (
+                      <>
+                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Downloading...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="mr-2 h-4 w-4" />
+                        Download Strategy
+                      </>
+                    )}
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  disabled={downloading === "strategy"}
-                  onClick={() => handleDownload("strategy")}
-                  className="bg-slate-800/50 border-slate-700 "
-                >
-                  {downloading === "strategy" ? (
-                    <>
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-                      Downloading...
-                    </>
-                  ) : (
-                    <>
-                      <Download className="mr-2 h-4 w-4" />
-                      Download Strategy
-                    </>
-                  )}
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              </div>
+              {/*==================== End of Strategy Header ====================*/}
+
+              {/*==================== Strategy Content ====================*/}
+              <div className="px-8 py-8">
+                <div className="prose prose-invert max-w-none space-y-8">
                   {salesStrategy.map((section, index) => (
                     <div
                       key={index}
-                      className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
+                      className="border-b border-blue-900/30 pb-6 last:border-b-0 last:pb-0"
                     >
-                      <div className="bg-gradient-to-r from-orange-500/50 to-orange-500/50 px-6 py-4 ">
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-semibold text-white flex items-center gap-2">
-                            <Target className="h-4 w-4 text-orange-400" />
-                            {section.title}
-                          </h3>
-                          <div className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded">
-                            Step {index + 1}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="p-6">
-                        <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
-                          {section.content}
-                        </div>
+                      <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                        <span className="text-orange-400 font-mono text-sm bg-orange-400/10 px-2 py-1 rounded-full">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        {section.title}
+                      </h2>
+                      <div className="text-slate-300 leading-10 whitespace-pre-line pl-8">
+                        {section.content}
                       </div>
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              {/*==================== End of Strategy Content ====================*/}
+            </div>
           </TabsContent>
           {/*==================== End of Sales Strategy Tab ====================*/}
 
           {/*==================== Sales Pitch Tab ====================*/}
-
           <TabsContent value="pitch">
-            <Card className="border-blue-900/30 bg-transparent ">
-              <CardHeader className="flex flex-row items-center justify-between pb-3">
-                <div>
-                  <CardTitle className="flex items-center gap-2 text-lg">
-                    <Lightbulb className="h-5 w-5 text-orange-400" />
-                    Sales Pitch
-                  </CardTitle>
-                  <CardDescription>
-                    Persuasive script for engaging with {lead?.company_name}
-                  </CardDescription>
+            <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/30 overflow-hidden">
+              {/*==================== Pitch Header ====================*/}
+              <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-8 py-6 border-b border-blue-900/30">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h1 className="text-xl font-bold text-white flex items-center gap-3">
+                      <Lightbulb className="h-6 w-6 text-green-400" />
+                      Sales Pitch Guide
+                    </h1>
+                    <p className="text-slate-300 mt-1">
+                      Persuasive messaging framework for {lead?.company_name}
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleDownload("pitch")}
+                    disabled={downloading === "pitch"}
+                    className="bg-transparent border-slate-600 hover:bg-slate-700/50"
+                  >
+                    {downloading === "pitch" ? (
+                      <>
+                        <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                        Downloading...
+                      </>
+                    ) : (
+                      <>
+                        <Download className="mr-2 h-4 w-4" />
+                        Download Pitch
+                      </>
+                    )}
+                  </Button>
                 </div>
-                <Button
-                  variant="outline"
-                  onClick={() => handleDownload("pitch")}
-                  disabled={downloading === "pitch"}
-                  className="bg-slate-800/50 border-slate-700 "
-                >
-                  {downloading === "pitch" ? (
-                    <>
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-                      Downloading...
-                    </>
-                  ) : (
-                    <>
-                      <Download className="mr-2 h-4 w-4" />
-                      Download Pitch
-                    </>
-                  )}
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
+              </div>
+              {/*==================== End of Pitch Header ====================*/}
+
+              {/*==================== Pitch Content ====================*/}
+              <div className="px-8 py-8">
+                <div className="prose prose-invert max-w-none space-y-8">
                   {salesPitch.map(
                     (
                       section: { title: string; content: string },
@@ -393,37 +381,31 @@ const AiroLeadDetailsPage = () => {
                     ) => (
                       <div
                         key={index}
-                        className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
+                        className="border-b border-blue-900/30 pb-6 last:border-b-0 last:pb-0"
                       >
-                        <div className="bg-gradient-to-r from-green-500/30 to-green-700/20 px-6 py-4 ">
-                          <div className="flex items-center justify-between">
-                            <h3 className="font-semibold text-white flex items-center gap-2">
-                              <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                              {section.title}
-                            </h3>
-                            <div className="flex items-center gap-2">
-                              {index === 0 && (
-                                <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
-                                  Start Here
-                                </Badge>
-                              )}
-                              <div className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded">
-                                Step {index + 1}
-                              </div>
-                            </div>
-                          </div>
+                        <div className="flex items-center gap-3 mb-4">
+                          <h2 className="text-lg font-semibold text-white flex items-center gap-2">
+                            <span className="text-green-400 font-mono text-sm bg-green-400/10 px-2 py-1 rounded-full">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                            {section.title}
+                          </h2>
+                          {index === 0 && (
+                            <Badge className="bg-green-500/20 text-green-400 border-green-500/30 text-xs">
+                              Start Here
+                            </Badge>
+                          )}
                         </div>
-                        <div className="p-6">
-                          <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
-                            {section.content}
-                          </div>
+                        <div className="text-slate-300 leading-10 whitespace-pre-line pl-8">
+                          {section.content}
                         </div>
                       </div>
                     )
                   )}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              {/*==================== End of Pitch Content ====================*/}
+            </div>
           </TabsContent>
           {/*==================== End of Sales Pitch Tab ====================*/}
         </Tabs>

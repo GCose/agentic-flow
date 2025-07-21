@@ -26,10 +26,10 @@ const AiroLeadDetailsPage = () => {
   const [downloading, setDownloading] = useState<string | null>(null);
 
   const salesReport = [
-    { title: "Summary", content: lead?.lead_analysis?.summary },
-    { title: "Industry", content: lead?.lead_analysis?.industry },
-    { title: "Company Size", content: lead?.lead_analysis?.company_size },
-    { title: "Annual Revenue", content: lead?.lead_analysis?.annual_revenue },
+    { title: "Summary", content: lead?.lead_analysis.summary },
+    { title: "Industry", content: lead?.lead_analysis.industry },
+    { title: "Company Size", content: lead?.lead_analysis.company_size },
+    { title: "Annual Revenue", content: lead?.lead_analysis.annual_revenue },
     {
       title: "Lead Score",
       content: lead?.lead_analysis.lead_score?.toString(),
@@ -50,9 +50,11 @@ const AiroLeadDetailsPage = () => {
     { title: "Memory Log", content: lead?.sales_strategy.memory_log },
     {
       title: "Narrative Breakdown",
-      content: Object.entries(lead?.sales_strategy?.narrative_breakdown)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join("\n"),
+      content: lead?.sales_strategy.narrative_breakdown
+        ? Object.entries(lead.sales_strategy.narrative_breakdown)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join("\n")
+        : "No narrative breakdown available",
     },
   ];
 
@@ -87,7 +89,7 @@ const AiroLeadDetailsPage = () => {
     }
 
     const doc = new jsPDF();
-    const title = `${lead.company_name} – ${
+    const title = `${lead?.company_name} – ${
       type.charAt(0).toUpperCase() + type.slice(1)
     }`;
 
@@ -131,15 +133,15 @@ const AiroLeadDetailsPage = () => {
       currentY += 10;
     });
 
-    const filename = `${lead.company_name}-${type}.pdf`.replace(/\s+/g, "-");
+    const filename = `${lead?.company_name}-${type}.pdf`.replace(/\s+/g, "-");
     doc.save(filename);
     setDownloading(null);
   };
 
   const meta = lead
     ? {
-        title: `Agentic Flow | ${lead.company_name} Lead Details`,
-        description: `View detailed information about ${lead.company_name}`,
+        title: `Agentic Flow | ${lead?.company_name} Lead Details`,
+        description: `View detailed information about ${lead?.company_name}`,
       }
     : ClientPageMeta.leadDetailPage;
 
@@ -181,8 +183,8 @@ const AiroLeadDetailsPage = () => {
   return (
     <DashboardLayout role="client" meta={meta}>
       <DashboardHeader
+        title={lead?.company_name}
         hasBackButton={true}
-        title={lead.company_name}
         onBackClick={() => router.push("/client/sales-system/airo")}
       />
 
@@ -230,7 +232,7 @@ const AiroLeadDetailsPage = () => {
                     Sales Intelligence Report
                   </CardTitle>
                   <CardDescription>
-                    Comprehensive analysis of {lead.company_name} for sales
+                    Comprehensive analysis of {lead?.company_name} for sales
                     preparation
                   </CardDescription>
                 </div>
@@ -295,7 +297,7 @@ const AiroLeadDetailsPage = () => {
                     Sales Strategy
                   </CardTitle>
                   <CardDescription>
-                    Strategic approach to convert {lead.company_name} into a
+                    Strategic approach to convert {lead?.company_name} into a
                     client
                   </CardDescription>
                 </div>
@@ -360,7 +362,7 @@ const AiroLeadDetailsPage = () => {
                     Sales Pitch
                   </CardTitle>
                   <CardDescription>
-                    Persuasive script for engaging with {lead.company_name}
+                    Persuasive script for engaging with {lead?.company_name}
                   </CardDescription>
                 </div>
                 <Button

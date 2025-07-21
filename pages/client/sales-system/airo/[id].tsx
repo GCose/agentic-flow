@@ -26,38 +26,38 @@ const AiroLeadDetailsPage = () => {
   const [downloading, setDownloading] = useState<string | null>(null);
 
   const salesReport = [
-    { title: "Summary", content: lead.lead_analysis.summary },
-    { title: "Industry", content: lead.lead_analysis.industry },
-    { title: "Company Size", content: lead.lead_analysis.company_size },
-    { title: "Annual Revenue", content: lead.lead_analysis.annual_revenue },
+    { title: "Summary", content: lead?.lead_analysis?.summary },
+    { title: "Industry", content: lead?.lead_analysis?.industry },
+    { title: "Company Size", content: lead?.lead_analysis?.company_size },
+    { title: "Annual Revenue", content: lead?.lead_analysis?.annual_revenue },
     {
       title: "Lead Score",
-      content: lead.lead_analysis.lead_score?.toString(),
+      content: lead?.lead_analysis.lead_score?.toString(),
     },
-    { title: "Status", content: lead.lead_analysis.status },
+    { title: "Status", content: lead?.lead_analysis.status },
     {
       title: "Pain Points & System Gaps",
-      content: lead.lead_analysis.system_gap,
+      content: lead?.lead_analysis.system_gap,
     },
   ];
 
   const salesStrategy = [
     {
       title: "CTA Decision",
-      content: `${lead.sales_strategy.cta_decision.cta_tier}\nFunnel Path: ${lead.sales_strategy.cta_decision.funnel_path}\nUrgency: ${lead.sales_strategy.cta_decision.urgency_logic}`,
+      content: `${lead?.sales_strategy.cta_decision.cta_tier}\nFunnel Path: ${lead?.sales_strategy.cta_decision.funnel_path}\nUrgency: ${lead?.sales_strategy.cta_decision.urgency_logic}`,
     },
-    { title: "Handoff Message", content: lead.sales_strategy.handoff_message },
-    { title: "Memory Log", content: lead.sales_strategy.memory_log },
+    { title: "Handoff Message", content: lead?.sales_strategy.handoff_message },
+    { title: "Memory Log", content: lead?.sales_strategy.memory_log },
     {
       title: "Narrative Breakdown",
-      content: Object.entries(lead.sales_strategy.narrative_breakdown)
+      content: Object.entries(lead?.sales_strategy?.narrative_breakdown)
         .map(([key, value]) => `${key}: ${value}`)
         .join("\n"),
     },
   ];
 
   const salesPitch =
-    lead.sales_strategy.modular_pitch?.map(
+    lead?.sales_strategy.modular_pitch?.map(
       (item: { module_type: string; content: string }) => ({
         title: item.module_type,
         content: item.content,

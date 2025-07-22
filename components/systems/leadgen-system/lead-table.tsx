@@ -63,6 +63,14 @@ const LeadsTable = ({
     salesCall: string;
   }
 
+  const getLeadScoreBadgeClasses = (score: number) => {
+    if (score >= 80)
+      return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
+    if (score >= 60)
+      return "bg-amber-500/10 text-amber-500 border-amber-500/20";
+    return "bg-rose-500/10 text-rose-500 border-rose-500/20";
+  };
+
   const filteredLeads = data.filter(
     (lead: Lead) =>
       lead.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -169,7 +177,9 @@ const LeadsTable = ({
                     <TableCell>
                       <Badge
                         variant="outline"
-                        className="bg-green-500/10 text-green-500 font-medium text-md"
+                        className={`${getLeadScoreBadgeClasses(
+                          lead.lead_analysis.lead_score
+                        )} font-medium text-md`}
                       >
                         {lead?.lead_analysis.lead_score}
                       </Badge>
@@ -179,7 +189,12 @@ const LeadsTable = ({
                     <TableCell>
                       <Badge
                         variant="outline"
-                        className="bg-blue-500/10 text-blue-500 font-medium text-md"
+                        className={`${getLeadScoreBadgeClasses(
+                          Number(
+                            lead?.report?.report_section?.audit_scorecard[0]
+                              ?.overall_funnel_score?.score
+                          )
+                        )} font-medium text-md`}
                       >
                         {Number(
                           lead?.report?.report_section?.audit_scorecard[0]

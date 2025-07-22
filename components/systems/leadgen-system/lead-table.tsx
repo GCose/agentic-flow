@@ -171,7 +171,7 @@ const LeadsTable = ({
                         variant="outline"
                         className="bg-green-500/10 text-green-500 font-medium text-md"
                       >
-                        {lead.lead_analysis.lead_score}
+                        {lead?.lead_analysis.lead_score}
                       </Badge>
                     </TableCell>
                   )}
@@ -182,8 +182,8 @@ const LeadsTable = ({
                         className="bg-blue-500/10 text-blue-500 font-medium text-md"
                       >
                         {Number(
-                          lead.report.report_section.audit_scorecard[0]
-                            .overall_funnel_score.score
+                          lead?.report?.report_section?.audit_scorecard[0]
+                            ?.overall_funnel_score?.score
                         )}
                       </Badge>
                     </TableCell>

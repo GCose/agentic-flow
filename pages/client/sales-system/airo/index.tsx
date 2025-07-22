@@ -7,6 +7,8 @@ import router from "next/router";
 
 const AiroSubPage = () => {
   const { leads, isLoading, error, refresh } = useLeads();
+  console.log("Error in LeadsPage:", error);
+
   return (
     <DashboardLayout role="client" meta={ClientPageMeta.airoSubPage}>
       <DashboardHeader

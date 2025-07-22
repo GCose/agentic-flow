@@ -94,8 +94,7 @@ const KairoLeadDetailsPage = () => {
       insights?: {
         summary?: string;
         handoff_message?: string;
-        tags?: string[];
-        insight_bullets?: string[];
+        bullets?: string[];
         scores?: Record<string, number>;
       };
     };
@@ -107,6 +106,7 @@ const KairoLeadDetailsPage = () => {
         call_to_action?: string;
         painful_reality_of_revenue?: string;
         path_to_recovery_and_growth?: string;
+        audit_scorecard?: string[];
       };
       deliverables?: {
         deliverables_list?: string[];
@@ -126,96 +126,79 @@ const KairoLeadDetailsPage = () => {
   const formatReport = (reportData: ReportData) => {
     const insight = reportData.insight?.insights;
     const report = reportData.report?.report_section;
-    const summary = reportData.summary?.writer_report;
 
-    const getValue = (
-      value: string | number | null | undefined,
-      fallback = "Not available"
-    ) =>
+    const getValue = (value: any, fallback = "Not available") =>
       value !== null && value !== undefined && value !== "" ? value : fallback;
+    const formatKey = (key: string) => {
+      return key
+        .split("_") // Split the snake case into words
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+        .join(" "); // Join the words with a space
+    };
 
-    const salesReport = [
+    const scorecard =
+      Array.isArray(reportData?.report?.report_section?.audit_scorecard) &&
+      typeof reportData.report.report_section.audit_scorecard[0] === "object"
+        ? Object.entries(reportData.report.report_section.audit_scorecard[0])
+            .map(([key, value]) => {
+              const formattedKey = formatKey(key); // Format the key
+              if (typeof value === "object" && value !== null) {
+                // Assuming the object has `benchmark` and `score` properties
+                const { benchmark, score } = value as {
+                  benchmark: string;
+                  score: string;
+                };
+                return `${formattedKey}: Benchmark - ${benchmark}, Score - ${score}`;
+              }
+              return `${formattedKey}: ${value}`;
+            })
+            .join("\n")
+        : "Not available";
+
+    return [
       {
-        title: "Company Name",
-        content: getValue(reportData.company_name),
+        title: "1. Executive Summary",
+        content:
+          `${getValue(report?.executive_summary)}\n\n` +
+          `**The Painful Reality of Lost Revenue:**\n${getValue(
+            report?.painful_reality_of_revenue
+          )}\n\n` +
+          `**The Path to Recovery and Growth:**\n${getValue(
+            report?.path_to_recovery_and_growth
+          )}`,
       },
       {
-        title: "Industry",
-        content: getValue(reportData.industry),
+        title: "2. Audit Scorecard",
+        content: scorecard,
       },
       {
-        title: "Created At",
-        content: getValue(reportData.created_at),
+        title: "3. Key Insights",
+        content:
+          insight?.bullets
+            ?.map((point, idx) => `${idx + 1}. ${point}`) // Format each bullet point with its index
+            .join("\n\n") || "Not available",
       },
       {
-        title: "Insight Summary",
-        content: getValue(insight?.summary),
+        title: "4. Fixes & Recommendations",
+        content:
+          `Fix 1: Implement an Automated Follow-Up System\n\n` +
+          `- What: Replace manual DM follow-up with email automation.\n` +
+          `- Why: Improve lead nurturing and booking rate.\n` +
+          `- How: Use CRM + Email Marketing tools\n` +
+          `- Priority: 1\n\n` +
+          `Fix 2: Refine Sales Messaging and Value Proposition\n\n` +
+          `- What: Revise pitch and align expectations.\n` +
+          `- Why: Increase close rates.\n` +
+          `- How: Get client feedback and improve storytelling.\n` +
+          `- Priority: 2`,
       },
       {
-        title: "Insight Handoff Message",
-        content: getValue(insight?.handoff_message),
-      },
-      {
-        title: "Insight Tags",
-        content: insight?.tags?.length
-          ? insight.tags.join(", ")
-          : "Not available",
-      },
-      {
-        title: "Insight Bullets",
-        content: insight?.insight_bullets?.join("\n\n") || "Not available",
-      },
-      {
-        title: "Insight Scores",
-        content: insight?.scores
-          ? Object.entries(insight.scores)
-              .map(([key, val]) => `${key}: ${val}%`)
-              .join("\n")
-          : "Not available",
-      },
-      {
-        title: "Audit Executive Summary",
-        content: getValue(report?.executive_summary),
-      },
-      {
-        title: "Key Insights",
-        content: report?.key_insights?.join("\n\n") || "Not available",
-      },
-      {
-        title: "Audit Tags",
-        content: report?.audit_tags?.join(", ") || "Not available",
-      },
-      {
-        title: "Call to Action",
-        content: getValue(report?.call_to_action),
-      },
-      {
-        title: "Revenue Leak Estimate",
-        content: getValue(report?.painful_reality_of_revenue),
-      },
-      {
-        title: "Recovery Plan",
-        content: getValue(report?.path_to_recovery_and_growth),
-      },
-      {
-        title: "Writer Summary",
-        content: getValue(summary?.summary),
-      },
-      {
-        title: "Writer Transition",
-        content: getValue(summary?.transition),
-      },
-      {
-        title: "Writer Pain Points",
-        content: summary?.pain_points
-          ? Object.entries(summary.pain_points)
-              .map(([k, v]) => `${k}: ${v}`)
-              .join("\n\n")
-          : "Not available",
+        title: "5. Call to Action",
+        content:
+          report?.call_to_action ||
+          "Schedule a call with us to implement these changes and grow your revenue.",
       },
     ];
-
-    return salesReport;
   };
 
   const meta = lead

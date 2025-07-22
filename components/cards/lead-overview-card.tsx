@@ -92,7 +92,9 @@ const LeadOverviewCard = ({ lead }: any) => {
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground">Email</p>
-                      <p className="text-sm font-medium">{lead.email}</p>
+                      <p className="text-sm font-medium">
+                        {lead.email || lead?.report?.report_section.email}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
@@ -101,7 +103,10 @@ const LeadOverviewCard = ({ lead }: any) => {
                     </div>
                     <div>
                       <p className="text-xs text-muted-foreground">Phone</p>
-                      <p className="text-sm font-medium">{lead.phone}</p>
+                      <p className="text-sm font-medium">
+                        {lead.phone ||
+                          lead?.report?.report_section.phone_number}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -130,7 +135,8 @@ const LeadOverviewCard = ({ lead }: any) => {
                     <div>
                       <p className="text-xs text-muted-foreground">Address</p>
                       <p className="text-sm font-medium">
-                        {lead.lead_analysis?.address}
+                        {lead.lead_analysis?.address ||
+                          lead?.report?.report_section.address}
                       </p>
                     </div>
                   </div>

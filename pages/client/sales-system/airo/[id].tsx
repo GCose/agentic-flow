@@ -43,9 +43,15 @@ const AiroLeadDetailsPage = () => {
     { title: "Memory Log", content: lead?.sales_strategy.memory_log },
     {
       title: "Narrative Breakdown",
-      content: lead?.sales_strategy.narrative_breakdown
+      content: lead?.sales_strategy?.narrative_breakdown
         ? Object.entries(lead.sales_strategy.narrative_breakdown)
-            .map(([key, value]) => `${key}: ${value}`)
+            .map(([key, value]) => {
+              const formattedKey = key
+                .split("_")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ");
+              return `${formattedKey}: ${value}`;
+            })
             .join("\n")
         : "No narrative breakdown available",
     },

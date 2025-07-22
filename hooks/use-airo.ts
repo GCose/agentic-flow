@@ -1,7 +1,6 @@
 // hooks/use-kairo.ts
 import useSWR from "swr";
 import axios from "axios";
-import { RootObject } from "@/types/audit";
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 

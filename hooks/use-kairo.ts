@@ -11,6 +11,7 @@ export const useLeads = () => {
   );
 
   console.log("Kairo data:", data);
+  console.error("Kairo error:", error);
 
   return {
     leads: data || [],

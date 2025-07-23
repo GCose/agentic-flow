@@ -42,6 +42,22 @@ const AiroLeadDetailsPage = () => {
     { title: "Handoff Message", content: lead?.sales_strategy.handoff_message },
     { title: "Memory Log", content: lead?.sales_strategy.memory_log },
     {
+      title: "Modular Pitch",
+      content: lead?.sales_strategy?.modular_pitch
+        ? lead?.sales_strategy?.modular_pitch
+            .map(
+              (item: {
+                module_name: string;
+                module: string;
+                script: string;
+              }) => {
+                return `${item.module_name}:\n${item.script}`;
+              }
+            )
+            .join("\n\n")
+        : "No modular pitch available",
+    },
+    {
       title: "Narrative Breakdown",
       content: lead?.sales_strategy?.narrative_breakdown
         ? Object.entries(lead.sales_strategy.narrative_breakdown)

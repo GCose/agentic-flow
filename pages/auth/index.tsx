@@ -78,15 +78,13 @@ const LoginPage: NextPage = () => {
               />
             </div>
             <h1 className="text-4xl font-bold mb-4">Welcome to Agentic Flow</h1>
-            <p className="text-xl text-blue-200">
-              Leveraging AI to Boost ROI
-            </p>
+            <p className="text-xl text-blue-200">Leveraging AI to Boost ROI</p>
           </div>
         </div>
         {/*==================== End of Left Side - Visual Content ====================*/}
 
         {/*==================== Right Side - Login Form ====================*/}
-        <div className="flex items-center justify-center p-1 md:p-8 bg-blue-900/20 m-2 md:rounded-4xl md:m-10">
+        <div className="bg-gradient-to-r from-blue-800/10 to-blue-900/10 flex items-center justify-center p-1 md:p-8">
           <Card className="w-full max-w-md border-0 shadow-none bg-transparent">
             <CardHeader className="space-y-1">
               <div className="flex items-center justify-center mb-4 lg:hidden">

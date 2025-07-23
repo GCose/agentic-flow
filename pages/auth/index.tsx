@@ -140,13 +140,13 @@ const LoginPage: NextPage = () => {
                 {isLoading ? "Logging in..." : "Login"}
               </Button>
 
-              <div className="text-center flex flex-col gap-2 text-xs text-muted-foreground">
+              {/* <div className="text-center flex flex-col gap-2 text-xs text-muted-foreground">
                 <p>Use the following demo credentials:</p>
                 <p className="mt-1">Admin: admin@example.com / admin123</p>
                 <p>Videographer: video@example.com / video123</p>
                 <p>Designer: design@example.com / design123</p>
                 <p>Client: client@example.com / client123</p>
-              </div>
+              </div> */}
             </form>
           </CardContent>
         </Card>

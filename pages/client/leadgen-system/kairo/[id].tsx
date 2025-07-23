@@ -3,141 +3,43 @@ import { useRouter } from "next/router";
 import jsPDF from "jspdf";
 import { FileText, Download } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ClientPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import LeadOverviewCard from "@/components/cards/lead-overview-card";
-
-interface ReportSection {
-  title: string;
-  content: string;
-}
-
-interface LeadData {
-  id: string;
-  company: string;
-  leadScore: number;
-  strategy: string;
-  salePitch: string;
-  leadEntry: string;
-  createdAt: string;
-  industry: string;
-  salesCall: string;
-  email: string;
-  phone: string;
-  website: string;
-  address: string;
-  size: string;
-  revenue: string;
-  description: string;
-  notes: string[];
-  salesReport: ReportSection[];
-  salesStrategy: ReportSection[];
-  salesPitch: ReportSection[];
-}
-
-const reportSections = [
-  {
-    title: "Executive Summary",
-    content:
-      "This sales intelligence report provides a comprehensive analysis of Acme Inc., a leading technology company in the cloud-based enterprise solutions space. The company shows strong interest in our automation solutions and has budget approval expected by the end of the quarter. They are currently evaluating competitive offerings but our unique value proposition positions us favorably in the selection process.",
-  },
-  {
-    title: "Company Profile",
-    content:
-      "Acme Inc. is an established technology provider with a strong market presence in cloud infrastructure and enterprise SaaS solutions. Founded in 2005, they have grown to 250-500 employees with estimated annual revenue between $50M-$100M. Their primary market segments include finance, healthcare, and manufacturing with a focus on mid to large enterprises.",
-  },
-  {
-    title: "Pain Points & Challenges",
-    content:
-      "Through our analysis, we've identified several key challenges Acme Inc. is facing:\n\n1. Operational inefficiency in their customer support workflow\n2. High cost of manual data processing across departments\n3. Integration issues between their legacy systems and newer cloud applications\n4. Employee productivity bottlenecks in their approval processes\n5. Compliance reporting requirements creating significant overhead",
-  },
-  {
-    title: "Budget & Timeline",
-    content:
-      "Based on our intelligence gathering, Acme Inc. has allocated a budget range of $100K-$150K for this initiative. They expect to make a final vendor selection within the next 4-6 weeks and aim for full implementation by the end of Q3. Budget approval is expected at their next executive meeting scheduled for the end of the current quarter.",
-  },
-  {
-    title: "Risk Assessment",
-    content:
-      "Key risks to closing this opportunity include:\n\n- Budget constraints (Medium risk): While budget exists, there may be pressure to reduce scope\n- Technical concerns (Low risk): Some stakeholders have expressed concerns about integration complexity\n- Competitive pressure (Medium risk): CompetitorY has an existing relationship with their CFO\n- Implementation timeline (High risk): Their desired implementation window is aggressive",
-  },
-  {
-    title: "Recommended Actions",
-    content:
-      "Based on our analysis, we recommend the following actions:\n\n1. Prepare a detailed technical integration plan addressing their specific pain points\n2. Develop a phased implementation approach to show quick wins\n3. Create a custom ROI calculator highlighting cost savings vs. competitors\n4. Schedule a technical deep-dive with their IT team focusing on API capabilities\n5. Prepare references from similar clients in their industry",
-  },
-];
-
-const leadDetails: Record<string, LeadData> = {
-  "wl-1": {
-    id: "wl-1",
-    company: "Acme Inc.",
-    leadScore: 87,
-    strategy: "Direct outreach",
-    salePitch: "ROI-focused solution",
-    leadEntry: "2025-04-20",
-    createdAt: "2025-04-15",
-    industry: "Technology",
-    salesCall: "Scheduled for next week",
-    email: "contact@acmeinc.com",
-    phone: "+1 (555) 123-4567",
-    website: "https://www.acmeinc.com",
-    address: "123 Corporate Drive, Business Park, CA 94123",
-    size: "250-500 employees",
-    revenue: "$50M - $100M",
-    description:
-      "Acme Inc. is a leading technology company specializing in cloud-based solutions for enterprise clients. They are currently looking to optimize their operational efficiency and reduce costs through automation solutions.",
-    notes: [
-      "Initial contact made through LinkedIn outreach campaign",
-      "CEO showed strong interest in our automation solution during preliminary discussion",
-      "Budget approval expected by end of quarter based on executive feedback",
-      "Currently evaluating competitors, but our solution has unique technical advantages",
-      "Implementation timeline aligns with their Q3 operational goals",
-    ],
-    salesReport: reportSections,
-    salesStrategy: [],
-    salesPitch: [],
-  },
-};
+import { useLead } from "@/hooks/use-kairo";
 
 const KairoLeadDetailsPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const [lead, setLead] = useState<LeadData | null>(null);
+  const { lead, error } = useLead(id as string);
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
-    if (id && typeof id === "string") {
-      setLoading(true);
-
-      // Simulate API fetch
-      setTimeout(() => {
-        const leadData = leadDetails[id as keyof typeof leadDetails];
-        if (leadData) {
-          setLead(leadData);
-        }
-        setLoading(false);
-      }, 500);
+    if (lead || error) {
+      setLoading(false);
     }
-  }, [id]);
+  }, [lead, error]);
 
-  const handleDownload = () => {
+  const handleDownload = (type: "report" | "strategy" | "pitch") => {
     if (!lead) return;
     setDownloading(true);
+    // Only implement report download for now
+    if (type !== "report") {
+      setDownloading(false);
+      return;
+    }
+
+    const formattedReport = formatReport(lead);
+    if (!formattedReport || formattedReport.length === 0) {
+      setDownloading(false);
+      return;
+    }
 
     const doc = new jsPDF();
-    const title = `${lead.company} – Report`;
-
-    // Set up page margins and dimensions
+    const title = `${lead.company_name} – Audit Report`;
+    // Page settings
     const pageHeight = doc.internal.pageSize.height;
     const pageWidth = doc.internal.pageSize.width;
     const margin = 20;
@@ -150,52 +52,159 @@ const KairoLeadDetailsPage = () => {
     doc.text(title, margin, 20);
 
     let currentY = 35;
-
-    lead.salesReport.forEach((section, sectionIndex) => {
-      // Check if we need a new page for the section header
+    formattedReport.forEach((section, index) => {
       if (currentY > pageHeight - 40) {
         doc.addPage();
         currentY = 20;
       }
 
-      // Section title
       doc.setFont("helvetica", "bold");
       doc.setFontSize(14);
-      doc.text(`${sectionIndex + 1}. ${section.title}`, margin, currentY);
+      doc.text(`${index + 1}. ${section.title}`, margin, currentY);
       currentY += 10;
 
-      // Section content
       doc.setFont("helvetica", "normal");
       doc.setFontSize(11);
-
-      // Split content into lines that fit the page width
-      const contentLines = doc.splitTextToSize(section.content, maxWidth);
-
-      // Process each line and handle page breaks
-      contentLines.forEach((line: string) => {
-        // Check if we need a new page
+      const lines = doc.splitTextToSize(String(section.content), maxWidth);
+      lines.forEach((line: string) => {
         if (currentY > pageHeight - 20) {
           doc.addPage();
           currentY = 20;
         }
-
         doc.text(line, margin, currentY);
         currentY += lineHeight;
       });
 
-      // Add spacing between sections
       currentY += 10;
     });
 
-    const filename = `${lead.company}-Report.pdf`.replace(/\s+/g, "-");
+    const filename = `${lead.company_name}-Audit-${type}.pdf`.replace(
+      /\s+/g,
+      "-"
+    );
     doc.save(filename);
     setDownloading(false);
   };
 
+  interface ReportData {
+    company_name: string;
+    industry: string;
+    created_at: string;
+    insight?: {
+      insights?: {
+        summary?: string;
+        handoff_message?: string;
+        bullets?: string[];
+        scores?: Record<string, number>;
+      };
+    };
+    report?: {
+      report_section?: {
+        executive_summary?: string;
+        key_insights?: string[];
+        audit_tags?: string[];
+        call_to_action?: string;
+        painful_reality_of_revenue?: string;
+        path_to_recovery_and_growth?: string;
+        audit_scorecard?: string[];
+      };
+      deliverables?: {
+        deliverables_list?: string[];
+        pdf_report_url?: string;
+        loom_video_url?: string;
+      };
+    };
+    summary?: {
+      writer_report?: {
+        summary?: string;
+        transition?: string;
+        pain_points?: Record<string, string>;
+      };
+    };
+  }
+
+  const formatReport = (reportData: ReportData) => {
+    const insight = reportData.insight?.insights;
+    const report = reportData.report?.report_section;
+
+    const getValue = (value: any, fallback = "Not available") =>
+      value !== null && value !== undefined && value !== "" ? value : fallback;
+    const formatKey = (key: string) => {
+      return key
+        .split("_") // Split the snake case into words
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize each word
+        .join(" "); // Join the words with a space
+    };
+
+    const scorecard =
+      Array.isArray(reportData?.report?.report_section?.audit_scorecard) &&
+      typeof reportData.report.report_section.audit_scorecard[0] === "object"
+        ? Object.entries(reportData.report.report_section.audit_scorecard[0])
+            .map(([key, value]) => {
+              const formattedKey = formatKey(key); // Format the key
+              if (typeof value === "object" && value !== null) {
+                // Assuming the object has `benchmark` and `score` properties
+                const { benchmark, score } = value as {
+                  benchmark: string;
+                  score: string;
+                };
+                return `${formattedKey}: Benchmark - ${benchmark}, Score - ${score}`;
+              }
+              return `${formattedKey}: ${value}`;
+            })
+            .join("\n")
+        : "Not available";
+
+    return [
+      {
+        title: "1. Executive Summary",
+        content:
+          `${getValue(report?.executive_summary)}\n\n` +
+          `**The Painful Reality of Lost Revenue:**\n${getValue(
+            report?.painful_reality_of_revenue
+          )}\n\n` +
+          `**The Path to Recovery and Growth:**\n${getValue(
+            report?.path_to_recovery_and_growth
+          )}`,
+      },
+      {
+        title: "2. Audit Scorecard",
+        content: scorecard,
+      },
+      {
+        title: "3. Key Insights",
+        content:
+          insight?.bullets
+            ?.map((point, idx) => `${idx + 1}. ${point}`) // Format each bullet point with its index
+            .join("\n\n") || "Not available",
+      },
+      {
+        title: "4. Fixes & Recommendations",
+        content:
+          `Fix 1: Implement an Automated Follow-Up System\n\n` +
+          `- What: Replace manual DM follow-up with email automation.\n` +
+          `- Why: Improve lead nurturing and booking rate.\n` +
+          `- How: Use CRM + Email Marketing tools\n` +
+          `- Priority: 1\n\n` +
+          `Fix 2: Refine Sales Messaging and Value Proposition\n\n` +
+          `- What: Revise pitch and align expectations.\n` +
+          `- Why: Increase close rates.\n` +
+          `- How: Get client feedback and improve storytelling.\n` +
+          `- Priority: 2`,
+      },
+      {
+        title: "5. Call to Action",
+        content:
+          report?.call_to_action ||
+          "Schedule a call with us to implement these changes and grow your revenue.",
+      },
+    ];
+  };
+
   const meta = lead
     ? {
-        title: `Agentic Flow | ${lead.company} Lead Details`,
-        description: `View detailed information about ${lead.company}`,
+        title: `Agentic Flow | ${lead.company_name} Lead Details`,
+        description: `View detailed information about ${lead.company_name}`,
       }
     : ClientPageMeta.leadDetailPage;
 
@@ -237,8 +246,8 @@ const KairoLeadDetailsPage = () => {
   return (
     <DashboardLayout role="client" meta={meta}>
       <DashboardHeader
-        title={lead.company}
         hasBackButton={true}
+        title={lead.company_name}
         onBackClick={() => router.push("/client/leadgen-system/kairo")}
       />
       <div className="flex-1 p-6 md:p-8 pt-6 space-y-8 ">
@@ -247,24 +256,25 @@ const KairoLeadDetailsPage = () => {
         {/*==================== End of Lead Score & Company Overview ====================*/}
 
         {/*==================== Sales Report ====================*/}
-        <Card className="border-none bg-transparent">
-          <CardHeader className="flex flex-row items-center pb-3 relative">
-            <div className="flex-1"></div>
-            <div className="flex-1 text-center">
-              <CardTitle className="flex items-center justify-center gap-2 text-2xl">
-                <FileText className="h-5 w-5 text-purple-400" />
-                Kairo Audit Report
-              </CardTitle>
-              <CardDescription className="text-lg pt-2 text-slate-300">
-                Comprehensive analysis of {lead.company} for sales preparation
-              </CardDescription>
-            </div>
-            <div className="flex-1 flex justify-end">
+        <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/30 overflow-hidden">
+          {/*==================== Report Header ====================*/}
+          <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-4 sm:px-8 py-6 border-b border-blue-900/30">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="text-center sm:text-left">
+                <h1 className="text-lg sm:text-xl font-bold text-white flex items-center justify-center sm:justify-start gap-3">
+                  <FileText className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400" />
+                  Kairo Audit Report
+                </h1>
+                <p className="text-slate-300 mt-1 text-sm sm:text-base">
+                  Here is the detailed audit report by Kairo for
+                  {lead.company_name}
+                </p>
+              </div>
               <Button
                 variant="outline"
                 disabled={downloading}
-                onClick={handleDownload}
-                className="bg-slate-800/50 border-slate-700 "
+                onClick={() => handleDownload("report")}
+                className="bg-transparent border-slate-600 hover:bg-slate-700/50 w-full sm:w-auto"
               >
                 {downloading ? (
                   <>
@@ -279,35 +289,32 @@ const KairoLeadDetailsPage = () => {
                 )}
               </Button>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {lead.salesReport?.map((section, index) => (
+          </div>
+          {/*==================== End of Report Header ====================*/}
+
+          {/*==================== Report Content ====================*/}
+          <div className="px-8 py-8">
+            <div className="prose prose-invert max-w-none space-y-8">
+              {formatReport(lead).map((section, index) => (
                 <div
                   key={index}
-                  className="group hover:bg-blue-800/10 transition-colors duration-200 rounded-xl overflow-hidden bg-slate-900/30 "
+                  className="border-b border-blue-900/30 pb-6 last:border-b-0 last:pb-0"
                 >
-                  <div className="bg-gradient-to-r from-purple-800/30 to-purple-900/20 px-6 py-4 ">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-white flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-purple-400" />
-                        {section.title}
-                      </h3>
-                      <div className="text-xs text-slate-400 bg-slate-700/50 px-2 py-1 rounded">
-                        Section {index + 1}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <div className="text-sm text-slate-300 leading-relaxed whitespace-pre-line">
-                      {section.content}
-                    </div>
+                  <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+                    <span className="text-purple-400 font-mono text-sm bg-purple-400/10 px-2 py-1 rounded-full">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    {section.title}
+                  </h2>
+                  <div className="text-slate-300 leading-10 whitespace-pre-line pl-8">
+                    {section.content}
                   </div>
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+          {/*==================== End of Report Content ====================*/}
+        </div>
         {/*==================== End of Sales Report ====================*/}
       </div>
     </DashboardLayout>

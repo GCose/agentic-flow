@@ -1,5 +1,4 @@
 import { useState } from "react";
-// import { NextApiRequest, NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth-context";
@@ -60,96 +59,131 @@ const LoginPage: NextPage = () => {
       <Head>
         <title>Agentic Flow | Login</title>
         <meta name="description" content="Login to Agentic Flow" />
+        <link rel="icon" href="/images/Icon.png" />
       </Head>
 
-      <div className="flex min-h-screen w-screen items-center justify-center">
-        <BackgroundElements />
+      <div className="grid min-h-screen w-screen lg:grid-cols-2">
+        {/*==================== Left Side - Visual Content ====================*/}
+        <div className="relative hidden lg:flex lg:items-center lg:justify-center bg-transparent">
+          <BackgroundElements />
 
-        <Card className="w-full max-w-md border border-blue-500/20 bg-transparent min-[600px]: m-4 z-10">
-          <CardHeader className="space-y-1">
-            <div className="flex items-center justify-center mb-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full">
-                <Image
-                  width={200}
-                  height={200}
-                  alt="ITCA Logo"
-                  className="mr-2"
-                  src="/images/Icon.png"
-                />
-              </div>
+          <div className="relative z-10 text-center text-white">
+            <div className="mb-8">
+              <Image
+                width={120}
+                height={120}
+                className="mx-auto"
+                src="/images/Icon.png"
+                alt="Agentic Flow Logo"
+              />
             </div>
-            <CardTitle className="text-2xl text-center">Agentic Flow</CardTitle>
-            <CardDescription className="text-center">
-              Enter your credentials to access your dashboard
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form
-              onSubmit={handleSubmit}
-              className="space-y-4 flex flex-col gap-4"
-            >
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  required
-                  id="email"
-                  type="email"
-                  value={email}
-                  placeholder="your@email.com"
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
+            <h1 className="text-4xl font-bold mb-4">Welcome to Agentic Flow</h1>
+            <p className="text-xl text-blue-200">Leveraging AI to Boost ROI</p>
+          </div>
+        </div>
+        {/*==================== End of Left Side - Visual Content ====================*/}
 
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
+        {/*==================== Right Side - Login Form ====================*/}
+        <div className="bg-gradient-to-r from-blue-800/10 to-blue-900/10 flex items-center justify-center p-1 md:p-8">
+          <Card className="w-full max-w-md border-0 shadow-none bg-transparent">
+            <CardHeader className="space-y-1">
+              <div className="flex items-center justify-center mb-4 lg:hidden">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full">
+                  <Image
+                    width={200}
+                    height={200}
+                    alt="ITCA Logo"
+                    className="mr-2"
+                    src="/images/Icon.png"
+                  />
+                </div>
+              </div>
+              <CardTitle className="text-3xl font-bold text-center text-gray-50">
+                Sign In
+              </CardTitle>
+              <CardDescription className="text-center text-gray-400">
+                Enter your credentials to access your dashboard
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form
+                onSubmit={handleSubmit}
+                className="space-y-4 flex flex-col gap-4"
+              >
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-gray-300">
+                    Email
+                  </Label>
                   <Input
                     required
-                    id="password"
-                    value={password}
-                    placeholder="••••••••"
-                    type={showPassword ? "text" : "password"}
-                    onChange={(e) => setPassword(e.target.value)}
+                    id="email"
+                    type="email"
+                    value={email}
+                    placeholder="your@email.com"
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="border-gray-300 focus:border-blue-500"
                   />
-                  <Button
-                    size="icon"
-                    type="button"
-                    variant="ghost"
-                    className="absolute right-0 top-0 h-full px-3"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                    <span className="sr-only">
-                      {showPassword ? "Hide password" : "Show password"}
-                    </span>
-                  </Button>
                 </div>
-              </div>
 
-              {error && (
-                <div className="text-sm text-destructive text-center">
-                  {error}
+                <div className="space-y-2">
+                  <Label htmlFor="password" className="text-gray-300">
+                    Password
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      required
+                      id="password"
+                      value={password}
+                      placeholder="••••••••"
+                      type={showPassword ? "text" : "password"}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="border-slate-300 focus:border-blue-500"
+                    />
+                    <Button
+                      size="icon"
+                      type="button"
+                      variant="ghost"
+                      className="absolute right-0 top-0 h-full px-3 text-slate-500 hover:text-slate-700"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                      <span className="sr-only">
+                        {showPassword ? "Hide password" : "Show password"}
+                      </span>
+                    </Button>
+                  </div>
                 </div>
-              )}
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
-              </Button>
+                {error && (
+                  <div className="text-sm text-red-600 text-center">
+                    {error}
+                  </div>
+                )}
 
-              <div className="text-center flex flex-col gap-2 text-xs text-muted-foreground">
-                <p>Use the following demo credentials:</p>
-                <p className="mt-1">Admin: admin@example.com / admin123</p>
-                <p>Videographer: video@example.com / video123</p>
-                <p>Designer: design@example.com / design123</p>
-                <p>Client: client@example.com / client123</p>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
+                <Button
+                  type="submit"
+                  className="w-full from-blue-900 via-blue-900 to-blue-500 hover:bg-blue-700"
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Logging in..." : "Login"}
+                </Button>
+
+                {/* <div className="text-center flex flex-col gap-2 text-xs text-muted-foreground">
+                  <p>Use the following demo credentials:</p>
+                  <p className="mt-1">Admin: admin@example.com / admin123</p>
+                  <p>Videographer: video@example.com / video123</p>
+                  <p>Designer: design@example.com / design123</p>
+                  <p>Client: client@example.com / client123</p>
+                </div> */}
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+        {/*==================== End of Right Side - Login Form ====================*/}
       </div>
     </>
   );

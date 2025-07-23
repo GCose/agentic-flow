@@ -47,11 +47,13 @@ const AiroLeadDetailsPage = () => {
         ? lead?.sales_strategy?.modular_pitch
             .map(
               (item: {
-                module_name: string;
-                module: string;
-                script: string;
+                module_name?: string;
+                module?: string;
+                script?: string;
+                content?: string;
               }) => {
-                return `${item.module_name}:\n${item.script}`;
+                const moduleTitle = item.module_name || item.module || "";
+                return `${moduleTitle}\n\n${item.script || item.content || ""}`;
               }
             )
             .join("\n\n")

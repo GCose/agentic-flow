@@ -112,7 +112,7 @@ const LoginPage: NextPage = () => {
                 className="space-y-4 flex flex-col gap-4"
               >
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-gray-400">
+                  <Label htmlFor="email" className="text-gray-300">
                     Email
                   </Label>
                   <Input

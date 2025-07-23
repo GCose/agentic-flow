@@ -1,4 +1,3 @@
-// hooks/use-kairo.ts
 import useSWR from "swr";
 import axios from "axios";
 

@@ -42,6 +42,24 @@ const AiroLeadDetailsPage = () => {
     { title: "Handoff Message", content: lead?.sales_strategy.handoff_message },
     { title: "Memory Log", content: lead?.sales_strategy.memory_log },
     {
+      title: "Modular Pitch",
+      content: lead?.sales_strategy?.modular_pitch
+        ? lead?.sales_strategy?.modular_pitch
+            .map(
+              (item: {
+                module_name?: string;
+                module?: string;
+                script?: string;
+                content?: string;
+              }) => {
+                const moduleTitle = item.module_name || item.module || "";
+                return `${moduleTitle}\n\n${item.script || item.content || ""}`;
+              }
+            )
+            .join("\n")
+        : "No modular pitch available",
+    },
+    {
       title: "Narrative Breakdown",
       content: lead?.sales_strategy?.narrative_breakdown
         ? Object.entries(lead.sales_strategy.narrative_breakdown)
@@ -93,7 +111,7 @@ const AiroLeadDetailsPage = () => {
               .split("_")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" "),
-            content: Object.entries(value)
+            content: Object.entries(value || "")
               .map(
                 ([subKey, subValue]) =>
                   `${subKey
@@ -109,7 +127,7 @@ const AiroLeadDetailsPage = () => {
               .split("_")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" "),
-            content: value.toString(),
+            content: value?.toString() ?? "N/A",
           };
         }
       })

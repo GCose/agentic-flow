@@ -26,7 +26,7 @@ interface AuthProviderProps {
 const MOCK_USERS: Array<User & { password: string }> = [
   {
     id: "1",
-    email: "office@agenticflow.gm",
+    email: "admin@agenticflow.gm",
     password: "nextgen@123",
     name: "NextGen Agency",
     role: "admin",
@@ -47,14 +47,14 @@ const MOCK_USERS: Array<User & { password: string }> = [
   },
   {
     id: "4",
-    email: "office@aftermath.com",
+    email: "aftermath@agenticflow.gm",
     password: "aftermath@123",
     name: "Aftermath Agency",
     role: "client",
   },
   {
     id: "5",
-    email: "nextgen@agenticflow.com",
+    email: "nextgen@agenticflow.gm",
     password: "nextgen@123",
     name: "NextGen Agency",
     role: "client",

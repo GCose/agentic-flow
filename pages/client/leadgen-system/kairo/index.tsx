@@ -7,7 +7,8 @@ import { useLeads } from "@/hooks/use-kairo";
 import router from "next/router";
 
 const KairoSubPage = () => {
-  const { leads, isLoading, error, refresh } = useLeads();
+  const { leads: rawLeads, isLoading, error, refresh } = useLeads();
+  const leads = Array.isArray(rawLeads) ? rawLeads : [];
 
   console.log("Kairo SubPage - Leads Data:", leads);
   return (

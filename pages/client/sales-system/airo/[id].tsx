@@ -56,7 +56,7 @@ const AiroLeadDetailsPage = () => {
                 return `${moduleTitle}\n\n${item.script || item.content || ""}`;
               }
             )
-            .join("\n\n")
+            .join("\n")
         : "No modular pitch available",
     },
     {

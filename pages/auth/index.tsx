@@ -59,6 +59,7 @@ const LoginPage: NextPage = () => {
       <Head>
         <title>Agentic Flow | Login</title>
         <meta name="description" content="Login to Agentic Flow" />
+        <link rel="icon" href="/images/Icon.png" />
       </Head>
 
       <div className="grid min-h-screen w-screen lg:grid-cols-2">
@@ -78,14 +79,14 @@ const LoginPage: NextPage = () => {
             </div>
             <h1 className="text-4xl font-bold mb-4">Welcome to Agentic Flow</h1>
             <p className="text-xl text-blue-200">
-              Streamline your workflow with intelligent automation
+              Leveraging AI to Boost ROI
             </p>
           </div>
         </div>
         {/*==================== End of Left Side - Visual Content ====================*/}
 
         {/*==================== Right Side - Login Form ====================*/}
-        <div className="flex items-center justify-center p-8 bg-gray-50/5 ">
+        <div className="flex items-center justify-center p-1 md:p-8 bg-blue-900/20 m-2 md:rounded-4xl md:m-10">
           <Card className="w-full max-w-md border-0 shadow-none bg-transparent">
             <CardHeader className="space-y-1">
               <div className="flex items-center justify-center mb-4 lg:hidden">
@@ -99,7 +100,7 @@ const LoginPage: NextPage = () => {
                   />
                 </div>
               </div>
-              <CardTitle className="text-2xl text-center text-gray-100">
+              <CardTitle className="text-3xl font-bold text-center text-gray-50">
                 Sign In
               </CardTitle>
               <CardDescription className="text-center text-gray-400">
@@ -127,7 +128,7 @@ const LoginPage: NextPage = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-gray-400">
+                  <Label htmlFor="password" className="text-gray-300">
                     Password
                   </Label>
                   <div className="relative">
@@ -167,7 +168,7 @@ const LoginPage: NextPage = () => {
 
                 <Button
                   type="submit"
-                  className="w-full bg-blue-600 hover:bg-blue-700"
+                  className="w-full from-blue-900 via-blue-900 to-blue-500 hover:bg-blue-700"
                   disabled={isLoading}
                 >
                   {isLoading ? "Logging in..." : "Login"}

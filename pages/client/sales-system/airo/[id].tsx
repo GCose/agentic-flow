@@ -93,7 +93,7 @@ const AiroLeadDetailsPage = () => {
               .split("_")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" "),
-            content: Object.entries(value)
+            content: Object.entries(value || "")
               .map(
                 ([subKey, subValue]) =>
                   `${subKey
@@ -109,7 +109,7 @@ const AiroLeadDetailsPage = () => {
               .split("_")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" "),
-            content: value.toString(),
+            content: value?.toString() ?? "N/A",
           };
         }
       })

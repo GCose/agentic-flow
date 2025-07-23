@@ -23,7 +23,7 @@ const AiroSubPage = () => {
           title="Manage and track leads that have shown interest in your products or services."
           data={leads}
           isLoading={isLoading}
-          error={error}
+          // error={error}
           onRefresh={async () => {
             await refresh();
           }}

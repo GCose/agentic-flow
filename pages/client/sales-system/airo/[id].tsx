@@ -57,13 +57,65 @@ const AiroLeadDetailsPage = () => {
     },
   ];
 
-  const salesPitch =
-    lead?.sales_strategy.modular_pitch?.map(
-      (item: { module_type: string; content: string }) => ({
-        title: item.module_type,
-        content: item.content,
+  const salesPitch = lead?.sales_pitch
+    ? Object.entries(lead.sales_pitch).map(([key, value]) => {
+        if (Array.isArray(value)) {
+          return {
+            title: key
+              .split("_")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" "),
+            content: value
+              .map((item) => {
+                if (typeof item === "string") {
+                  return `- ${item}`;
+                } else if (typeof item === "object") {
+                  return Object.entries(item)
+                    .map(
+                      ([subKey, subValue]) =>
+                        `${subKey
+                          .split("_")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ")}: ${subValue}`
+                    )
+                    .join("\n");
+                }
+                return item;
+              })
+              .join("\n"),
+          };
+        } else if (typeof value === "object") {
+          return {
+            title: key
+              .split("_")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" "),
+            content: Object.entries(value)
+              .map(
+                ([subKey, subValue]) =>
+                  `${subKey
+                    .split("_")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}: ${subValue}`
+              )
+              .join("\n"),
+          };
+        } else {
+          return {
+            title: key
+              .split("_")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" "),
+            content: value.toString(),
+          };
+        }
       })
-    ) || [];
+    : [];
+
+  console.log("Sales Pitch Confirmed:", lead);
 
   useEffect(() => {
     if (lead) {

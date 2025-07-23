@@ -53,7 +53,7 @@ const AiroLeadDetailsPage = () => {
                 content?: string;
               }) => {
                 const moduleTitle = item.module_name || item.module || "";
-                return `${moduleTitle}\n\n${item.script || item.content || ""}`;
+                return `\n${moduleTitle}\n${item.script || item.content || ""}`;
               }
             )
             .join("\n")

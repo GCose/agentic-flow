@@ -13,7 +13,34 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const LeadOverviewCard = ({ lead }: any) => {
+interface Lead {
+  lead_analysis?: {
+    lead_score?: number;
+    summary?: string;
+    address?: string;
+    company_size?: string;
+    annual_revenue?: string;
+    industry?: string;
+  };
+  report?: {
+    report_section?: {
+      audit_scorecard?: { overall_funnel_score: { score: number } }[];
+      email?: string;
+      phone_number?: string;
+      address?: string;
+    };
+  };
+  created_at?: string;
+  updated_at?: string;
+  company_name?: string;
+  email?: string;
+  phone?: string;
+  website_url?: string;
+  summary?: { writer_report?: { summary?: string } };
+  industry?: string;
+}
+
+const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
   const getLeadScoreColor = (score: number) => {
     if (score >= 80) return "text-emerald-500";
     if (score >= 60) return "text-amber-500";
@@ -35,14 +62,15 @@ const LeadOverviewCard = ({ lead }: any) => {
                   className={cn(
                     "text-6xl font-bold mb-2",
                     getLeadScoreColor(
-                      lead.lead_analysis?.lead_score ||
-                        lead.report.report_section?.audit_scorecard[0]
-                          .overall_funnel_score.score
+                      lead.lead_analysis?.lead_score ??
+                        lead.report?.report_section?.audit_scorecard?.[0]
+                          ?.overall_funnel_score?.score ??
+                        0
                     )
                   )}
                 >
                   {lead.lead_analysis?.lead_score ||
-                    lead.report.report_section?.audit_scorecard[0]
+                    lead.report?.report_section?.audit_scorecard?.[0]
                       .overall_funnel_score.score}
                 </div>
                 <p className="text-slate-300 text-sm font-medium">Lead Score</p>
@@ -93,7 +121,7 @@ const LeadOverviewCard = ({ lead }: any) => {
                     <div>
                       <p className="text-xs text-muted-foreground">Email</p>
                       <p className="text-sm font-medium">
-                        {lead.email || lead?.report?.report_section.email}
+                        {lead.email || lead?.report?.report_section?.email}
                       </p>
                     </div>
                   </div>
@@ -105,7 +133,7 @@ const LeadOverviewCard = ({ lead }: any) => {
                       <p className="text-xs text-muted-foreground">Phone</p>
                       <p className="text-sm font-medium">
                         {lead.phone ||
-                          lead?.report?.report_section.phone_number}
+                          lead?.report?.report_section?.phone_number}
                       </p>
                     </div>
                   </div>
@@ -136,7 +164,7 @@ const LeadOverviewCard = ({ lead }: any) => {
                       <p className="text-xs text-muted-foreground">Address</p>
                       <p className="text-sm font-medium">
                         {lead.lead_analysis?.address ||
-                          lead?.report?.report_section.address}
+                          lead?.report?.report_section?.address}
                       </p>
                     </div>
                   </div>

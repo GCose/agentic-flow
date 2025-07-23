@@ -21,7 +21,7 @@ const AiroSubPage = () => {
         <LeadsTable
           basePath="/client/sales-system/airo"
           title="Manage and track leads that have shown interest in your products or services."
-          data={leads}
+          data={Array.isArray(leads) ? leads : leads?.leads || []}
           isLoading={isLoading}
           // error={error}
           onRefresh={async () => {

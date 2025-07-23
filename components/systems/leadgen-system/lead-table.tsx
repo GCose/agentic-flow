@@ -25,10 +25,34 @@ import {
 interface LeadsTableProps {
   title: string;
   basePath: string;
-  data: any;
+  data: Lead[];
   isLoading?: boolean;
   error?: string | null;
   onRefresh?: () => Promise<void> | void;
+}
+
+interface Lead {
+  id: string;
+  company_name: string;
+  strategy: string;
+  report?: {
+    report_section?: {
+      audit_scorecard?: {
+        overall_funnel_score?: Array<{
+          score?: number;
+        }>;
+      };
+    };
+  };
+  leadScore: number;
+  leadEntry: string;
+  industry: string;
+  salesCall: string;
+  created_at?: string;
+  lead_analysis?: {
+    lead_score?: number;
+    industry?: string;
+  };
 }
 
 const LeadsTable = ({
@@ -52,17 +76,6 @@ const LeadsTable = ({
     setIsRefreshing(false);
   };
 
-  interface Lead {
-    id: string;
-    company_name: string;
-    strategy: string;
-    report?: string;
-    leadScore: number;
-    leadEntry: string;
-    industry: string;
-    salesCall: string;
-  }
-
   const getLeadScoreBadgeClasses = (score: number) => {
     if (score >= 80)
       return "bg-emerald-500/10 text-emerald-500 border-emerald-500/20";
@@ -71,12 +84,8 @@ const LeadsTable = ({
     return "bg-rose-500/10 text-rose-500 border-rose-500/20";
   };
 
-  const filteredLeads = data.filter(
-    (lead: Lead) =>
-      lead.company_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      lead.strategy.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (lead.report &&
-        lead.report.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredLeads = data.filter((lead: Lead) =>
+    lead.company_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const sortedLeads = [...filteredLeads].sort((a, b) => {
@@ -157,7 +166,7 @@ const LeadsTable = ({
                 </TableHead>
                 <TableHead className="table-cell">Lead Captured</TableHead>
                 <TableHead className="table-cell">Industry</TableHead>
-                {filteredLeads.salesCall && (
+                {filteredLeads.some((lead) => lead.salesCall) && (
                   <TableHead className="table-cell">Sales Call</TableHead>
                 )}
                 <TableHead className="text-right">Actions</TableHead>
@@ -191,14 +200,22 @@ const LeadsTable = ({
                         variant="outline"
                         className={`${getLeadScoreBadgeClasses(
                           Number(
-                            lead?.report?.report_section?.audit_scorecard[0]
-                              ?.overall_funnel_score?.score
+                            Array.isArray(
+                              lead?.report?.report_section?.audit_scorecard
+                            )
+                              ? lead.report.report_section.audit_scorecard[0]
+                                  ?.overall_funnel_score.score
+                              : undefined
                           )
                         )} font-medium text-md`}
                       >
                         {Number(
-                          lead?.report?.report_section?.audit_scorecard[0]
-                            ?.overall_funnel_score?.score
+                          Array.isArray(
+                            lead?.report?.report_section?.audit_scorecard
+                          )
+                            ? lead.report.report_section.audit_scorecard[0]
+                                ?.overall_funnel_score.score
+                            : undefined
                         )}
                       </Badge>
                     </TableCell>

@@ -127,7 +127,10 @@ const KairoLeadDetailsPage = () => {
     const insight = reportData.insight?.insights;
     const report = reportData.report?.report_section;
 
-    const getValue = (value: any, fallback = "Not available") =>
+    const getValue = (
+      value: string | number | null | undefined,
+      fallback = "Not available"
+    ) =>
       value !== null && value !== undefined && value !== "" ? value : fallback;
     const formatKey = (key: string) => {
       return key

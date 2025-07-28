@@ -6,7 +6,7 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export const useLeads = () => {
   const { data, error, isLoading, mutate } = useSWR<{ leads: any }>(
-    "http://178.63.40.80:5500/api/leads/",
+    "https://178.63.40.80:5500/api/leads/",
     fetcher
   );
 

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// hooks/use-kairo.ts
 import useSWR from "swr";
 import axios from "axios";
 
@@ -5,7 +7,7 @@ const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
 export const useLeads = () => {
   const { data, error, isLoading, mutate } = useSWR<{ leads: any }>(
-    "http://178.63.40.80:5500/api/leads/",
+    "https://178.63.40.80:5500/api/leads/",
     fetcher
   );
 
@@ -23,7 +25,7 @@ export const useLeads = () => {
 export const useLead = (id?: string | number) => {
   const shouldFetch = !!id;
   const { data, error, isLoading, mutate } = useSWR<any>(
-    shouldFetch ? `http://178.63.40.80:5500/api/leads/${id}/` : null,
+    shouldFetch ? `https://178.63.40.80:5500/api/leads/${id}/` : null,
     fetcher
   );
 

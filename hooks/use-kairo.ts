@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// hooks/use-kairo.ts
 import useSWR from "swr";
 import axios from "axios";
 

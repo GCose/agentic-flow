@@ -16,6 +16,8 @@ const KairoLeadDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
 
+  console.log("Lead Dataaa", lead);
+
   useEffect(() => {
     if (lead || error) {
       setLoading(false);
@@ -255,7 +257,36 @@ const KairoLeadDetailsPage = () => {
       />
       <div className="flex-1 p-6 md:p-8 pt-6 space-y-8 ">
         {/*==================== Lead Score & Company Overview ====================*/}
-        <LeadOverviewCard lead={lead} />
+        <LeadOverviewCard
+          lead={Object.fromEntries(
+            Object.entries(lead).map(([key, value]) => {
+              if (
+                typeof value === "object" &&
+                value !== null &&
+                !Array.isArray(value)
+              ) {
+                // Format object as readable string
+                return [
+                  key,
+                  Object.entries(value)
+                    .map(
+                      ([subKey, subValue]) =>
+                        `${subKey
+                          .split("_")
+                          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                          .join(" ")}: ${
+                          typeof subValue === "object" && subValue !== null
+                            ? JSON.stringify(subValue)
+                            : subValue
+                        }`
+                    )
+                    .join("\n"),
+                ];
+              }
+              return [key, value];
+            })
+          )}
+        />
         {/*==================== End of Lead Score & Company Overview ====================*/}
 
         {/*==================== Sales Report ====================*/}

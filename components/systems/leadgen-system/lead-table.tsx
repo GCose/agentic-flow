@@ -29,6 +29,7 @@ interface LeadsTableProps {
   isLoading?: boolean;
   error?: string | null;
   onRefresh?: () => Promise<void> | void;
+  onDelete: (id: string) => Promise<void> | void;
 }
 
 interface Lead {
@@ -62,11 +63,13 @@ const LeadsTable = ({
   isLoading = false,
   error = null,
   onRefresh,
+  onDelete,
 }: LeadsTableProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortField, setSortField] = useState<keyof Lead>("leadScore");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [isRefreshing, setIsRefreshing] = useState(false);
+  // Removed incorrect destructuring of onDelete
   const router = useRouter();
 
   const handleRefresh = async () => {
@@ -250,11 +253,14 @@ const LeadsTable = ({
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
-                          onClick={() => handleViewDetails(lead.id)}
+                        // onClick={() => handleViewDetails(lead.id)}
                         >
                           View Details
                         </DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">
+                        <DropdownMenuItem
+                          className="text-destructive"
+                          onClick={() => onDelete(lead.id)}
+                        >
                           Delete Lead
                         </DropdownMenuItem>
                       </DropdownMenuContent>

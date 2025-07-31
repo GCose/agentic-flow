@@ -18,6 +18,8 @@ const AiroLeadDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState<string | null>(null);
 
+  console.log("Lead", lead);
+
   const salesReport = [
     { title: "Summary", content: lead?.lead_analysis.summary },
     { title: "Industry", content: lead?.lead_analysis.industry },
@@ -44,19 +46,33 @@ const AiroLeadDetailsPage = () => {
     {
       title: "Modular Pitch",
       content: lead?.sales_strategy?.modular_pitch
-        ? lead?.sales_strategy?.modular_pitch
-            .map(
-              (item: {
-                module_name?: string;
-                module?: string;
-                script?: string;
-                content?: string;
-              }) => {
-                const moduleTitle = item.module_name || item.module || "";
-                return `${moduleTitle}\n\n${item.script || item.content || ""}`;
+        ? Object.entries(lead.sales_strategy.modular_pitch)
+            .map(([key, value]) => {
+              const formattedKey = key
+                .split("_")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ");
+              if (typeof value === "object" && value !== null) {
+                return (
+                  formattedKey +
+                  "\n\n" +
+                  Object.entries(value)
+                    .map(
+                      ([subKey, subValue]) =>
+                        `${subKey
+                          .split("_")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ")}: ${subValue}`
+                    )
+                    .join("\n")
+                );
               }
-            )
-            .join("\n")
+              return `${formattedKey}\n\n${value}`;
+            })
+            .join("\n\n")
         : "No modular pitch available",
     },
     {

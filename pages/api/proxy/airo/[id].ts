@@ -18,7 +18,7 @@ export default async function handler(
     return res.status(400).json({ message: "Invalid ID", status: 400 });
   }
 
-  const url = `https://178.63.40.80:5500/api/leads/${id}/`;
+  const url = `https://api.ngaagenticflow.agency/warmlead/api/leads/${id}/`;
 
   try {
     if (req.method === "GET") {

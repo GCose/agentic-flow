@@ -30,3 +30,14 @@ export const useLead = (id?: string | number) => {
     refresh: mutate,
   };
 };
+
+export const useDeleteLead = () => {
+  const deleteLead = async (id: string | number) => {
+    if (!id) throw new Error("Lead ID is required");
+
+    const response = await axios.delete(`/api/proxy/airo/${id}`);
+    return response.data;
+  };
+
+  return { deleteLead };
+};

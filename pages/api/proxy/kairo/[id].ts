@@ -1,47 +1,52 @@
-// pages/api/proxy/kairo/[id].ts
-import type { NextApiRequest, NextApiResponse } from "next";
+// pages/api/proxy/airo/[id].ts
 import axios from "axios";
 import https from "https";
+import type { NextApiRequest, NextApiResponse } from "next";
 
-const httpsAgent = new https.Agent({ rejectUnauthorized: false });
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false, // Accept self-signed SSL cert (only in dev!)
+});
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { id } = req.query;
+  console.log("ID:", id);
 
-  if (!id) {
-    return res.status(400).json({ error: "Missing lead ID" });
+  if (!id || Array.isArray(id)) {
+    return res.status(400).json({ message: "Invalid ID", status: 400 });
   }
 
-  try {
-    const response = await axios.get(
-      `https://178.63.40.80:5600/api/audits/${id}/`,
-      { httpsAgent }
-    );
-    res.status(200).json(response.data);
-  } catch (error: unknown) {
-    let message = "Unknown error";
-    let status = undefined;
-    let responseData = undefined;
+  const url = `https://api.ngaagenticflow.agency/audits/api/audits/${id}/`;
 
-    if (axios.isAxiosError(error)) {
-      message = error.message;
-      status = error.response?.status;
-      responseData = error.response?.data;
-    } else if (error instanceof Error) {
-      message = error.message;
+  try {
+    if (req.method === "GET") {
+      const response = await axios.get(url, { httpsAgent });
+      return res.status(200).json(response.data);
     }
 
-    console.error("🔥 Proxy lead error:", {
-      message,
-      status,
-      response: responseData,
-    });
-    res.status(500).json({
-      error: "Failed to fetch lead",
-      details: message,
-    });
+    if (req.method === "DELETE") {
+      const response = await axios.delete(url, { httpsAgent });
+      return res.status(response.status).json({
+        message: "Deleted successfully",
+        status: response.status,
+        data: response.data || null,
+      });
+    }
+
+    return res.status(405).json({ message: "Method not allowed", status: 405 });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      return res.status(error.response?.status || 500).json({
+        message: error.message,
+        status: error.response?.status || 500,
+        details: error.response?.data,
+      });
+    }
+
+    return res
+      .status(500)
+      .json({ message: "Unexpected server error", status: 500 });
   }
 }

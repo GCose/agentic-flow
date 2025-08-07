@@ -18,6 +18,8 @@ const AiroLeadDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState<string | null>(null);
 
+  console.log("Lead", lead);
+
   const salesReport = [
     { title: "Summary", content: lead?.lead_analysis.summary },
     { title: "Industry", content: lead?.lead_analysis.industry },
@@ -44,6 +46,7 @@ const AiroLeadDetailsPage = () => {
     {
       title: "Modular Pitch",
       content: lead?.sales_strategy?.modular_pitch
+<<<<<<< HEAD
         ? lead?.sales_strategy?.modular_pitch
             .map(
               (item: {
@@ -54,9 +57,35 @@ const AiroLeadDetailsPage = () => {
               }) => {
                 const moduleTitle = item.module_name || item.module || "";
                 return `\n${moduleTitle}\n${item.script || item.content || ""}`;
+=======
+        ? Object.entries(lead.sales_strategy.modular_pitch)
+            .map(([key, value]) => {
+              const formattedKey = key
+                .split("_")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ");
+              if (typeof value === "object" && value !== null) {
+                return (
+                  formattedKey +
+                  "\n\n" +
+                  Object.entries(value)
+                    .map(
+                      ([subKey, subValue]) =>
+                        `${subKey
+                          .split("_")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join(" ")}: ${subValue}`
+                    )
+                    .join("\n")
+                );
+>>>>>>> 3d727bd44f21835d5af32f61818962aa8dba5edb
               }
-            )
-            .join("\n")
+              return `${formattedKey}\n\n${value}`;
+            })
+            .join("\n\n")
         : "No modular pitch available",
     },
     {

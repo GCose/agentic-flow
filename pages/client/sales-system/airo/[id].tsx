@@ -46,18 +46,6 @@ const AiroLeadDetailsPage = () => {
     {
       title: "Modular Pitch",
       content: lead?.sales_strategy?.modular_pitch
-<<<<<<< HEAD
-        ? lead?.sales_strategy?.modular_pitch
-            .map(
-              (item: {
-                module_name?: string;
-                module?: string;
-                script?: string;
-                content?: string;
-              }) => {
-                const moduleTitle = item.module_name || item.module || "";
-                return `\n${moduleTitle}\n${item.script || item.content || ""}`;
-=======
         ? Object.entries(lead.sales_strategy.modular_pitch)
             .map(([key, value]) => {
               const formattedKey = key
@@ -81,7 +69,6 @@ const AiroLeadDetailsPage = () => {
                     )
                     .join("\n")
                 );
->>>>>>> 3d727bd44f21835d5af32f61818962aa8dba5edb
               }
               return `${formattedKey}\n\n${value}`;
             })

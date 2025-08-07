@@ -2,13 +2,22 @@ import DashboardHeader from "@/components/dashboard/dashboard-header";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import LeadsTable from "@/components/systems/leadgen-system/lead-table";
 import { ClientPageMeta } from "@/page-meta/meta";
-import { useLeads } from "@/hooks/use-kairo";
+import { useLeads, useDeleteLead } from "@/hooks/use-kairo";
 
 import router from "next/router";
 
 const KairoSubPage = () => {
   const { leads: rawLeads, isLoading, error, refresh } = useLeads();
+  const { deleteLead } = useDeleteLead();
   const leads = Array.isArray(rawLeads) ? rawLeads : [];
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteLead(id);
+    } catch (err) {
+      console.error("Failed to delete lead:", err);
+    }
+  };
 
   console.log("Kairo SubPage - Leads Data:", leads);
   return (
@@ -29,6 +38,7 @@ const KairoSubPage = () => {
           onRefresh={async () => {
             await refresh();
           }}
+          onDelete={handleDelete}
         />
       </div>
     </DashboardLayout>

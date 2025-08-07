@@ -12,7 +12,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const response = await axios.get("https://178.63.40.80:5500/api/leads/", {
+    const response = await axios.get("https://api.ngaagenticflow.agency/warmlead/api/leads/", {
       httpsAgent,
     });
 

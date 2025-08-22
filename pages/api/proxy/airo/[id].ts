@@ -14,6 +14,29 @@ export default async function handler(
 ) {
   let client_id = req.query.client_id;
   const { id } = req.query;
+  if (req.method === "DELETE" && id && !Array.isArray(id)) {
+    // For DELETE, do not use client_id in the URL
+    const url = `https://api.ngaagenticflow.agency/warmlead/api/leads/${id}/`;
+    try {
+      const response = await axios.delete(url, { httpsAgent });
+      return res.status(response.status).json({
+        message: "Deleted successfully",
+        status: response.status,
+        data: response.data || null,
+      });
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return res.status(error.response?.status || 500).json({
+          message: error.message,
+          status: error.response?.status || 500,
+          details: error.response?.data,
+        });
+      }
+      return res.status(500).json({ message: "Unexpected server error", status: 500 });
+    }
+  }
+
+  // For GET and other methods, require client_id
   if (!client_id || Array.isArray(client_id)) {
     // Try to get from logged-in user
     const user = typeof window !== "undefined" ? loggedInUser() : null;

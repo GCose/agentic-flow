@@ -71,6 +71,9 @@ const LeadsTable = ({
   const [isRefreshing, setIsRefreshing] = useState(false);
   // Removed incorrect destructuring of onDelete
   const router = useRouter();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const handleRefresh = async () => {
     if (!onRefresh) return;
@@ -179,8 +182,7 @@ const LeadsTable = ({
               {sortedLeads.map((lead) => (
                 <TableRow
                   key={lead.id}
-                  onClick={() => handleViewDetails(lead.id)}
-                  className="border-blue-900/30 hover:bg-blue-600/10 cursor-pointer"
+                  className="border-blue-900/30 hover:bg-blue-600/10"
                 >
                   <TableCell className="font-medium">
                     {lead.company_name}
@@ -253,13 +255,16 @@ const LeadsTable = ({
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
-                        // onClick={() => handleViewDetails(lead.id)}
+                          onClick={() => handleViewDetails(lead.id)}
                         >
                           View Details
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="text-destructive"
-                          onClick={() => onDelete(lead.id)}
+                          onClick={() => {
+                            setPendingDeleteId(lead.id);
+                            setShowDeleteModal(true);
+                          }}
                         >
                           Delete Lead
                         </DropdownMenuItem>
@@ -295,8 +300,42 @@ const LeadsTable = ({
             </TableBody>
           </Table>
         </div>
-      </CardContent>
-    </Card>
+      {/* Delete Confirmation Modal - Styled to match team theme */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-950/80 backdrop-blur-sm">
+          <div className="bg-gradient-to-br from-blue-900/90 to-blue-950/95 border border-blue-900/40 rounded-2xl shadow-2xl p-8 w-full max-w-md text-white">
+            <h3 className="text-xl font-bold mb-3 text-purple-400">Confirm Delete</h3>
+            <p className="mb-6 text-slate-300">Are you sure you want to delete this lead? This action cannot be undone.</p>
+            <div className="flex justify-end gap-3">
+              <Button variant="outline" className="border-blue-900/40 text-slate-300 bg-transparent hover:bg-blue-900/30" onClick={() => { setShowDeleteModal(false); setPendingDeleteId(null); }}>
+                Cancel
+              </Button>
+              <Button
+                variant="destructive"
+                className="bg-rose-700/80 border-rose-700/40 text-white hover:bg-rose-800 flex items-center gap-2"
+                disabled={isDeleting}
+                onClick={async () => {
+                  if (pendingDeleteId) {
+                    setIsDeleting(true);
+                    await onDelete(pendingDeleteId);
+                    if (onRefresh) await onRefresh();
+                    setIsDeleting(false);
+                  }
+                  setShowDeleteModal(false);
+                  setPendingDeleteId(null);
+                }}
+              >
+                {isDeleting && (
+                  <span className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></span>
+                )}
+                Delete
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+    </CardContent>
+  </Card>
   );
 };
 

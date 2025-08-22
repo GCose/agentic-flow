@@ -18,6 +18,7 @@ const VideographerDashboard: NextPage = () => {
       </Head>
       <DashboardLayout
         role="videographer"
+        allowedRoles={['videographer']}
         meta={AdminPageMeta.videographerPage}
       >
         <VideographerHeader />

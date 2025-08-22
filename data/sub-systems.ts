@@ -38,6 +38,14 @@ export const clientDashboardSystem: SubSystemsItem[] = [
     iconColor: "text-green-500",
     leadType: "client/sales-system",
   },
+  {
+    title: "Appointment Booking",
+    description: "Manage your appointments and meetings",
+    icon: CalendarClock,
+    bgColor: "bg-orange-500/10",
+    iconColor: "text-orange-500",
+    leadType: "client/appointment-booking",
+  },
   // {
   //   title: "Onboarding System",
   //   description: "Streamline client onboarding process",

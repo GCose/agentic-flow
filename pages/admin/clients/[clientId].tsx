@@ -160,7 +160,11 @@ const ClientDashboardPage: NextPage = () => {
 
   if (!client) {
     return (
-      <DashboardLayout meta={AdminPageMeta.clientDashboardPage}>
+      <DashboardLayout 
+        role="admin"
+        allowedRoles={['admin']}
+        meta={AdminPageMeta.clientDashboardPage}
+      >
         <div className="flex-1 h-screen space-y-4 p-8 pt-6 ">
           <div className="flex items-center">
             <Button
@@ -186,6 +190,8 @@ const ClientDashboardPage: NextPage = () => {
 
   return (
     <DashboardLayout
+      role="admin"
+      allowedRoles={['admin']}
       meta={{
         title: client ? `${client.name} | Dashboard` : "Client Dashboard",
         description: `Dashboard for ${client?.name || "client"}`,

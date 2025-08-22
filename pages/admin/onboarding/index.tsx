@@ -6,7 +6,7 @@ import type { NextPage } from "next";
 
 const OnboardingPage: NextPage = () => {
   return (
-    <DashboardLayout role="admin" meta={AdminPageMeta.onboardingPage}>
+    <DashboardLayout role="Administrator" meta={AdminPageMeta.onboardingPage}>
       <DashboardHeader title="Onboarding System" />
       <div className="flex-1 p-8 pt-6">
         <OnboardingWizard />

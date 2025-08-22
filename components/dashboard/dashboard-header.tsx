@@ -8,7 +8,7 @@ interface DashboardHeaderProps {
   hasBackButton?: boolean;
   onBackClick?: () => void;
   pageId?: string;
-  role?: "admin" | "client";
+  role?: "Administrator" | "Organization" | "Videographer" | "Designer" | "HR";
 }
 
 const DashboardHeader = ({

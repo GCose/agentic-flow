@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useAuth } from "@/contexts/auth-context";
+import { useAuth, useRole } from "@/hooks/use-auth-store";
 import Image from "next/image";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,37 +20,68 @@ import { NextPage } from "next";
 const LoginPage: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [localError, setLocalError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const { login, isAuthenticated } = useAuth();
+  const { login, isAuthenticated, isLoading, error, clearError } = useAuth();
+  const { role } = useRole();
   const router = useRouter();
 
-  // If already authenticated, redirect to appropriate dashboard
+  // Clear errors when component mounts or when inputs change
+  useEffect(() => {
+    clearError();
+    setLocalError("");
+  }, [clearError]);
+
+  // Handle navigation based on authentication status and role
+  useEffect(() => {
+    if (isAuthenticated && role) {
+      // Redirect based on user role
+      switch (role) {
+        case 'Administrator':
+          router.push('/admin');
+          break;
+        case 'Videographer':
+          router.push('/videographer');
+          break;
+        case 'Designer':
+          router.push('/designer');
+          break;
+        case 'Organization':
+          router.push('/org');
+          break;
+        default:
+          router.push('/org');
+      }
+    }
+  }, [isAuthenticated, role, router]);
+
+  // If already authenticated, show loading
   if (isAuthenticated) {
-    router.push("/admin");
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white">Redirecting...</div>
+      </div>
+    );
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
-      setError("Please enter both email and password");
+      setLocalError("Please enter both email and password");
       return;
     }
 
-    setIsLoading(true);
-    setError("");
+    setLocalError("");
+    clearError();
 
     try {
       await login(email, password);
-      // Redirect handled in auth context
+      // Navigation is handled in the useEffect above
     } catch {
-      setError("Invalid email or password");
-    } finally {
-      setIsLoading(false);
+      // Error is already set in the store, but we can also set a local error
+      setLocalError("Invalid email or password");
     }
   };
 
@@ -159,9 +190,9 @@ const LoginPage: NextPage = () => {
                   </div>
                 </div>
 
-                {error && (
+                {(error || localError) && (
                   <div className="text-sm text-red-600 text-center">
-                    {error}
+                    {error || localError}
                   </div>
                 )}
 
@@ -178,7 +209,7 @@ const LoginPage: NextPage = () => {
                   <p className="mt-1">Admin: admin@example.com / admin123</p>
                   <p>Videographer: video@example.com / video123</p>
                   <p>Designer: design@example.com / design123</p>
-                  <p>Client: client@example.com / client123</p>
+                  <p>Org: org@example.com / org123</p>
                 </div> */}
               </form>
             </CardContent>

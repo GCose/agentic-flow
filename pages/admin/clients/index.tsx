@@ -110,7 +110,11 @@ const ClientDashboardPage: NextPage = () => {
   };
 
   return (
-    <DashboardLayout meta={AdminPageMeta.clientsDashboardPage}>
+    <DashboardLayout  
+      role="Organization"
+      allowedRoles={['Administrator']}
+      meta={AdminPageMeta.clientsDashboardPage}
+    >
       <DashboardHeader title="Clients" />
 
       {/*==================== Client Content ====================*/}

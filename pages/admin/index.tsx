@@ -7,7 +7,7 @@ import { adminDashboardStats } from "@/data/stats-card-data";
 
 const DashboardPage = () => {
   return (
-    <DashboardLayout meta={AdminPageMeta.dashboardPage}>
+    <DashboardLayout role="Administrator" allowedRoles={['Administrator']} meta={AdminPageMeta.dashboardPage}>
       <DashboardHeader title="Overview" />
       <div className="flex-1 p-8 pt-6 ">
         {/*==================== Stats Overview ====================*/}

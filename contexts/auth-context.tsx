@@ -23,43 +23,43 @@ interface AuthProviderProps {
 }
 
 // Mock users for demonstration
-const MOCK_USERS: Array<User & { password: string }> = [
-  {
-    id: "1",
-    email: "admin@agenticflow.gm",
-    password: "nextgen@123",
-    name: "NextGen Agency",
-    role: "admin",
-  },
-  {
-    id: "2",
-    email: "video@example.com",
-    password: "video123",
-    name: "Video Producer",
-    role: "videographer",
-  },
-  {
-    id: "3",
-    email: "design@example.com",
-    password: "design123",
-    name: "Graphic Designer",
-    role: "designer",
-  },
-  {
-    id: "4",
-    email: "aftermath@agenticflow.gm",
-    password: "aftermath@123",
-    name: "Aftermath Agency",
-    role: "client",
-  },
-  {
-    id: "5",
-    email: "nextgen@agenticflow.gm",
-    password: "nextgen@123",
-    name: "NextGen Agency",
-    role: "client",
-  },
-];
+// const MOCK_USERS: Array<User & { password: string }> = [
+//   {
+//     id: "1",
+//     email: "admin@agenticflow.gm",
+//     password: "nextgen@123",
+//     name: "NextGen Agency",
+//     role: "admin",
+//   },
+//   {
+//     id: "2",
+//     email: "video@example.com",
+//     password: "video123",
+//     name: "Video Producer",
+//     role: "videographer",
+//   },
+//   {
+//     id: "3",
+//     email: "design@example.com",
+//     password: "design123",
+//     name: "Graphic Designer",
+//     role: "designer",
+//   },
+//   {
+//     id: "4",
+//     email: "aftermath@agenticflow.gm",
+//     password: "aftermath@123",
+//     name: "Aftermath Agency",
+//     role: "client",
+//   },
+//   {
+//     id: "5",
+//     email: "nextgen@agenticflow.gm",
+//     password: "nextgen@123",
+//     name: "NextGen Agency",
+//     role: "client",
+//   },
+// ];
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
@@ -109,14 +109,14 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       );
 
       // Redirect based on role
-      if (authenticatedUser.role === "admin") {
+      if (authenticatedUser.role === "Administrator") {
         router.push("/admin");
       } else if (authenticatedUser.role === "videographer") {
         router.push("/admin/role/videographer");
       } else if (authenticatedUser.role === "designer") {
         router.push("/admin/role/designer");
-      } else if (authenticatedUser.role === "client") {
-        router.push("/client");
+      } else if (authenticatedUser.role === "org") {
+        router.push("/org");
       }
     } catch (error) {
       console.error("Login error:", error);

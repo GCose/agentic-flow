@@ -1,11 +1,9 @@
 import Head from "next/head";
 import type { ReactNode } from "react";
-import { useEffect } from "react";
-import { useRouter } from "next/router";
 import DashboardSidebar from "../dashboard/dashboard-sidebar";
 import BackgroundElements from "../ui/background-elements";
-import { useAuth } from "@/contexts/auth-context";
 import { UserRole } from "@/types/user";
+import RoleBasedRoute from "@/components/auth/RoleBasedRoute";
 
 type Meta = {
   title: string;
@@ -17,31 +15,25 @@ interface DashboardLayoutProps {
   children: ReactNode;
   role?: UserRole;
   meta: Meta;
+  allowedRoles?: UserRole[];
+  requiredPermissions?: string[];
 }
 
-const DashboardLayout = ({ children, role, meta }: DashboardLayoutProps) => {
-  const { user, isAuthenticated, loading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      router.push("/auth/");
-    } else if (
-      !loading &&
-      isAuthenticated &&
-      user?.role !== role &&
-      role !== "admin"
-    ) {
-      if (user?.role === "admin") return;
-      else if (user?.role === "videographer")
-        router.push("/admin/videographer");
-      else if (user?.role === "designer") router.push("/admin/designer");
-      else if (user?.role === "client") router.push("/client");
-    }
-  }, [loading, isAuthenticated, user, router, role]);
+const DashboardLayout = ({ 
+  children, 
+  role, 
+  meta, 
+  allowedRoles,
+  requiredPermissions 
+}: DashboardLayoutProps) => {
+  // If allowedRoles is not provided, default to the specified role or common roles
+  const rolesAllowed = allowedRoles || (role ? [role] : ['Administrator', 'Organization', 'Videographer', 'Designer']);
 
   return (
-    <>
+    <RoleBasedRoute 
+      allowedRoles={rolesAllowed}
+      requiredPermissions={requiredPermissions}
+    >
       <Head>
         <title>{meta.title}</title>
         {meta.description && (
@@ -52,12 +44,12 @@ const DashboardLayout = ({ children, role, meta }: DashboardLayoutProps) => {
 
       <div className="flex h-screen w-screen overflow-hidden">
         <BackgroundElements />
-        <DashboardSidebar role={role} />
+        <DashboardSidebar />
         <main className="flex-1 w-full overflow-y-auto relative">
           <div className="relative z-10 w-full">{children}</div>
         </main>
       </div>
-    </>
+    </RoleBasedRoute>
   );
 };
 

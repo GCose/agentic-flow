@@ -16,6 +16,7 @@ const DesignerDashboard: NextPage = () => {
       </Head>
       <DashboardLayout
         role="designer"
+        allowedRoles={['designer']}
         meta={AdminPageMeta.graphicsDesignerPage}
       >
         <div className="flex-1 space-y-4 p-8 pt-6">

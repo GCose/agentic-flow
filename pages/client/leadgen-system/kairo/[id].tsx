@@ -218,7 +218,7 @@ const KairoLeadDetailsPage = () => {
                         if (Array.isArray(value)) {
                           return (
                             `${formatKey(key)}:\n` +
-                            value.map((v, i) => `  - ${v}`).join("\n")
+                            value.map((v) => `  - ${v}`).join("\n")
                           );
                         }
                         return `${formatKey(key)}: ${value}`;

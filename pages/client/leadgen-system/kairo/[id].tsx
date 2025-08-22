@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import jsPDF from "jspdf";
@@ -170,7 +172,10 @@ const KairoLeadDetailsPage = () => {
           .map(([key, value]) => {
             const pad = "  ".repeat(indent);
             if (typeof value === "object" && value !== null) {
-              return `${pad}${formatKey(key)}:\n${formatNested(value, indent + 1)}`;
+              return `${pad}${formatKey(key)}:\n${formatNested(
+                value,
+                indent + 1
+              )}`;
             }
             return `${pad}${formatKey(key)}: ${value}`;
           })
@@ -184,10 +189,10 @@ const KairoLeadDetailsPage = () => {
         title: "1. Executive Summary",
         content:
           `${getValue(report?.executive_summary)}\n\n` +
-          `**The Painful Reality of Lost Revenue:**\n${getValue(
+          `The Painful Reality of Lost Revenue:\n${getValue(
             report?.painful_reality_of_revenue
           )}\n\n` +
-          `**The Path to Recovery and Growth:**\n${getValue(
+          `The Path to Recovery and Growth:\n${getValue(
             report?.path_to_recovery_and_growth
           )}`,
       },
@@ -197,38 +202,34 @@ const KairoLeadDetailsPage = () => {
       },
       {
         title: "3. Insights",
-        content:
-          insight
-            ? formatNested(insight)
-            : "Not available",
+        content: insight ? formatNested(insight) : "Not available",
       },
-      
+
       {
         title: "4. Fixes & Recommendations",
-        content:
-          Array.isArray(report?.fixes_and_recommendations)
-            ? report?.fixes_and_recommendations
-                .map((fix, idx) => {
-                  if (typeof fix === "object" && fix !== null) {
-                    return (
-                      `${idx + 1}.\n` +
-                      Object.entries(fix)
-                        .map(([key, value]) => {
-                          if (Array.isArray(value)) {
-                            return (
-                              `${formatKey(key)}:\n` +
-                              value.map((v, i) => `  - ${v}`).join("\n")
-                            );
-                          }
-                          return `${formatKey(key)}: ${value}`;
-                        })
-                        .join("\n")
-                    );
-                  }
-                  return `${idx + 1}. ${fix}`;
-                })
-                .join("\n\n")
-            : "Not available",
+        content: Array.isArray(report?.fixes_and_recommendations)
+          ? report?.fixes_and_recommendations
+              .map((fix, idx) => {
+                if (typeof fix === "object" && fix !== null) {
+                  return (
+                    `${idx + 1}.\n` +
+                    Object.entries(fix)
+                      .map(([key, value]) => {
+                        if (Array.isArray(value)) {
+                          return (
+                            `${formatKey(key)}:\n` +
+                            value.map((v, i) => `  - ${v}`).join("\n")
+                          );
+                        }
+                        return `${formatKey(key)}: ${value}`;
+                      })
+                      .join("\n")
+                  );
+                }
+                return `${idx + 1}. ${fix}`;
+              })
+              .join("\n\n")
+          : "Not available",
       },
       {
         title: "5. Call to Action",
@@ -290,7 +291,7 @@ const KairoLeadDetailsPage = () => {
       />
       <div className="flex-1 p-6 md:p-8 pt-6 space-y-8 ">
         {/*==================== Lead Score & Company Overview ====================*/}
-  <LeadOverviewCard lead={lead} />
+        <LeadOverviewCard lead={lead} />
         {/*==================== End of Lead Score & Company Overview ====================*/}
 
         {/*==================== Sales Report ====================*/}

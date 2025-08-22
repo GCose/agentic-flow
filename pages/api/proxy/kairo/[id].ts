@@ -2,6 +2,7 @@
 import axios from "axios";
 import https from "https";
 import type { NextApiRequest, NextApiResponse } from "next";
+import { loggedInUser } from "../../../../utils/auth";
 
 const httpsAgent = new https.Agent({
   rejectUnauthorized: false, // Accept self-signed SSL cert (only in dev!)
@@ -11,14 +12,20 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
+  let client_id = req.query.client_id;
   const { id } = req.query;
-  console.log("ID:", id);
-
-  if (!id || Array.isArray(id)) {
-    return res.status(400).json({ message: "Invalid ID", status: 400 });
+  if (!client_id || Array.isArray(client_id)) {
+    // Try to get from logged-in user
+    const user = typeof window !== "undefined" ? loggedInUser() : null;
+    client_id = user?.id;
   }
-
-  const url = `https://api.ngaagenticflow.agency/audits/api/audits/${id}/`;
+  if (!client_id) {
+    return res.status(400).json({ message: "Invalid client_id", status: 400 });
+  }
+  let url = `https://api.ngaagenticflow.agency/audits/api/${client_id}/audits/`;
+  if (id && !Array.isArray(id)) {
+    url += `${id}/`;
+  }
 
   try {
     if (req.method === "GET") {
@@ -26,7 +33,7 @@ export default async function handler(
       return res.status(200).json(response.data);
     }
 
-    if (req.method === "DELETE") {
+    if (req.method === "DELETE" && id && !Array.isArray(id)) {
       const response = await axios.delete(url, { httpsAgent });
       return res.status(response.status).json({
         message: "Deleted successfully",

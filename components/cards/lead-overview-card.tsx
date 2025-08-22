@@ -47,6 +47,15 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
     return "text-rose-500";
   };
 
+  // Safely get lead score
+  const leadScore =
+    lead.lead_analysis?.lead_score ??
+    (Array.isArray(lead.report?.report_section?.audit_scorecard) &&
+      lead.report?.report_section?.audit_scorecard.length > 0 &&
+      lead.report?.report_section?.audit_scorecard[0]?.overall_funnel_score?.score)
+      ? lead.lead_analysis?.lead_score ?? lead.report?.report_section?.audit_scorecard?.[0]?.overall_funnel_score?.score
+      : 0;
+
   console.log("Lead Overview Card Data:", lead);
 
   return (
@@ -61,17 +70,10 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                 <div
                   className={cn(
                     "text-6xl font-bold mb-2",
-                    getLeadScoreColor(
-                      lead.lead_analysis?.lead_score ??
-                        lead.report?.report_section?.audit_scorecard?.[0]
-                          ?.overall_funnel_score?.score ??
-                        0
-                    )
+                    getLeadScoreColor(Number(leadScore))
                   )}
                 >
-                  {lead.lead_analysis?.lead_score ||
-                    lead.report?.report_section?.audit_scorecard?.[0]
-                      .overall_funnel_score.score}
+                  {leadScore}
                 </div>
                 <p className="text-slate-300 text-sm font-medium">Lead Score</p>
               </div>
@@ -121,7 +123,8 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                     <div>
                       <p className="text-xs text-muted-foreground">Email</p>
                       <p className="text-sm font-medium">
-                        {lead.email || lead?.report?.report_section?.email}
+                        {lead.email}
+                         {  lead?.report?.report_section?.email}
                       </p>
                     </div>
                   </div>

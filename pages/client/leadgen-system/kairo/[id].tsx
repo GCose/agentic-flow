@@ -109,6 +109,7 @@ const KairoLeadDetailsPage = () => {
         painful_reality_of_revenue?: string;
         path_to_recovery_and_growth?: string;
         audit_scorecard?: string[];
+        fixes_and_recommendations?: string[];
       };
       deliverables?: {
         deliverables_list?: string[];
@@ -160,6 +161,24 @@ const KairoLeadDetailsPage = () => {
             .join("\n")
         : "Not available";
 
+    // Helper to format nested objects/arrays for insights
+    const formatNested = (obj: any, indent = 0): string => {
+      if (Array.isArray(obj)) {
+        return obj.map((item) => formatNested(item, indent)).join("\n");
+      } else if (typeof obj === "object" && obj !== null) {
+        return Object.entries(obj)
+          .map(([key, value]) => {
+            const pad = "  ".repeat(indent);
+            if (typeof value === "object" && value !== null) {
+              return `${pad}${formatKey(key)}:\n${formatNested(value, indent + 1)}`;
+            }
+            return `${pad}${formatKey(key)}: ${value}`;
+          })
+          .join("\n");
+      }
+      return String(obj);
+    };
+
     return [
       {
         title: "1. Executive Summary",
@@ -177,25 +196,39 @@ const KairoLeadDetailsPage = () => {
         content: scorecard,
       },
       {
-        title: "3. Key Insights",
+        title: "3. Insights",
         content:
-          insight?.bullets
-            ?.map((point, idx) => `${idx + 1}. ${point}`) // Format each bullet point with its index
-            .join("\n\n") || "Not available",
+          insight
+            ? formatNested(insight)
+            : "Not available",
       },
+      
       {
         title: "4. Fixes & Recommendations",
         content:
-          `Fix 1: Implement an Automated Follow-Up System\n\n` +
-          `- What: Replace manual DM follow-up with email automation.\n` +
-          `- Why: Improve lead nurturing and booking rate.\n` +
-          `- How: Use CRM + Email Marketing tools\n` +
-          `- Priority: 1\n\n` +
-          `Fix 2: Refine Sales Messaging and Value Proposition\n\n` +
-          `- What: Revise pitch and align expectations.\n` +
-          `- Why: Increase close rates.\n` +
-          `- How: Get client feedback and improve storytelling.\n` +
-          `- Priority: 2`,
+          Array.isArray(report?.fixes_and_recommendations)
+            ? report?.fixes_and_recommendations
+                .map((fix, idx) => {
+                  if (typeof fix === "object" && fix !== null) {
+                    return (
+                      `${idx + 1}.\n` +
+                      Object.entries(fix)
+                        .map(([key, value]) => {
+                          if (Array.isArray(value)) {
+                            return (
+                              `${formatKey(key)}:\n` +
+                              value.map((v, i) => `  - ${v}`).join("\n")
+                            );
+                          }
+                          return `${formatKey(key)}: ${value}`;
+                        })
+                        .join("\n")
+                    );
+                  }
+                  return `${idx + 1}. ${fix}`;
+                })
+                .join("\n\n")
+            : "Not available",
       },
       {
         title: "5. Call to Action",
@@ -257,36 +290,7 @@ const KairoLeadDetailsPage = () => {
       />
       <div className="flex-1 p-6 md:p-8 pt-6 space-y-8 ">
         {/*==================== Lead Score & Company Overview ====================*/}
-        <LeadOverviewCard
-          lead={Object.fromEntries(
-            Object.entries(lead).map(([key, value]) => {
-              if (
-                typeof value === "object" &&
-                value !== null &&
-                !Array.isArray(value)
-              ) {
-                // Format object as readable string
-                return [
-                  key,
-                  Object.entries(value)
-                    .map(
-                      ([subKey, subValue]) =>
-                        `${subKey
-                          .split("_")
-                          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-                          .join(" ")}: ${
-                          typeof subValue === "object" && subValue !== null
-                            ? JSON.stringify(subValue)
-                            : subValue
-                        }`
-                    )
-                    .join("\n"),
-                ];
-              }
-              return [key, value];
-            })
-          )}
-        />
+  <LeadOverviewCard lead={lead} />
         {/*==================== End of Lead Score & Company Overview ====================*/}
 
         {/*==================== Sales Report ====================*/}

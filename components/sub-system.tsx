@@ -11,7 +11,7 @@ const SubSystemComponent = ({ systems, title }: SubSystemComponentProps) => {
 
   return (
     <div className="pt-6">
-      <h2 className="text-xl font-bold tracking-tight mb-4">{title}</h2>
+      <h2 className="text-xl text-center font-bold tracking-tight mb-4">{title}</h2>
       <div className="grid gap-6 md:grid-cols-2">
         {systems.map((item, i) => (
           <SubSystemCard

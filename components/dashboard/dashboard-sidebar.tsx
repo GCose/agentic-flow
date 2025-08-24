@@ -13,7 +13,6 @@ import {
   DollarSign,
   // Briefcase,
 } from "lucide-react";
-
 import {
   Sidebar,
   SidebarContent,
@@ -31,6 +30,14 @@ import {
 import Image from "next/image";
 import { useAuth } from "@/contexts/auth-context";
 import { UserRole } from "@/types/user";
+import { LucideIcon } from "lucide-react";
+
+interface NavItem {
+  title: string;
+  href: string;
+  icon: LucideIcon;
+  onClick?: () => void;
+}
 
 interface DashboardSidebarProps {
   role?: UserRole;
@@ -48,6 +55,20 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
   };
 
   const getNavItems = (role: UserRole) => {
+    const commonItems = [
+      {
+        title: "Settings",
+        href: `/${role}/settings`,
+        icon: Settings,
+      },
+      {
+        title: "Logout",
+        href: "/auth",
+        icon: LogOut,
+        onClick: () => logout?.(),
+      },
+    ];
+
     if (role === "client") {
       return {
         mainItems: [
@@ -86,7 +107,8 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           //   href: "/client/feedback",
           //   icon: MessageSquare,
           // },
-        ],
+          ...commonItems,
+        ] as NavItem[],
         contentCreationItems: [], // No content creation items for clients
       };
     }
@@ -109,6 +131,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           href: "/admin/clients",
           icon: Users,
         },
+        ...commonItems,
       ];
 
       // Content creation items in a separate group
@@ -147,6 +170,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
             href: "/admin/role/videographer/content",
             icon: FileText,
           },
+          ...commonItems,
         ],
         contentCreationItems: [],
       };
@@ -171,41 +195,28 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
             href: "/admin/role/designer/content",
             icon: FileText,
           },
+          ...commonItems,
         ],
         contentCreationItems: [],
       };
     }
 
     // Default to admin if role not recognized
-    return { mainItems: [], contentCreationItems: [] };
+    return { mainItems: [...commonItems], contentCreationItems: [] };
   };
 
   const { mainItems, contentCreationItems } = getNavItems(role);
 
-  const secondaryNavItems = [
-    {
-      title: "Settings",
-      href: role === "admin" ? "/settings" : `/${role}/settings`,
-      icon: Settings,
-    },
-    {
-      title: "Logout",
-      href: "/logout",
-      icon: LogOut,
-      onClick: () => logout?.(),
-    },
-  ];
-
   const roleTitle = role.charAt(0).toUpperCase() + role.slice(1);
 
   return (
-    <Sidebar className=" border-blue-900/30 ">
-      <SidebarHeader>
-        <div className="flex items-center gap-2 px-4 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-transparent">
+    <Sidebar className=" border-blue-900/70 ">
+      <SidebarHeader className="p-0">
+        <div className="flex items-center gap-2 px-4 py-2 border-b border-blue-900/70">
+          <div className="flex h-10 w-10 items-center justify-center rounded-md bg-transparent">
             <Image
-              width={150}
-              height={150}
+              width={200}
+              height={200}
               alt="ITCA Logo"
               className="mr-2"
               src="/images/Icon.png"
@@ -214,32 +225,40 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           <span className="text-xl font-bold">Agentic Flow</span>
         </div>
       </SidebarHeader>
-
       <SidebarContent className="overflow-x-hidden">
         <SidebarGroup>
-          <SidebarGroupLabel>Main Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu className="gap-4">
+            <SidebarMenu className="gap-4 pt-4">
               {mainItems.map((item) => (
-                <SidebarMenuItem key={item.href}>
+                <SidebarMenuItem key={item.href} className="pb-2">
                   <SidebarMenuButton
-                    asChild
                     tooltip={item.title}
+                    className="border-b border-blue-900/70"
+                    onClick={item.onClick}
+                    asChild={!item.onClick}
                     isActive={isMenuItemActive(item.href)}
                   >
-                    <Link href={item.href} className="group">
-                      <div className="flex h-6 w-6 items-center justify-center rounded transition-colors bg-transparent">
-                        <item.icon className="h-5 w-5" />
+                    {item.onClick ? (
+                      <div className="group flex h-8 w-full cursor-pointer items-center gap-2 overflow-hidden rounded-md text-left text-sm outline-hidden">
+                        <div className="flex h-6 w-6 items-center justify-center rounded transition-colors bg-transparent group-hover:bg-primary/10">
+                          <item.icon className="h-5 w-5" />
+                        </div>
+                        <span>{item.title}</span>
                       </div>
-                      <span>{item.title}</span>
-                    </Link>
+                    ) : (
+                      <Link href={item.href} className="group">
+                        <div className="flex h-6 w-6 items-center justify-center rounded transition-colors bg-transparent">
+                          <item.icon className="h-5 w-5" />
+                        </div>
+                        <span>{item.title}</span>
+                      </Link>
+                    )}
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-
         {role === "admin" && contentCreationItems.length > 0 && (
           <>
             <SidebarSeparator />
@@ -268,44 +287,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
             </SidebarGroup>
           </>
         )}
-
-        <SidebarSeparator />
-
-        <SidebarGroup>
-          <SidebarGroupLabel>Account</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {secondaryNavItems.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    tooltip={item.title}
-                    onClick={item.onClick}
-                    asChild={!item.onClick}
-                    isActive={isMenuItemActive(item.href)}
-                  >
-                    {item.onClick ? (
-                      <div className="group flex h-8 w-full cursor-pointer items-center gap-2 overflow-hidden rounded-md text-left text-sm outline-hidden">
-                        <div className="flex h-6 w-6 items-center justify-center rounded transition-colors bg-transparent group-hover:bg-primary/10">
-                          <item.icon className="h-5 w-5" />
-                        </div>
-                        <span>{item.title}</span>
-                      </div>
-                    ) : (
-                      <Link href={item.href} className="group">
-                        <div className="flex h-6 w-6 items-center justify-center rounded transition-colors bg-transparent">
-                          <item.icon className="h-5 w-5" />
-                        </div>
-                        <span>{item.title}</span>
-                      </Link>
-                    )}
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
       </SidebarContent>
-
       <SidebarFooter>
         <div className="flex items-center gap-3 p-4">
           <div className="h-9 w-9 overflow-hidden rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
@@ -315,11 +297,9 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-medium">{user?.name || "User"}</span>
-            <span className="text-xs text-muted-foreground">{roleTitle}</span>
           </div>
         </div>
       </SidebarFooter>
-
       <SidebarRail />
     </Sidebar>
   );

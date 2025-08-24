@@ -29,7 +29,6 @@ const KairoLeadDetailsPage = () => {
   const handleDownload = (type: "report" | "strategy" | "pitch") => {
     if (!lead) return;
     setDownloading(true);
-    // Only implement report download for now
     if (type !== "report") {
       setDownloading(false);
       return;
@@ -149,9 +148,8 @@ const KairoLeadDetailsPage = () => {
       typeof reportData.report.report_section.audit_scorecard[0] === "object"
         ? Object.entries(reportData.report.report_section.audit_scorecard[0])
             .map(([key, value]) => {
-              const formattedKey = formatKey(key); // Format the key
+              const formattedKey = formatKey(key);
               if (typeof value === "object" && value !== null) {
-                // Assuming the object has `benchmark` and `score` properties
                 const { benchmark, score } = value as {
                   benchmark: string;
                   score: string;
@@ -295,9 +293,9 @@ const KairoLeadDetailsPage = () => {
         {/*==================== End of Lead Score & Company Overview ====================*/}
 
         {/*==================== Sales Report ====================*/}
-        <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/30 overflow-hidden">
+        <div className="bg-transparent rounded-2xl border border-blue-900/70 overflow-hidden">
           {/*==================== Report Header ====================*/}
-          <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-4 sm:px-8 py-6 border-b border-blue-900/30">
+          <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-4 sm:px-8 py-6 border-b border-blue-900/70">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="text-center sm:text-left">
                 <h1 className="text-lg sm:text-xl font-bold text-white flex items-center justify-center sm:justify-start gap-3">
@@ -337,7 +335,7 @@ const KairoLeadDetailsPage = () => {
               {formatReport(lead).map((section, index) => (
                 <div
                   key={index}
-                  className="border-b border-blue-900/30 pb-6 last:border-b-0 last:pb-0"
+                  className="border-b border-blue-900/70 pb-6 last:border-b-0 last:pb-0"
                 >
                   <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                     <span className="text-purple-400 font-mono text-sm bg-purple-400/10 px-2 py-1 rounded-full">

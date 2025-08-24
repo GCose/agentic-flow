@@ -52,20 +52,23 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
     lead.lead_analysis?.lead_score ??
     (Array.isArray(lead.report?.report_section?.audit_scorecard) &&
       lead.report?.report_section?.audit_scorecard.length > 0 &&
-      lead.report?.report_section?.audit_scorecard[0]?.overall_funnel_score?.score)
-      ? lead.lead_analysis?.lead_score ?? lead.report?.report_section?.audit_scorecard?.[0]?.overall_funnel_score?.score
+      lead.report?.report_section?.audit_scorecard[0]?.overall_funnel_score
+        ?.score)
+      ? lead.lead_analysis?.lead_score ??
+        lead.report?.report_section?.audit_scorecard?.[0]?.overall_funnel_score
+          ?.score
       : 0;
 
   console.log("Lead Overview Card Data:", lead);
 
   return (
-    <div className="bg-gradient-to-r from-blue-800/10 to-blue-900/20 rounded-xl border-none overflow-hidden">
+    <div className="bg-transparent border-blue-900/70 rounded-xl border overflow-hidden">
       <div className="px-8 pt-8 pb-8">
         <div className="grid grid-cols-1 lg:grid-rows-[1fr_auto] gap-8">
           {/*==================== Top Row: Lead Score and About ==================== */}
           <div className="lg:row-span-1 grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/*==================== Lead Score Section ==================== */}
-            <div className="lg:col-span-1 lg:border-r lg:pr-6 border-blue-900/30 flex flex-col items-center justify-center text-center">
+            <div className="lg:col-span-1 lg:border-r lg:pr-6 border-blue-900/70 flex flex-col items-center justify-center text-center">
               <div className="mb-4">
                 <div
                   className={cn(
@@ -124,7 +127,7 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                       <p className="text-xs text-muted-foreground">Email</p>
                       <p className="text-sm font-medium">
                         {lead.email}
-                         {  lead?.report?.report_section?.email}
+                        {lead?.report?.report_section?.email}
                       </p>
                     </div>
                   </div>
@@ -179,7 +182,7 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
           {/*==================== End of Top Row ==================== */}
 
           {/*==================== Bottom Row: Company Details ==================== */}
-          <div className="lg:row-span-1 lg:border-t border-blue-900/30">
+          <div className="lg:row-span-1 lg:border-t border-blue-900/70">
             <div className="grid grid-cols-1 md:grid-cols-3">
               {lead.lead_analysis?.company_size && (
                 <div className="text-center border-r md:border-r-blue-900/30 md:border-b-0 border-b border-b-blue-900/30 md:last:border-r-0 last:border-b-0">

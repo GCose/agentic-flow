@@ -167,7 +167,7 @@ const ChannelDetailPage = () => {
         description: `Dashboard for ${platform?.name || "platform"}`,
       }}
     >
-      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-blue-900/30 rounded-bl-4xl rounded-br-4xl bg-transparent  px-4 sm:px-6">
+      <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b border-blue-900/70 rounded-bl-4xl rounded-br-4xl bg-transparent  px-4 sm:px-6">
         <SidebarTrigger />
         <Button
           size="icon"
@@ -200,7 +200,7 @@ const ChannelDetailPage = () => {
 
       <div className="flex-1 space-y-4 p-8">
         {selectedContent ? (
-          <Card className="border-blue-900/30 bg-transparent">
+          <Card className="border-blue-900/70 bg-transparent">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
                 <CardTitle>Content Viewer</CardTitle>
@@ -239,7 +239,7 @@ const ChannelDetailPage = () => {
         ) : (
           <>
             <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-              <Card className="border border-blue-900/30 bg-transparent ">
+              <Card className="border border-blue-900/70 bg-transparent ">
                 <CardContent className="p-6">
                   <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <p className="text-sm font-medium text-muted-foreground">
@@ -260,7 +260,7 @@ const ChannelDetailPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border border-blue-900/30 bg-transparent ">
+              <Card className="border border-blue-900/70 bg-transparent ">
                 <CardContent className="p-6">
                   <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <p className="text-sm font-medium text-muted-foreground">
@@ -281,7 +281,7 @@ const ChannelDetailPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border border-blue-900/30 bg-transparent ">
+              <Card className="border border-blue-900/70 bg-transparent ">
                 <CardContent className="p-6">
                   <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <p className="text-sm font-medium text-muted-foreground">
@@ -301,7 +301,7 @@ const ChannelDetailPage = () => {
                 </CardContent>
               </Card>
 
-              <Card className="border border-blue-900/30 bg-transparent ">
+              <Card className="border border-blue-900/70 bg-transparent ">
                 <CardContent className="p-6">
                   <div className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <p className="text-sm font-medium text-muted-foreground">
@@ -332,7 +332,7 @@ const ChannelDetailPage = () => {
               </TabsList>
 
               <TabsContent value="content" className="space-y-4">
-                <Card className="border border-blue-900/30 bg-transparent">
+                <Card className="border border-blue-900/70 bg-transparent">
                   <CardHeader>
                     <CardTitle className="text-center font-medium text-lg">
                       Content Library

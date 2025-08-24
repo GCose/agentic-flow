@@ -154,8 +154,8 @@ const ContentCalendar = () => {
               key={`day-${dayCounter}`}
               className={`border p-1 rounded-md min-h-28 transition-colors ${
                 isToday
-                  ? "border-blue-900/30 bg-blue-900/40"
-                  : "border-blue-900/30 hover:bg-blue-900/20"
+                  ? "border-blue-900/70 bg-blue-900/40"
+                  : "border-blue-900/70 hover:bg-blue-900/20"
               }`}
             >
               <div className="text-right mb-1">
@@ -188,7 +188,7 @@ const ContentCalendar = () => {
           weekCells.push(
             <div
               key={`empty-end-${cellIndex}`}
-              className="border border-blue-900/30 bg-muted/10 rounded-md min-h-28"
+              className="border border-blue-900/70 bg-muted/10 rounded-md min-h-28"
             />
           );
         }
@@ -226,7 +226,7 @@ const ContentCalendar = () => {
         </div>
       </div>
 
-      <Card className="bg-transparent border-blue-900/30">
+      <Card className="bg-transparent border-blue-900/70">
         <CardContent className="p-4">{generateCalendarGrid()}</CardContent>
       </Card>
 

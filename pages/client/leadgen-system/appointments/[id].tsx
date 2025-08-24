@@ -140,7 +140,7 @@ const ClientAppointmentDetailPage = () => {
       <div className="flex-1 px-8 py-6">
         <div className="max-w-6xl mx-auto">
           {/* Hero Section */}
-          <div className="bg-gradient-to-r from-blue-900/20 via-blue-800/10 to-purple-900/20 rounded-2xl p-8 mb-8 border border-blue-900/30">
+          <div className="bg-gradient-to-r from-blue-900/20 via-blue-800/10 to-purple-900/20 rounded-2xl p-8 mb-8 border border-blue-900/70">
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-3xl font-bold mb-2">
@@ -265,7 +265,7 @@ const ClientAppointmentDetailPage = () => {
                 {appointment.meetingLink && (
                   <Button
                     variant="outline"
-                    className="w-full bg-transparent border-blue-900/30 hover:bg-gradient-to-r hover:from-blue-800/30 hover:via-blue-700/20 hover:to-blue-500/25 hover:text-white"
+                    className="w-full bg-transparent border-blue-900/70 hover:bg-gradient-to-r hover:from-blue-800/30 hover:via-blue-700/20 hover:to-blue-500/25 hover:text-white"
                     onClick={() =>
                       window.open(appointment.meetingLink, "_blank")
                     }

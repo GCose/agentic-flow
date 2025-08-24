@@ -122,7 +122,7 @@ const ClientDashboardPage: NextPage = () => {
               <Input
                 value={searchTerm}
                 placeholder="Search clients..."
-                className="w-full md:w-64 border-blue-900/30"
+                className="w-full md:w-64 border-blue-900/70"
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -214,10 +214,10 @@ const ClientDashboardPage: NextPage = () => {
             </div>
           </CardHeader>
           <CardContent>
-            <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-blue-900/30">
+            <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-blue-900/70">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-blue-900/30 hover:bg-transparent">
+                  <TableRow className="border-b border-blue-900/70 hover:bg-transparent">
                     <TableHead>Client</TableHead>
                     <TableHead>Systems</TableHead>
                     <TableHead className="hidden md:table-cell">
@@ -234,7 +234,7 @@ const ClientDashboardPage: NextPage = () => {
                     <TableRow
                       key={client.id}
                       onClick={() => navigateToClientDashboard(client.id)}
-                      className="cursor-pointer border-b border-blue-900/30 hover:bg-blue-600/10 hover:rounded-md"
+                      className="cursor-pointer border-b border-blue-900/70 hover:bg-blue-600/10 hover:rounded-md"
                     >
                       <TableCell className="font-medium">
                         {client.name}

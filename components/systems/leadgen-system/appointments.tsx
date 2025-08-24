@@ -139,7 +139,7 @@ const Appointments = ({ role }: { role: "admin" | "client" }) => {
               value={searchTerm}
               placeholder="Search appointments..."
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10 bg-transparent border-blue-900/30 min-w-[300px]"
+              className="pl-10 bg-transparent border-blue-900/70 min-w-[300px]"
             />
           </div>
           <Button
@@ -147,7 +147,7 @@ const Appointments = ({ role }: { role: "admin" | "client" }) => {
             variant="outline"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="bg-transparent border-blue-900/30 hover:bg-gradient-to-r hover:from-blue-800/30 hover:via-blue-700/20 hover:to-blue-500/25 hover:text-white hover:border-blue-600/50"
+            className="bg-transparent border-blue-900/70 hover:bg-gradient-to-r hover:from-blue-800/30 hover:via-blue-700/20 hover:to-blue-500/25 hover:text-white hover:border-blue-600/50"
           >
             <RefreshCw
               className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
@@ -160,7 +160,7 @@ const Appointments = ({ role }: { role: "admin" | "client" }) => {
           {filteredAppointments.map((appointment) => (
             <Card
               key={appointment.id}
-              className="bg-gradient-to-br from-blue-900/10 via-blue-800/5 to-blue-500/10 border-blue-900/30 hover:from-blue-900/20 hover:via-blue-800/10 hover:to-blue-500/20 hover:border-blue-600/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all cursor-pointer group"
+              className="bg-gradient-to-br from-blue-900/10 via-blue-800/5 to-blue-500/10 border-blue-900/70 hover:from-blue-900/20 hover:via-blue-800/10 hover:to-blue-500/20 hover:border-blue-600/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all cursor-pointer group"
               onClick={() => handleCardClick(appointment.id)}
             >
               <CardContent className="px-6">

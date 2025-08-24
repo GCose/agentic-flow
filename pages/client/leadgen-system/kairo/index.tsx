@@ -5,6 +5,8 @@ import { ClientPageMeta } from "@/page-meta/meta";
 import { useLeads, useDeleteLead } from "@/hooks/use-kairo";
 
 import router from "next/router";
+import DashboardStatCard from "@/components/cards/dashboard-stats-card";
+import { clientWarmLeadDashboardStats } from "@/data/stats-card-data";
 
 const KairoSubPage = () => {
   const { leads: rawLeads, isLoading, error, refresh } = useLeads();
@@ -30,7 +32,9 @@ const KairoSubPage = () => {
           onBackClick={() => router.push("/client/leadgen-system")}
         />
         <div className="flex-1 px-8 pt-2">
-          <div className="text-red-500 font-semibold">Error loading leads: {error.message || "Unknown error"}</div>
+          <div className="text-red-500 font-semibold">
+            Error loading leads: {error.message || "Unknown error"}
+          </div>
         </div>
       </DashboardLayout>
     );
@@ -44,17 +48,18 @@ const KairoSubPage = () => {
         title="Kairo Lead Audits"
         onBackClick={() => router.push("/client/leadgen-system")}
       />
-      <div className="flex-1 px-8 pt-2">
+      <div className="flex flex-col gap-6 flex-1 px-8 py-6">
+        <DashboardStatCard stats={clientWarmLeadDashboardStats} />
         <LeadsTable
-          basePath="/client/leadgen-system/kairo"
-          title="Track all audits of leads interested in your service."
           data={leads}
           isLoading={isLoading}
-          error={error && error.status !== 404 ? error : undefined}
           onRefresh={async () => {
             await refresh();
           }}
           onDelete={handleDelete}
+          basePath="/client/leadgen-system/kairo"
+          error={error && error.status !== 404 ? error : undefined}
+          title="Track all audits of leads interested in your service."
         />
       </div>
     </DashboardLayout>

@@ -69,7 +69,7 @@ const ChannelCard = ({ name, icon: Icon, color }: ChannelCardProps) => {
 
   return (
     <Card
-      className={`border border-blue-900/30 hover:bg-blue-600/10 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.1] hover:shadow-md ${colors.bg}`}
+      className={`border border-blue-900/70 hover:bg-blue-600/10 overflow-hidden cursor-pointer transition-all duration-500 hover:scale-[1.1] hover:shadow-md ${colors.bg}`}
     >
       <CardContent>
         <div className="flex items-center justify-between mb-4">

@@ -121,7 +121,7 @@ const LoginPage: NextPage = () => {
                     value={email}
                     placeholder="your@email.com"
                     onChange={(e) => setEmail(e.target.value)}
-                    className="border-blue-900/70 focus:border-blue-700"
+                    className="border-t-0 border-r-0 border-l-0 border-b rounded-none"
                   />
                 </div>
 
@@ -137,7 +137,7 @@ const LoginPage: NextPage = () => {
                       placeholder="••••••••"
                       type={showPassword ? "text" : "password"}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="border-blue-900/70 focus:border-blue-500"
+                      className="border-t-0 border-r-0 border-l-0 border-b rounded-none border-blue-900/70"
                     />
                     <Button
                       size="icon"

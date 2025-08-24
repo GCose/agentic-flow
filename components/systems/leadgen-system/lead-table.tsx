@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { ArrowUpDown, RefreshCw, Trash2 } from "lucide-react";
+import { ArrowUpDown, RefreshCw, Search, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/router";
-import ErrorState from "@/components/ui/error-state";
 import {
   Table,
   TableBody,
@@ -132,11 +131,12 @@ const LeadsTable = ({
       <CardHeader className="flex gap-4 items-center justify-between px-0">
         <CardTitle className="font-medium text-md">{title}</CardTitle>
         <div className="flex gap-2 items-center">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
             value={searchTerm}
-            placeholder="Search leads..."
+            placeholder="Search appointments..."
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8 bg-transparent border-blue-900/70"
+            className="pl-10 bg-transparent border-blue-900/70 min-w-[300px]"
           />
           <Button
             size="sm"
@@ -271,29 +271,18 @@ const LeadsTable = ({
               )}
               {error && (
                 <TableRow>
-                  <TableCell colSpan={7} className="p-0 border-none">
-                    <ErrorState
-                      type="generic"
-                      title="Failed to Load Data"
-                      message="There was an issue loading the leads data."
-                      onRetry={onRefresh}
-                      showRetry={true}
-                      showGoBack={false}
-                    />
+                  <TableCell
+                    colSpan={7}
+                    className="h-24 text-center text-red-500"
+                  >
+                    Error: {error}
                   </TableCell>
                 </TableRow>
               )}
               {filteredLeads.length === 0 && !isLoading && !error && (
                 <TableRow>
-                  <TableCell colSpan={7} className="p-0 border-none">
-                    <ErrorState
-                      type="not-found"
-                      title="No Leads Found"
-                      message="You don't have any leads yet. Check back later or adjust your search filters."
-                      onRetry={onRefresh}
-                      showRetry={true}
-                      showGoBack={false}
-                    />
+                  <TableCell colSpan={7} className="h-24 text-center">
+                    No leads found.
                   </TableCell>
                 </TableRow>
               )}

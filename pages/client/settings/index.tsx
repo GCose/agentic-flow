@@ -257,7 +257,10 @@ const ClientSettingsPage = () => {
   return (
     <DashboardLayout
       role="client"
-      meta={{ title: "Settings", description: "Manage your account settings" }}
+      meta={{
+        title: "Agentic Flow | Settings",
+        description: "Manage your account settings",
+      }}
     >
       <DashboardHeader role="client" title="Settings" hasBackButton={false} />
 

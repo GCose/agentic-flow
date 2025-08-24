@@ -1,4 +1,3 @@
-// pages/api/proxy/airo.ts
 import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import https from "https";

@@ -267,17 +267,17 @@ const ClientSettingsPage = () => {
       <div className="flex flex-1 h-full py-8">
         {/*==================== Sidebar ====================*/}
         <div className="w-64 border-r border-blue-900/70 bg-transparent p-6">
-          <nav className="space-y-2">
+          <nav className="space-y-6">
             {tabs.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors ${
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-colors border-b border-blue-900/70 ${
                     activeTab === tab.id
-                      ? "bg-blue-600/20 text-blue-400 border border-blue-500/30"
-                      : "text-slate-300 hover:bg-blue-600/10 hover:text-blue-300"
+                      ? "bg-gradient-to-r from-blue-900 via-blue-900 to-blue-500 text-white shadow-lg shadow-blue-500/50"
+                      : "text-slate-300 hover:bg-gradient-to-r hover:from-blue-800/30 hover:via-blue-700/20 hover:to-blue-500/25 hover:text-white"
                   }`}
                 >
                   <Icon className="h-5 w-5" />

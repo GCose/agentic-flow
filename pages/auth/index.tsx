@@ -27,7 +27,6 @@ const LoginPage: NextPage = () => {
   const { login, isAuthenticated } = useAuth();
   const router = useRouter();
 
-  // If already authenticated, redirect to appropriate dashboard
   if (isAuthenticated) {
     router.push("/admin");
     return null;
@@ -46,7 +45,6 @@ const LoginPage: NextPage = () => {
 
     try {
       await login(email, password);
-      // Redirect handled in auth context
     } catch {
       setError("Invalid email or password");
     } finally {
@@ -171,14 +169,6 @@ const LoginPage: NextPage = () => {
                 >
                   {isLoading ? "Logging in..." : "Login"}
                 </Button>
-
-                {/* <div className="text-center flex flex-col gap-2 text-xs text-muted-foreground">
-                  <p>Use the following demo credentials:</p>
-                  <p className="mt-1">Admin: admin@example.com / admin123</p>
-                  <p>Videographer: video@example.com / video123</p>
-                  <p>Designer: design@example.com / design123</p>
-                  <p>Client: client@example.com / client123</p>
-                </div> */}
               </form>
             </CardContent>
           </Card>

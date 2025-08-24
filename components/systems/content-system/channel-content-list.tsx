@@ -300,7 +300,7 @@ const ChannelContentList = ({
         <div className="rounded-md border-none pt-5">
           <Table>
             <TableHeader>
-              <TableRow className="border border-blue-900/30 rounded-tl-smS">
+              <TableRow className="border border-blue-900/70 rounded-tl-smS">
                 <TableHead className="w-[30%]">
                   <Button
                     variant="ghost"
@@ -340,7 +340,7 @@ const ChannelContentList = ({
               {sortedContent.map((content) => (
                 <TableRow
                   key={content.id}
-                  className="border border-blue-900/30"
+                  className="border border-blue-900/70"
                 >
                   <TableCell className="font-medium">{content.title}</TableCell>
                   <TableCell>{content.type}</TableCell>

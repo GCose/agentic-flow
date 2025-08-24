@@ -19,7 +19,7 @@ const DashboardPage = () => {
 
         {/*==================== SubSystem Component ====================*/}
         <SubSystemComponent
-          title="Subscribed System"
+          title="Subscribed Systems"
           systems={clientDashboardSystem}
         />
         {/*==================== End of SubSystem Component ====================*/}

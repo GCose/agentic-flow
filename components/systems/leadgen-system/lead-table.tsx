@@ -69,7 +69,6 @@ const LeadsTable = ({
   const [sortField, setSortField] = useState<keyof Lead>("leadScore");
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [isRefreshing, setIsRefreshing] = useState(false);
-  // Removed incorrect destructuring of onDelete
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
@@ -123,21 +122,21 @@ const LeadsTable = ({
 
   return (
     <Card className=" border-none bg-transparent">
-      <CardHeader className="flex gap-4 items-center justify-between">
+      <CardHeader className="flex gap-4 items-center justify-between px-0">
         <CardTitle className="font-medium text-md">{title}</CardTitle>
         <div className="flex gap-2 items-center">
           <Input
             value={searchTerm}
             placeholder="Search leads..."
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-8 bg-transparent border-blue-900/30"
+            className="pl-8 bg-transparent border-blue-900/70"
           />
           <Button
             size="sm"
             variant="outline"
             onClick={handleRefresh}
             disabled={isRefreshing}
-            className="bg-transparent border-blue-900/30 hover:bg-gradient-to-r hover:from-blue-800/30 hover:via-blue-700/20 hover:to-blue-500/25 hover:text-white hover:border-blue-600/50"
+            className="bg-transparent border-blue-900/70 hover:bg-gradient-to-r hover:from-blue-800/30 hover:via-blue-700/20 hover:to-blue-500/25 hover:text-white hover:border-blue-600/50"
           >
             <RefreshCw
               className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`}
@@ -145,11 +144,11 @@ const LeadsTable = ({
           </Button>
         </div>
       </CardHeader>
-      <CardContent>
-        <div className="rounded-md border border-blue-900/30 p-2">
+      <CardContent className="p-0">
+        <div className="rounded-md border border-blue-900/70 p-2">
           <Table>
             <TableHeader>
-              <TableRow className="border-blue-900/30 hover:bg-transparent">
+              <TableRow className="border-blue-900/70 hover:bg-transparent">
                 <TableHead>
                   <Button
                     variant="ghost"
@@ -182,7 +181,7 @@ const LeadsTable = ({
               {sortedLeads.map((lead) => (
                 <TableRow
                   key={lead.id}
-                  className="border-blue-900/30 hover:bg-blue-600/10"
+                  className="border-blue-900/70 hover:bg-blue-600/10"
                 >
                   <TableCell className="font-medium">
                     {lead.company_name}
@@ -300,42 +299,54 @@ const LeadsTable = ({
             </TableBody>
           </Table>
         </div>
-      {/* Delete Confirmation Modal - Styled to match team theme */}
-      {showDeleteModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-950/80 backdrop-blur-sm">
-          <div className="bg-gradient-to-br from-blue-900/90 to-blue-950/95 border border-blue-900/40 rounded-2xl shadow-2xl p-8 w-full max-w-md text-white">
-            <h3 className="text-xl font-bold mb-3 text-purple-400">Confirm Delete</h3>
-            <p className="mb-6 text-slate-300">Are you sure you want to delete this lead? This action cannot be undone.</p>
-            <div className="flex justify-end gap-3">
-              <Button variant="outline" className="border-blue-900/40 text-slate-300 bg-transparent hover:bg-blue-900/30" onClick={() => { setShowDeleteModal(false); setPendingDeleteId(null); }}>
-                Cancel
-              </Button>
-              <Button
-                variant="destructive"
-                className="bg-rose-700/80 border-rose-700/40 text-white hover:bg-rose-800 flex items-center gap-2"
-                disabled={isDeleting}
-                onClick={async () => {
-                  if (pendingDeleteId) {
-                    setIsDeleting(true);
-                    await onDelete(pendingDeleteId);
-                    if (onRefresh) await onRefresh();
-                    setIsDeleting(false);
-                  }
-                  setShowDeleteModal(false);
-                  setPendingDeleteId(null);
-                }}
-              >
-                {isDeleting && (
-                  <span className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></span>
-                )}
-                Delete
-              </Button>
+        {/* Delete Confirmation Modal - Styled to match team theme */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-950/80 backdrop-blur-sm">
+            <div className="bg-gradient-to-br from-blue-900/90 to-blue-950/95 border border-blue-900/40 rounded-2xl shadow-2xl p-8 w-full max-w-md text-white">
+              <h3 className="text-xl font-bold mb-3 text-purple-400">
+                Confirm Delete
+              </h3>
+              <p className="mb-6 text-slate-300">
+                Are you sure you want to delete this lead? This action cannot be
+                undone.
+              </p>
+              <div className="flex justify-end gap-3">
+                <Button
+                  variant="outline"
+                  className="border-blue-900/40 text-slate-300 bg-transparent hover:bg-blue-900/30"
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setPendingDeleteId(null);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="destructive"
+                  className="bg-rose-700/80 border-rose-700/40 text-white hover:bg-rose-800 flex items-center gap-2"
+                  disabled={isDeleting}
+                  onClick={async () => {
+                    if (pendingDeleteId) {
+                      setIsDeleting(true);
+                      await onDelete(pendingDeleteId);
+                      if (onRefresh) await onRefresh();
+                      setIsDeleting(false);
+                    }
+                    setShowDeleteModal(false);
+                    setPendingDeleteId(null);
+                  }}
+                >
+                  {isDeleting && (
+                    <span className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></span>
+                  )}
+                  Delete
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
-    </CardContent>
-  </Card>
+        )}
+      </CardContent>
+    </Card>
   );
 };
 

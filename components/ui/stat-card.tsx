@@ -4,7 +4,7 @@ import { StatCardProps } from "@/types";
 const StatCard = ({
   title,
   value,
-  change,
+  // change,
   icon: Icon,
   color,
 }: StatCardProps) => {
@@ -44,14 +44,16 @@ const StatCard = ({
   const colors = colorMap[color];
 
   return (
-    <Card className={`border-none  overflow-hidden border ${colors.bg}`}>
+    <Card
+      className={`border overflow-hidden border-blue-900/70 bg-transparent`}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0">
         <CardTitle className="text-md font-medium">{title}</CardTitle>
-        <Icon className={`h-7 w-7 ${colors.iconColor}`} />
+        <Icon className={`h-6 w-6 ${colors.iconColor}`} />
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-bold pb-1">{value}</div>
-        <p className="text-xs text-muted-foreground">{change}</p>
+        <div className="text-2xl font-bold">{value}</div>
+        {/* <p className="text-sm text-muted-foreground">{change}</p> */}
       </CardContent>
     </Card>
   );

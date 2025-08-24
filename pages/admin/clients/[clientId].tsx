@@ -200,7 +200,7 @@ const ClientDashboardPage: NextPage = () => {
       <div className="flex-1 h-screen space-y-6 p-4 md:p-8 pt-6 ">
         {/*==================== Expanded Client Information ====================*/}
         <div className="grid gap-4 grid-cols-1">
-          <Card className="border-blue-900/30 bg-transparent">
+          <Card className="border-blue-900/70 bg-transparent">
             <CardHeader>
               <CardTitle>{client.name.replace(" Details", "")}</CardTitle>
               <CardDescription>{client.description}</CardDescription>
@@ -313,7 +313,7 @@ const ClientDashboardPage: NextPage = () => {
               return (
                 <Card
                   key={system}
-                  className={`border-blue-900/30 relative overflow-hidden transition-all duration-300 ${
+                  className={`border-blue-900/70 relative overflow-hidden transition-all duration-300 ${
                     isActive ? config.bgGradient : "bg-slate-800/20 opacity-60"
                   }  hover:shadow-md ${
                     isActive ? "hover:translate-y-[-2px]" : ""

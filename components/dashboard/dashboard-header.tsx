@@ -31,7 +31,7 @@ const DashboardHeader = ({
   };
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4  border border-blue-900/30 rounded-bl-4xl rounded-br-4xl bg-transparent px-4 sm:px-6 backdrop-blur-xs">
+    <header className="sticky top-0 z-10 flex h-16 items-center gap-4  border border-t-0 border-blue-900/70 rounded-bl-4xl rounded-br-4xl bg-transparent px-4 sm:px-6 backdrop-blur-xs">
       <SidebarTrigger />
 
       {hasBackButton && (
@@ -42,7 +42,11 @@ const DashboardHeader = ({
       <h2 className="text-xl font-bold tracking-tight">{title}</h2>
 
       <div className="ml-auto flex items-center gap-2">
-        <Button variant="outline" size="icon" className="relative rounded-full">
+        <Button
+          variant="outline"
+          size="icon"
+          className="relative rounded-full border border-blue-400/70"
+        >
           <Bell className="h-4 w-4" />
           <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
             3

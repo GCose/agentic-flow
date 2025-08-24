@@ -80,7 +80,7 @@ const ContentSystemPage = () => {
           value={activeTab}
           defaultValue="channels"
           onValueChange={setActiveTab}
-          className="space-y-4 border-blue-900/30"
+          className="space-y-4 border-blue-900/70"
         >
           <div className="flex flex-col items-center md:flex-row md:justify-between gap-4">
             <h2 className="font-medium pt-6">
@@ -111,7 +111,7 @@ const ContentSystemPage = () => {
           </TabsContent>
 
           <TabsContent value="agents" className="space-y-4 ">
-            <Card className="border-blue-900/30 bg-transparent">
+            <Card className="border-blue-900/70 bg-transparent">
               <CardHeader>
                 <CardTitle>Agent Performance</CardTitle>
                 <CardDescription>
@@ -125,7 +125,7 @@ const ContentSystemPage = () => {
           </TabsContent>
 
           <TabsContent value="calendar" className="space-y-4 ">
-            <Card className="border-blue-900/30 bg-transparent ">
+            <Card className="border-blue-900/70 bg-transparent ">
               <CardHeader>
                 <CardTitle>Content Calendar</CardTitle>
                 <CardDescription>
@@ -140,7 +140,7 @@ const ContentSystemPage = () => {
         </Tabs>
 
         {activeTab === "channels" && (
-          <Card className="border border-blue-900/30 bg-transparent ">
+          <Card className="border border-blue-900/70 bg-transparent ">
             <CardHeader>
               <CardTitle>Recent Agent-Generated Content</CardTitle>
               <CardDescription>

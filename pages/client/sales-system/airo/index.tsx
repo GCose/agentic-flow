@@ -4,6 +4,8 @@ import LeadsTable from "@/components/systems/leadgen-system/lead-table";
 import { ClientPageMeta } from "@/page-meta/meta";
 import { useLeads, useDeleteLead } from "@/hooks/use-airo";
 import router from "next/router";
+import DashboardStatCard from "@/components/cards/dashboard-stats-card";
+import { clientWarmLeadDashboardStats } from "@/data/stats-card-data";
 
 const AiroSubPage = () => {
   const { leads, isLoading, error, refresh } = useLeads();
@@ -26,7 +28,8 @@ const AiroSubPage = () => {
         title="Airo Captured Leads"
         onBackClick={() => router.push("/client/sales-system")}
       />
-      <div className="flex-1 px-8 pt-2">
+      <div className="flex flex-col gap-6 flex-1 px-8 pt-6">
+        <DashboardStatCard stats={clientWarmLeadDashboardStats} />
         <LeadsTable
           basePath="/client/sales-system/airo"
           title="Manage and track leads that have shown interest in your products or services."

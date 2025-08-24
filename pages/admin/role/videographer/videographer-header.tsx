@@ -4,7 +4,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 
 const VideographerHeader = () => {
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent  px-4 sm:px-6 border-blue-900/30">
+    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-transparent  px-4 sm:px-6 border-blue-900/70">
       <SidebarTrigger />
 
       <div className="ml-auto flex items-center gap-2">

@@ -3,15 +3,12 @@ import SubSystemComponent from "@/components/sub-system";
 import { ClientSalesSystemSubSystems } from "@/data/sub-systems";
 import { ClientPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
-import DashboardStatCard from "@/components/cards/dashboard-stats-card";
-import { clientWarmLeadDashboardStats } from "@/data/stats-card-data";
 
 const SalesSystemPage = () => {
   return (
     <DashboardLayout role="client" meta={ClientPageMeta.salesSystemPage}>
       <DashboardHeader title="Sales System" />
-      <div className="flex-1 space-y-6 p-8 pt-6 ">
-        <DashboardStatCard stats={clientWarmLeadDashboardStats} />
+      <div className="flex-1 space-y-6 px-8">
         {/*==================== SubSystem Component ====================*/}
         <SubSystemComponent
           title="Sub-Systems"

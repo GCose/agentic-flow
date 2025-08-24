@@ -302,9 +302,9 @@ const AiroLeadDetailsPage = () => {
 
           {/*==================== Sales Report Tab ====================*/}
           <TabsContent value="report">
-            <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/30 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/70 overflow-hidden">
               {/*==================== Report Header ====================*/}
-              <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-8 py-6 border-b border-blue-900/30">
+              <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-8 py-6 border-b border-blue-900/70">
                 <div className="flex items-center justify-between">
                   <div>
                     <h1 className="text-xl font-bold text-white flex items-center gap-3">
@@ -343,7 +343,7 @@ const AiroLeadDetailsPage = () => {
                   {salesReport.map((section, index) => (
                     <div
                       key={index}
-                      className="border-b border-blue-900/30 pb-6 last:border-b-0 last:pb-0"
+                      className="border-b border-blue-900/70 pb-6 last:border-b-0 last:pb-0"
                     >
                       <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                         <span className="text-purple-400 font-mono text-sm bg-purple-400/10 px-2 py-1 rounded-full">
@@ -365,9 +365,9 @@ const AiroLeadDetailsPage = () => {
 
           {/*==================== Sales Strategy Tab ====================*/}
           <TabsContent value="strategy">
-            <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/30 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/70 overflow-hidden">
               {/*==================== Strategy Header ====================*/}
-              <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-8 py-6 border-b border-blue-900/30">
+              <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-8 py-6 border-b border-blue-900/70">
                 <div className="flex items-center justify-between">
                   <div>
                     <h1 className="text-xl font-bold text-white flex items-center gap-3">
@@ -406,7 +406,7 @@ const AiroLeadDetailsPage = () => {
                   {salesStrategy.map((section, index) => (
                     <div
                       key={index}
-                      className="border-b border-blue-900/30 pb-6 last:border-b-0 last:pb-0"
+                      className="border-b border-blue-900/70 pb-6 last:border-b-0 last:pb-0"
                     >
                       <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                         <span className="text-orange-400 font-mono text-sm bg-orange-400/10 px-2 py-1 rounded-full">
@@ -428,9 +428,9 @@ const AiroLeadDetailsPage = () => {
 
           {/*==================== Sales Pitch Tab ====================*/}
           <TabsContent value="pitch">
-            <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/30 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/70 overflow-hidden">
               {/*==================== Pitch Header ====================*/}
-              <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-8 py-6 border-b border-blue-900/30">
+              <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-8 py-6 border-b border-blue-900/70">
                 <div className="flex items-center justify-between">
                   <div>
                     <h1 className="text-xl font-bold text-white flex items-center gap-3">
@@ -473,7 +473,7 @@ const AiroLeadDetailsPage = () => {
                     ) => (
                       <div
                         key={index}
-                        className="border-b border-blue-900/30 pb-6 last:border-b-0 last:pb-0"
+                        className="border-b border-blue-900/70 pb-6 last:border-b-0 last:pb-0"
                       >
                         <div className="flex items-center gap-3 mb-4">
                           <h2 className="text-lg font-semibold text-white flex items-center gap-2">

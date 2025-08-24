@@ -78,10 +78,10 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                 >
                   {leadScore}
                 </div>
-                <p className="text-slate-300 text-sm font-medium">Lead Score</p>
+                <p className="text-white text-md font-bold">Lead Score</p>
               </div>
               <div className="grid grid-cols-1 gap-4 w-full">
-                <div className="bg-gray-100/5 rounded-lg p-3">
+                <div className="bg-gradient-to-r from-blue-800/25 to-blue-950/15 rounded-lg p-3">
                   <div className="flex items-center gap-5 justify-center">
                     <Calendar className="h-4 w-4 text-amber-400" />
                     <div className="text-left">
@@ -92,7 +92,7 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                     </div>
                   </div>
                 </div>
-                <div className="bg-gray-100/5 rounded-lg p-3">
+                <div className="bg-gradient-to-r from-blue-800/25 to-blue-950/15 rounded-lg p-3">
                   <div className="flex items-center gap-5 justify-center">
                     <Clock className="h-4 w-4 text-lime-500" />
                     <div className="text-left">
@@ -109,7 +109,7 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
 
             {/*==================== Company Description ==================== */}
             <div className="lg:col-span-2 py-8">
-              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+              <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <Building className="h-5 w-5 text-emerald-400" />
                 About {lead.company_name}
               </h3>
@@ -124,8 +124,8 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                       <Mail className="h-4 w-4 text-blue-400" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-50/70">Email</p>
-                      <p className="text-sm font-medium">
+                      <p className="text-md text-white font-bold">Email</p>
+                      <p className="text-sm font-medium text-gray-50/70">
                         {lead.email}
                         {lead?.report?.report_section?.email}
                       </p>
@@ -136,8 +136,8 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                       <Phone className="h-4 w-4 text-purple-400" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-50/70">Phone</p>
-                      <p className="text-sm font-medium">
+                      <p className="text-md text-white font-bold">Phone</p>
+                      <p className="text-sm font-medium text-gray-50/70">
                         {lead.phone ||
                           lead?.report?.report_section?.phone_number}
                       </p>
@@ -150,12 +150,12 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                       <Globe className="h-4 w-4 text-purple-400" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-50/70">Website</p>
+                      <p className="text-md text-white font-bold">Website</p>
                       <a
                         href={lead.website_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm font-medium flex items-center hover:text-primary"
+                        className="text-sm font-medium flex items-center text-gray-50/70 hover:text-primary"
                       >
                         {lead.website_url?.replace(/(^\w+:|^)\/\//, "")}
                         <ExternalLink className="ml-1 h-3 w-3" />
@@ -167,8 +167,8 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                       <MapPin className="h-4 w-4 text-orange-400" />
                     </div>
                     <div>
-                      <p className="text-xs text-gray-50/70">Address</p>
-                      <p className="text-sm font-medium">
+                      <p className="text-md text-white font-bold">Address</p>
+                      <p className="text-sm font-medium text-gray-50/70">
                         {lead.lead_analysis?.address ||
                           lead?.report?.report_section?.address}
                       </p>
@@ -188,11 +188,11 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                 <div className="text-center ">
                   <div className="flex items-center justify-center gap-2 pt-6 mb-3">
                     <Users className="h-5 w-5 text-blue-400" />
-                    <span className="text-sm font-medium text-muted-foreground">
+                    <span className="text-lg font-bold text-white">
                       Company Size
                     </span>
                   </div>
-                  <p className="text-lg font-semibold">
+                  <p className="text-md font-medium text-gray-50/70">
                     {lead.lead_analysis?.company_size}
                   </p>
                 </div>
@@ -201,11 +201,11 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                 <div className="text-center ">
                   <div className="flex items-center justify-center gap-2 pt-6 mb-3">
                     <DollarSign className="h-5 w-5 text-green-400" />
-                    <span className="text-sm font-medium text-muted-foreground">
+                    <span className="text-lg font-bold text-white">
                       Annual Revenue
                     </span>
                   </div>
-                  <p className="text-lg font-semibold">
+                  <p className="text-md font-medium text-gray-50/70">
                     {lead.lead_analysis?.annual_revenue}
                   </p>
                 </div>
@@ -213,16 +213,15 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
               <div className="text-center">
                 <div className="flex items-center justify-center gap-2 pt-6 mb-3">
                   <Briefcase className="h-5 w-5 text-purple-400" />
-                  <span className="text-sm font-medium text-muted-foreground">
-                    Industry
-                  </span>
+                  <span className="text-lg font-bold text-white">Industry</span>
                 </div>
-                <p className="text-lg font-semibold">
+                <p className="text-lg font-medium text-gray-50/70">
                   {lead.lead_analysis?.industry || lead.industry}
                 </p>
               </div>
             </div>
           </div>
+          {/*==================== End of Bottom Row: Company Details ==================== */}
         </div>
       </div>
     </div>

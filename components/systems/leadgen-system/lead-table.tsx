@@ -301,8 +301,8 @@ const LeadsTable = ({
         </div>
         {showDeleteModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-950/20 backdrop-blur-sm">
-            <div className="bg-gradient-to-br from-blue-900/90 to-blue-950/95 border border-blue-900/70 rounded-2xl shadow-2xl p-8 w-full max-w-md text-white">
-              <h3 className="text-xl font-bold mb-3 text-purple-400">
+            <div className="bg-gradient-to-r from-blue-800/25 to-blue-950/15 border border-blue-900/70 rounded-2xl shadow-2xl p-8 w-full max-w-md text-white">
+              <h3 className="text-xl font-bold mb-3 text-white">
                 Confirm Delete
               </h3>
               <p className="mb-6 text-slate-300">
@@ -312,7 +312,7 @@ const LeadsTable = ({
               <div className="flex justify-end gap-3">
                 <Button
                   variant="outline"
-                  className="border-blue-900/40 text-slate-300 bg-transparent hover:bg-blue-900/30"
+                  className="border-blue-900/70 text-slate-300 bg-transparent hover:bg-blue-900/30"
                   onClick={() => {
                     setShowDeleteModal(false);
                     setPendingDeleteId(null);

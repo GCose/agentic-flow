@@ -291,7 +291,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
       <SidebarFooter>
         <div className="flex items-center gap-3 p-4">
           <div className="h-9 w-9 overflow-hidden rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-            <span className="text-sm font-medium text-white">
+            <span className="text-sm font-medium text-white border border-blue-900/70">
               {user?.name?.charAt(0) || roleTitle.charAt(0)}
             </span>
           </div>

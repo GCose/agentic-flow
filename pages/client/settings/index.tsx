@@ -47,7 +47,7 @@ const ClientSettingsPage = () => {
                 Manage your organization profile and account information.
               </p>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8 pt-6">
               <div className="space-y-2">
                 <Label htmlFor="org-name" className="text-white">
                   Organization Name
@@ -56,7 +56,7 @@ const ClientSettingsPage = () => {
                   id="org-name"
                   value={organizationName}
                   onChange={(e) => setOrganizationName(e.target.value)}
-                  className="bg-transparent border-blue-900/70 text-white"
+                  className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Enter your organization name"
                 />
               </div>
@@ -69,7 +69,7 @@ const ClientSettingsPage = () => {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-transparent border-blue-900/70 text-white"
+                  className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="your@email.com"
                   type="email"
                 />
@@ -107,7 +107,7 @@ const ClientSettingsPage = () => {
                 Update your password and security preferences.
               </p>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-6 pt-6">
               <div className="space-y-2">
                 <Label htmlFor="current-password" className="text-white">
                   Current Password
@@ -117,7 +117,7 @@ const ClientSettingsPage = () => {
                   type="password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="bg-transparent border-blue-900/70 text-white"
+                  className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Enter current password"
                 />
               </div>
@@ -131,7 +131,7 @@ const ClientSettingsPage = () => {
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-transparent border-blue-900/70 text-white"
+                  className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Enter new password"
                 />
               </div>
@@ -145,7 +145,7 @@ const ClientSettingsPage = () => {
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-transparent border-blue-900/70 text-white"
+                  className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Confirm new password"
                 />
               </div>
@@ -193,7 +193,7 @@ const ClientSettingsPage = () => {
                 Control how you receive notifications from Agentic Flow.
               </p>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8">
               <div className="space-y-6">
                 <div className="flex items-center justify-between py-4">
                   <div className="space-y-1">
@@ -211,7 +211,7 @@ const ClientSettingsPage = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-t border-blue-900/30">
+                <div className="flex items-center justify-between py-4 border-t border-blue-900/70">
                   <div className="space-y-1">
                     <h4 className="text-white font-medium text-lg">
                       In-App Notifications

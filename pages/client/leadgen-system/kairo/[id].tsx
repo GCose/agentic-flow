@@ -293,7 +293,7 @@ const KairoLeadDetailsPage = () => {
         {/*==================== End of Lead Score & Company Overview ====================*/}
 
         {/*==================== Sales Report ====================*/}
-        <div className="bg-transparent rounded-2xl border border-blue-900/70 overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 rounded-2xl border border-blue-900/70 overflow-hidden">
           {/*==================== Report Header ====================*/}
           <div className="bg-gradient-to-r from-blue-800/40 to-blue-900/40 px-4 sm:px-8 py-6 border-b border-blue-900/70">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

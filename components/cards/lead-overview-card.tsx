@@ -62,11 +62,11 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
   console.log("Lead Overview Card Data:", lead);
 
   return (
-    <div className="bg-transparent border-blue-900/70 rounded-xl border overflow-hidden">
-      <div className="px-8 pt-8 pb-8">
-        <div className="grid grid-cols-1 lg:grid-rows-[1fr_auto] gap-8">
+    <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 border-blue-900/70 rounded-xl border overflow-hidden">
+      <div className="pb-8">
+        <div className="grid grid-cols-1 lg:grid-rows-[1fr_auto] gap-0">
           {/*==================== Top Row: Lead Score and About ==================== */}
-          <div className="lg:row-span-1 grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="lg:row-span-1 grid grid-cols-1 lg:grid-cols-3 gap-8 px-8">
             {/*==================== Lead Score Section ==================== */}
             <div className="lg:col-span-1 lg:border-r lg:pr-6 border-blue-900/70 flex flex-col items-center justify-center text-center">
               <div className="mb-4">
@@ -108,23 +108,23 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
             {/*==================== End of Lead Score Section ==================== */}
 
             {/*==================== Company Description ==================== */}
-            <div className="lg:col-span-2">
+            <div className="lg:col-span-2 py-8">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Building className="h-5 w-5 text-emerald-400" />
                 About {lead.company_name}
               </h3>
-              <p className="text-muted-foreground mb-6 leading-10">
+              <p className="text-gray-50/80 mb-6 leading-10">
                 {lead.lead_analysis?.summary ||
                   lead.summary?.writer_report?.summary}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="space-y-4">
+                <div className="space-y-8">
                   <div className="flex items-center gap-3">
                     <div className="bg-slate-800/50 h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Mail className="h-4 w-4 text-blue-400" />
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground">Email</p>
+                      <p className="text-xs text-gray-50/70">Email</p>
                       <p className="text-sm font-medium">
                         {lead.email}
                         {lead?.report?.report_section?.email}
@@ -136,7 +136,7 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                       <Phone className="h-4 w-4 text-purple-400" />
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground">Phone</p>
+                      <p className="text-xs text-gray-50/70">Phone</p>
                       <p className="text-sm font-medium">
                         {lead.phone ||
                           lead?.report?.report_section?.phone_number}
@@ -144,13 +144,13 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                     </div>
                   </div>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-8">
                   <div className="flex items-center gap-3">
                     <div className="bg-slate-800/50 h-10 w-10 rounded-lg flex items-center justify-center flex-shrink-0">
                       <Globe className="h-4 w-4 text-purple-400" />
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground">Website</p>
+                      <p className="text-xs text-gray-50/70">Website</p>
                       <a
                         href={lead.website_url}
                         target="_blank"
@@ -167,7 +167,7 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                       <MapPin className="h-4 w-4 text-orange-400" />
                     </div>
                     <div>
-                      <p className="text-xs text-muted-foreground">Address</p>
+                      <p className="text-xs text-gray-50/70">Address</p>
                       <p className="text-sm font-medium">
                         {lead.lead_analysis?.address ||
                           lead?.report?.report_section?.address}
@@ -185,7 +185,7 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
           <div className="lg:row-span-1 lg:border-t border-blue-900/70">
             <div className="grid grid-cols-1 md:grid-cols-3">
               {lead.lead_analysis?.company_size && (
-                <div className="text-center border-r md:border-r-blue-900/30 md:border-b-0 border-b border-b-blue-900/30 md:last:border-r-0 last:border-b-0">
+                <div className="text-center ">
                   <div className="flex items-center justify-center gap-2 pt-6 mb-3">
                     <Users className="h-5 w-5 text-blue-400" />
                     <span className="text-sm font-medium text-muted-foreground">
@@ -198,7 +198,7 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
                 </div>
               )}
               {lead.lead_analysis?.annual_revenue && (
-                <div className="text-center border-r md:border-r-blue-900/30 md:border-b-0 border-b border-b-blue-900/30 md:last:border-r-0 last:border-b-0">
+                <div className="text-center ">
                   <div className="flex items-center justify-center gap-2 pt-6 mb-3">
                     <DollarSign className="h-5 w-5 text-green-400" />
                     <span className="text-sm font-medium text-muted-foreground">

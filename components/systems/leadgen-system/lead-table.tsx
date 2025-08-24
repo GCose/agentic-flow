@@ -299,10 +299,9 @@ const LeadsTable = ({
             </TableBody>
           </Table>
         </div>
-        {/* Delete Confirmation Modal - Styled to match team theme */}
         {showDeleteModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-950/80 backdrop-blur-sm">
-            <div className="bg-gradient-to-br from-blue-900/90 to-blue-950/95 border border-blue-900/40 rounded-2xl shadow-2xl p-8 w-full max-w-md text-white">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-950/20 backdrop-blur-sm">
+            <div className="bg-gradient-to-br from-blue-900/90 to-blue-950/95 border border-blue-900/70 rounded-2xl shadow-2xl p-8 w-full max-w-md text-white">
               <h3 className="text-xl font-bold mb-3 text-purple-400">
                 Confirm Delete
               </h3>

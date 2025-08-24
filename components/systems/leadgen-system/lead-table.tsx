@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/router";
+import ErrorState from "@/components/ui/error-state";
 import {
   Table,
   TableBody,
@@ -270,18 +271,29 @@ const LeadsTable = ({
               )}
               {error && (
                 <TableRow>
-                  <TableCell
-                    colSpan={7}
-                    className="h-24 text-center text-red-500"
-                  >
-                    Error: {error}
+                  <TableCell colSpan={7} className="p-0 border-none">
+                    <ErrorState
+                      type="generic"
+                      title="Failed to Load Data"
+                      message="There was an issue loading the leads data."
+                      onRetry={onRefresh}
+                      showRetry={true}
+                      showGoBack={false}
+                    />
                   </TableCell>
                 </TableRow>
               )}
               {filteredLeads.length === 0 && !isLoading && !error && (
                 <TableRow>
-                  <TableCell colSpan={7} className="h-24 text-center">
-                    No leads found.
+                  <TableCell colSpan={7} className="p-0 border-none">
+                    <ErrorState
+                      type="not-found"
+                      title="No Leads Found"
+                      message="You don't have any leads yet. Check back later or adjust your search filters."
+                      onRetry={onRefresh}
+                      showRetry={true}
+                      showGoBack={false}
+                    />
                   </TableCell>
                 </TableRow>
               )}

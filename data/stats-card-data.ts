@@ -12,6 +12,8 @@ import {
   FileText,
   TrendingUp,
   Users,
+  UserCheck,
+  Handshake,
 } from "lucide-react";
 
 /**===========================================
@@ -87,31 +89,31 @@ export const clientDashboardStats: StatCardData[] = [
  ===================================================*/
 export const clientWarmLeadDashboardStats: StatCardData[] = [
   {
-    value: "28",
-    icon: Thermometer,
+    value: "15",
+    icon: Users,
     color: "orange",
-    title: "Warm Leads",
+    title: "Leads Captured",
     change: "+5 from last month",
   },
   {
-    value: "63",
-    icon: Snowflake,
+    value: "73%",
+    icon: Calendar,
     color: "blue",
-    title: "Cold Leads",
+    title: "Booking Rate",
     change: "+14 from last month",
   },
   {
-    value: "19",
-    icon: CalendarClock,
+    value: "50%",
+    icon: UserCheck,
     color: "green",
-    title: "Appointments Set",
+    title: "Showup Rate",
     change: "+3 from last month",
   },
   {
-    value: "11",
-    icon: ShieldCheck,
+    value: "30%",
+    icon: Handshake,
     color: "purple",
-    title: "Audits Done",
+    title: "Close Rate",
     change: "+2 from last month",
   },
 ];

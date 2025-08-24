@@ -294,9 +294,13 @@ const LeadsTable = ({
               <h3 className="text-xl font-bold mb-3 text-white">
                 Confirm Delete
               </h3>
-              <p className="mb-6 text-slate-300">
-                Are you sure you want to delete this lead? This action cannot be
-                undone.
+              <p className="mb-6 text-gray-50/70">
+                Are you sure you want to delete{" "}
+                {
+                  sortedLeads.find((lead) => lead.id === pendingDeleteId)
+                    ?.company_name
+                }
+                ? This action cannot be undone.
               </p>
               <div className="flex justify-end gap-3">
                 <Button

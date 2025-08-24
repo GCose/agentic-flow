@@ -31,7 +31,7 @@ const DashboardHeader = ({
   };
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4  border border-t-0 border-blue-900/70 rounded-bl-4xl rounded-br-4xl bg-transparent px-4 sm:px-6 backdrop-blur-xs">
+    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border border-t-0 border-blue-900/70 rounded-bl-4xl rounded-br-4xl bg-transparent px-4 sm:px-6 backdrop-blur-xs">
       <SidebarTrigger />
 
       {hasBackButton && (

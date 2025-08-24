@@ -3,7 +3,7 @@
  ======================================================*/
 export const AdminPageMeta = {
   dashboardPage: {
-    title: "Agentic Flow | Home",
+    title: "Agentic Flow | Dashboard",
     description: "Your dashboard for managing leads and campaigns",
   },
 
@@ -71,7 +71,7 @@ export const AdminPageMeta = {
  ======================================================*/
 export const ClientPageMeta = {
   dashboardPage: {
-    title: "Agentic Flow | Home",
+    title: "Agentic Flow | Dashboard",
     description: "Your dashboard for managing leads and campaigns",
   },
   contentSystemPage: {

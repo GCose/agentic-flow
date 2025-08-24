@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MoreHorizontal, ArrowUpDown, RefreshCw } from "lucide-react";
+import { ArrowUpDown, RefreshCw, Trash2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,14 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 interface LeadsTableProps {
   title: string;
@@ -120,6 +112,20 @@ const LeadsTable = ({
     router.push(`${basePath}/${leadId}`);
   };
 
+  const handleRowClick = (leadId: string, event: React.MouseEvent) => {
+    const target = event.target as HTMLElement;
+    if (target.closest('[data-actions-cell="true"]')) {
+      return;
+    }
+    handleViewDetails(leadId);
+  };
+
+  const handleDeleteClick = (leadId: string, event: React.MouseEvent) => {
+    event.stopPropagation();
+    setPendingDeleteId(leadId);
+    setShowDeleteModal(true);
+  };
+
   return (
     <Card className=" border-none bg-transparent">
       <CardHeader className="flex gap-4 items-center justify-between px-0">
@@ -181,7 +187,8 @@ const LeadsTable = ({
               {sortedLeads.map((lead) => (
                 <TableRow
                   key={lead.id}
-                  className="border-blue-900/70 hover:bg-blue-600/10"
+                  className="border-blue-900/70 hover:bg-blue-600/10 cursor-pointer"
+                  onClick={(e) => handleRowClick(lead.id, e)}
                 >
                   <TableCell className="font-medium">
                     {lead.company_name}
@@ -242,33 +249,15 @@ const LeadsTable = ({
                       {lead.salesCall}
                     </TableCell>
                   )}
-                  <TableCell className="text-right">
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                          <span className="sr-only">Open menu</span>
-                          <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                          onClick={() => handleViewDetails(lead.id)}
-                        >
-                          View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                          className="text-destructive"
-                          onClick={() => {
-                            setPendingDeleteId(lead.id);
-                            setShowDeleteModal(true);
-                          }}
-                        >
-                          Delete Lead
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                  <TableCell className="text-right" data-actions-cell="true">
+                    <Button
+                      variant="ghost"
+                      className="h-8 w-8 p-0 text-red-600 hover:text-red-600"
+                      onClick={(e) => handleDeleteClick(lead.id, e)}
+                    >
+                      <span className="sr-only">Delete lead</span>
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

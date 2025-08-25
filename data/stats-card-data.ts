@@ -89,7 +89,7 @@ export const clientDashboardStats: StatCardData[] = [
  ===================================================*/
 export const clientWarmLeadDashboardStats: StatCardData[] = [
   {
-    value: "15",
+    value: "5",
     icon: Users,
     color: "orange",
     title: "Leads Captured",

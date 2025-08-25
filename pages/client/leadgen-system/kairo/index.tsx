@@ -6,7 +6,7 @@ import { ClientPageMeta } from "@/page-meta/meta";
 import { useLeads, useDeleteLead } from "@/hooks/use-kairo";
 import router from "next/router";
 import DashboardStatCard from "@/components/cards/dashboard-stats-card";
-import { clientWarmLeadDashboardStats } from "@/data/stats-card-data";
+import { clientKairoAuditDashboardStats } from "@/data/stats-card-data";
 
 const KairoSubPage = () => {
   const { leads: rawLeads, isLoading, error, refresh } = useLeads();
@@ -54,7 +54,7 @@ const KairoSubPage = () => {
         onBackClick={() => router.push("/client/leadgen-system")}
       />
       <div className="flex flex-col gap-6 flex-1 px-8 py-6">
-        <DashboardStatCard stats={clientWarmLeadDashboardStats} />
+        <DashboardStatCard stats={clientKairoAuditDashboardStats} />
         <LeadsTable
           data={leads}
           isLoading={isLoading}

@@ -87,6 +87,40 @@ export const clientDashboardStats: StatCardData[] = [
 /**===================================================
  * Stat card data for the client warm lead dashboard.
  ===================================================*/
+export const clientKairoAuditDashboardStats: StatCardData[] = [
+  {
+    value: "2",
+    icon: Users,
+    color: "orange",
+    title: "Leads Captured",
+    change: "+5 from last month",
+  },
+  {
+    value: "73%",
+    icon: Calendar,
+    color: "blue",
+    title: "Booking Rate",
+    change: "+14 from last month",
+  },
+  {
+    value: "50%",
+    icon: UserCheck,
+    color: "green",
+    title: "Showup Rate",
+    change: "+3 from last month",
+  },
+  {
+    value: "30%",
+    icon: Handshake,
+    color: "purple",
+    title: "Close Rate",
+    change: "+2 from last month",
+  },
+];
+
+/**===================================================
+ * Stat card data for the client warm lead dashboard.
+ ===================================================*/
 export const clientWarmLeadDashboardStats: StatCardData[] = [
   {
     value: "5",

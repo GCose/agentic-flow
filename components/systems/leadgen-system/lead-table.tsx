@@ -131,13 +131,15 @@ const LeadsTable = ({
       <CardHeader className="flex gap-4 items-center justify-between px-0">
         <CardTitle className="font-medium text-md">{title}</CardTitle>
         <div className="flex gap-2 items-center">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <Input
-            value={searchTerm}
-            placeholder="Search appointments..."
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 bg-transparent border-blue-900/70 min-w-[300px]"
-          />
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              value={searchTerm}
+              placeholder="Search appointments..."
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10 bg-transparent border-blue-900/70 min-w-[300px]"
+            />
+          </div>
           <Button
             size="sm"
             variant="outline"

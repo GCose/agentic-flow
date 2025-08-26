@@ -18,7 +18,7 @@ const AiroLeadDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState<string | null>(null);
 
-  console.log("Lead", lead);
+  // console.log("Lead", lead);
 
   const salesReport = [
     { title: "Summary", content: lead?.lead_analysis.summary },
@@ -149,7 +149,7 @@ const AiroLeadDetailsPage = () => {
       })
     : [];
 
-  console.log("Sales Pitch Confirmed:", lead);
+  // console.log("Sales Pitch Confirmed:", lead);
 
   useEffect(() => {
     if (lead) {

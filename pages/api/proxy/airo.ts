@@ -11,7 +11,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { client_id, lead_id } = req.query;
-  console.log("Proxy airo.ts - client_id:", client_id, "lead_id:", lead_id);
+  // console.log("Proxy airo.ts - client_id:", client_id, "lead_id:", lead_id);
 
   if (!client_id || Array.isArray(client_id)) {
     return res.status(400).json({ error: "Invalid client_id", status: 400 });
@@ -21,7 +21,7 @@ export default async function handler(
   if (lead_id && !Array.isArray(lead_id)) {
     url += `${lead_id}/`;
   }
-  console.log("Proxy airo.ts - final URL:", url);
+  // console.log("Proxy airo.ts - final URL:", url);
 
   try {
     const response = await axios.get(url, { httpsAgent });

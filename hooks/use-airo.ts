@@ -14,7 +14,7 @@ export const useLeads = () => {
     shouldFetch ? `/api/proxy/airo?client_id=${clientId}` : null,
     fetcher
   );
-  console.log("Client Id from use-airo hook :",clientId)
+  // console.log("Client Id from use-airo hook :",clientId)
   return {
     leads: data ?? [],
     isLoading,
@@ -43,8 +43,11 @@ export const useDeleteLead = () => {
   const { user } = useAuth();
   const clientId = user?.id;
   const deleteLead = async (lead_id: string | number) => {
-    if (!lead_id || !clientId) throw new Error("Lead ID and client_id are required");
-    const response = await axios.delete(`/api/proxy/airo/${lead_id}?client_id=${clientId}`);
+    if (!lead_id || !clientId)
+      throw new Error("Lead ID and client_id are required");
+    const response = await axios.delete(
+      `/api/proxy/airo/${lead_id}?client_id=${clientId}`
+    );
     return response.data;
   };
   return { deleteLead };

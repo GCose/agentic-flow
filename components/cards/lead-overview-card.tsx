@@ -59,7 +59,7 @@ const LeadOverviewCard = ({ lead }: { lead: Lead }) => {
           ?.score
       : 0;
 
-  console.log("Lead Overview Card Data:", lead);
+  // console.log("Lead Overview Card Data:", lead);
 
   return (
     <div className="bg-gradient-to-r from-blue-800/5 to-blue-950/10 border-blue-900/70 rounded-xl border overflow-hidden">

@@ -128,7 +128,7 @@ const LeadsTable = ({
 
   return (
     <Card className=" border-none bg-transparent">
-      <CardHeader className="flex gap-4 items-center justify-between px-0">
+      <CardHeader className="flex flex-col md:flex-row gap-4 items-center justify-between px-0">
         <CardTitle className="font-medium text-md">{title}</CardTitle>
         <div className="flex gap-2 items-center">
           <div className="relative">

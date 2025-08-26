@@ -18,7 +18,7 @@ const KairoLeadDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [downloading, setDownloading] = useState(false);
 
-  console.log("Lead Dataaa", lead);
+  // console.log("Lead Dataaa", lead);
 
   useEffect(() => {
     if (lead || error) {

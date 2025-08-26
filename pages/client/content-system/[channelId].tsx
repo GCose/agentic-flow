@@ -122,9 +122,8 @@ const ChannelDetailPage = () => {
   const handleApproveContent = () => {
     setIsApproving(true);
 
-    // Simulate API call
     setTimeout(() => {
-      console.log("Content approved:", selectedContent);
+      // console.log("Content approved:", selectedContent);
       setIsApproving(false);
       setSelectedContent(null);
     }, 1000);

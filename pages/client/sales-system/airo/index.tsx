@@ -11,7 +11,7 @@ import { clientWarmLeadDashboardStats } from "@/data/stats-card-data";
 const AiroSubPage = () => {
   const { leads, isLoading, error, refresh } = useLeads();
   const { deleteLead } = useDeleteLead();
-  console.log("Error in LeadsPage:", error);
+  // console.log("Error in LeadsPage:", error);
 
   const handleDelete = async (id: string) => {
     try {

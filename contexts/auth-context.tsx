@@ -22,44 +22,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Mock users for demonstration
-const MOCK_USERS: Array<User & { password: string }> = [
-  {
-    id: "1",
-    email: "admin@agenticflow.gm",
-    password: "nextgen@123",
-    name: "NextGen Agency",
-    role: "admin",
-  },
-  {
-    id: "2",
-    email: "video@example.com",
-    password: "video123",
-    name: "Video Producer",
-    role: "videographer",
-  },
-  {
-    id: "3",
-    email: "design@example.com",
-    password: "design123",
-    name: "Graphic Designer",
-    role: "designer",
-  },
-  {
-    id: "4",
-    email: "aftermath@agenticflow.gm",
-    password: "aftermath@123",
-    name: "Aftermath Agency",
-    role: "client",
-  },
-  {
-    id: "001",
-    email: "nextgen@agenticflow.gm",
-    password: "nextgen@123",
-    name: "NextGen Agency",
-    role: "client",
-  },
-];
+
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
@@ -81,33 +44,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setLoading(false);
   }, []);
 
+  // Login using secure API endpoint
   const login = async (email: string, password: string) => {
     setLoading(true);
-
     try {
-      const matchedUser = MOCK_USERS.find(
-        (u) => u.email === email && u.password === password
-      );
-
-      if (!matchedUser) {
-        throw new Error("Invalid credentials");
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Invalid credentials");
       }
-
-      // Sanitized user object (without password)
-      const authenticatedUser: User = {
-        id: matchedUser.id,
-        name: matchedUser.name,
-        email: matchedUser.email,
-        role: matchedUser.role,
-      };
-
-      // Store in context and localStorage
+      const authenticatedUser = await res.json();
       setUser(authenticatedUser);
-      localStorage.setItem(
-        "agentic_flow_user",
-        JSON.stringify(authenticatedUser)
-      );
-
+      localStorage.setItem("agentic_flow_user", JSON.stringify(authenticatedUser));
       // Redirect based on role
       if (authenticatedUser.role === "admin") {
         router.push("/admin");
@@ -126,6 +78,50 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
+  // Register new user
+  const register = async (name: string, email: string, password: string, role: string) => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, role })
+      });
+      if (!res.ok) throw new Error("Registration failed");
+      const user = await res.json();
+      setUser(user);
+      localStorage.setItem("agentic_flow_user", JSON.stringify(user));
+      router.push("/client");
+    } catch (error) {
+      console.error("Registration error:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Update user profile
+  const updateProfile = async (updates: Partial<User> & { password?: string }) => {
+    if (!user) return;
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/users/${user.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates)
+      });
+      if (!res.ok) throw new Error("Profile update failed");
+      const updatedUser = await res.json();
+      setUser(updatedUser);
+      localStorage.setItem("agentic_flow_user", JSON.stringify(updatedUser));
+    } catch (error) {
+      console.error("Profile update error:", error);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem("agentic_flow_user");
@@ -137,6 +133,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     loading,
     login,
     logout,
+    register,
+    updateProfile,
     isAuthenticated: !!user,
   };
 

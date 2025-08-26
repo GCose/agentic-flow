@@ -1,0 +1,37 @@
+// Prisma schema for User management
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  systems   UserSystem[]
+}
+
+model System {
+  id      String   @id @default(uuid())
+  name    String   @unique
+  users   UserSystem[]
+}
+
+model UserSystem {
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  system  System @relation(fields: [systemId], references: [id])
+  systemId String
+
+  @@id([userId, systemId])
+}

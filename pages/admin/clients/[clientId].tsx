@@ -23,136 +23,62 @@ import { Button } from "@/components/ui/button";
 import { ClientData, SystemConfigs } from "@/types/clients";
 import { AdminPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
-
-// Dummy clients data
-const clientsData: ClientData[] = [
-  {
-    id: "client-1",
-    name: "NextGen Agency Details",
-    description:
-      "Enterprise technology solutions provider specializing in digital transformation, cloud infrastructure, and AI-powered business automation for Fortune 500 companies.",
-    systems: [
-      "Content System",
-      "LeadGen System",
-      "Sales System",
-      "Onboarding System",
-    ],
-    stats: {
-      agents: 24,
-      projects: 8,
-      activeUsers: 12,
-      successRate: 94.7,
-    },
-    activeTime: "3 months",
-    createdAt: "2024-03-15",
-  },
-  {
-    id: "client-2",
-    name: "Aftermath Marketing Details",
-    description:
-      "Results-driven performance marketing agency focused on manufacturing and consumer goods companies, delivering ROI-focused campaigns and lead generation.",
-    systems: ["Content System", "LeadGen System"],
-    stats: {
-      agents: 12,
-      projects: 4,
-      activeUsers: 6,
-      successRate: 92.3,
-    },
-    activeTime: "2 months",
-    createdAt: "2024-02-20",
-  },
-  {
-    id: "client-3",
-    name: "Group26Consult Details",
-    description:
-      "Strategic marketing consultancy and research development firm providing data-driven insights and market analysis for technology startups.",
-    systems: ["Content System", "Sales System"],
-    stats: {
-      agents: 10,
-      projects: 3,
-      activeUsers: 5,
-      successRate: 90.1,
-    },
-    activeTime: "5 months",
-    createdAt: "2024-01-10",
-  },
-  {
-    id: "client-4",
-    name: "TechStart Solutions Details",
-    description:
-      "Innovative startup technology consultancy helping early-stage companies build scalable tech infrastructure and go-to-market strategies.",
-    systems: ["Content System"],
-    stats: {
-      agents: 5,
-      projects: 1,
-      activeUsers: 3,
-      successRate: 87.5,
-    },
-    activeTime: "1 month",
-    createdAt: "2023-12-05",
-  },
-  {
-    id: "client-5",
-    name: "Future Enterprises Details",
-    description:
-      "Forward-thinking business solutions company focused on emerging technologies, automation, and digital workplace transformation.",
-    systems: ["LeadGen System", "Sales System"],
-    stats: {
-      agents: 8,
-      projects: 2,
-      activeUsers: 4,
-      successRate: 91.2,
-    },
-    activeTime: "2 months",
-    createdAt: "2024-03-01",
-  },
-];
-
-// System data with colors and icons
-const systemsConfig: SystemConfigs = {
-  "Content System": {
-    icon: FileText,
-    color: "blue",
-    description: "AI-powered content creation and distribution across channels",
-    bgGradient: "bg-gradient-to-br from-blue-500/10 to-blue-500/5",
-    iconClassName: "text-blue-500",
-  },
-  "LeadGen System": {
-    icon: Users,
-    color: "purple",
-    description: "AI-driven lead generation and qualification pipeline",
-    bgGradient: "bg-gradient-to-br from-purple-500/10 to-purple-500/5",
-    iconClassName: "text-purple-500",
-  },
-  "Sales System": {
-    icon: BarChart,
-    color: "green",
-    description: "AI-enhanced sales process optimization and conversion",
-    bgGradient: "bg-gradient-to-br from-green-500/10 to-green-500/5",
-    iconClassName: "text-green-500",
-  },
-  "Onboarding System": {
-    icon: FileInput,
-    color: "orange",
-    description: "Automated client onboarding workflow with AI assistance",
-    bgGradient: "bg-gradient-to-br from-orange-500/10 to-orange-500/5",
-    iconClassName: "text-orange-500",
-  },
-};
-
+import { getClientById,getSystemsConfig } from "@/lib/clients";
 const ClientDashboardPage: NextPage = () => {
   const router = useRouter();
   const { clientId } = router.query;
   const [client, setClient] = useState<ClientData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [systemsConfig, setSystemsConfig] = useState<SystemConfigs>({});
+
+  // Helper to extract system names from backend response
+  const getSubscribedSystems = (client: any): string[] => {
+    if (Array.isArray(client.systems)) {
+      // Prisma returns: systems: [{ system: { name: string } }]
+      return client.systems.map((us: any) => us.system?.name).filter(Boolean);
+    }
+    return [];
+  };
 
   useEffect(() => {
-    if (clientId) {
-      const clientData = clientsData.find((c) => c.id === clientId);
-      setClient(clientData || null);
-      setLoading(false);
+    async function fetchClient() {
+      if (clientId) {
+        setLoading(true);
+        const clientData = await getClientById(clientId as string);
+        // Extract subscribed systems from backend response
+        if (
+          clientData &&
+          typeof clientData.id === "string" &&
+          clientData.id &&
+          typeof clientData.name === "string" &&
+          clientData.name
+        ) {
+          setClient({
+            ...clientData,
+            systems: getSubscribedSystems(clientData),
+            id: clientData.id,
+            name: clientData.name,
+            description: clientData.description ?? "",
+            stats: clientData.stats ?? undefined,
+            activeTime: clientData.activeTime ?? "",
+            createdAt: clientData.createdAt ?? "",
+          });
+        } else {
+          setClient(null);
+        }
+        setLoading(false);
+      }
     }
+    fetchClient();
   }, [clientId]);
+
+  useEffect(() => {
+    async function fetchSystemsConfig() {
+      const config = await getSystemsConfig();
+      setSystemsConfig(config);
+    }
+    fetchSystemsConfig();
+  }, []);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -203,7 +129,10 @@ const ClientDashboardPage: NextPage = () => {
           <Card className="border-blue-900/70 bg-transparent">
             <CardHeader>
               <CardTitle>{client.name.replace(" Details", "")}</CardTitle>
-              <CardDescription>{client.description}</CardDescription>
+              <div className="text-xs text-muted-foreground mt-1">ID: {client.id}</div>
+              {client.description && (
+                <CardDescription>{client.description}</CardDescription>
+              )}
             </CardHeader>
             <CardContent>
               <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
@@ -213,24 +142,32 @@ const ClientDashboardPage: NextPage = () => {
                   </span>
                   <div className="flex items-center gap-2">
                     <Calendar className="h-4 w-4 text-muted-foreground" />
-                    <span className="font-medium">{client.createdAt}</span>
+                    <span className="font-medium">
+                      {client.createdAt
+                        ? client.createdAt.split("T")[0]
+                        : "-"}
+                    </span>
                   </div>
                 </div>
-                <div className="flex flex-col gap-2">
+                {/* <div className="flex flex-col gap-2">
                   <span className="text-sm text-muted-foreground">
                     Subscription Duration
                   </span>
                   <div className="flex items-center gap-2">
                     <Clock className="h-4 w-4 text-muted-foreground" />
-                    <span className="font-medium">{client.activeTime}</span>
+                    <span className="font-medium">
+                      {client.activeTime || "-"}
+                    </span>
                   </div>
-                </div>
+                </div> */}
                 <div className="flex flex-col gap-2">
                   <span className="text-sm text-muted-foreground">
                     Active Systems
                   </span>
                   <span className="font-medium">
-                    {client.systems.length} of 4 systems
+                    {Array.isArray(client.systems) && client.systems.length > 0
+                      ? `${client.systems.length} of ${Object.keys(systemsConfig).length} systems`
+                      : `0 of ${Object.keys(systemsConfig).length} systems`}
                   </span>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -241,12 +178,15 @@ const ClientDashboardPage: NextPage = () => {
                 </div>
 
                 {/*==================== System Performance Metrics ====================*/}
-                <div className="flex flex-col gap-2">
+                {/* Defensive checks for client.stats */}
+                {/* <div className="flex flex-col gap-2">
                   <span className="text-sm text-muted-foreground">
                     Active Users
                   </span>
                   <span className="font-medium">
-                    {client.stats.activeUsers} users
+                    {client.stats?.activeUsers !== undefined
+                      ? `${client.stats.activeUsers} users`
+                      : "N/A"}
                   </span>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -254,7 +194,9 @@ const ClientDashboardPage: NextPage = () => {
                     Success Rate
                   </span>
                   <span className="font-medium text-green-500">
-                    {client.stats.successRate}%
+                    {client.stats?.successRate !== undefined
+                      ? `${client.stats.successRate}%`
+                      : "N/A"}
                   </span>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -262,7 +204,9 @@ const ClientDashboardPage: NextPage = () => {
                     Active Projects
                   </span>
                   <span className="font-medium">
-                    {client.stats.projects} projects
+                    {client.stats?.projects !== undefined
+                      ? `${client.stats.projects} projects`
+                      : "N/A"}
                   </span>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -270,26 +214,30 @@ const ClientDashboardPage: NextPage = () => {
                     System Usage
                   </span>
                   <span className="font-medium">
-                    {client.stats.agents} operations
+                    {client.stats?.agents !== undefined
+                      ? `${client.stats.agents} operations`
+                      : "N/A"}
                   </span>
-                </div>
+                </div> */}
                 {/*==================== End of System Performance Metrics ====================*/}
 
                 {/*==================== Subscribed Systems List ====================*/}
                 <div className="col-span-1 sm:col-span-2 lg:col-span-4">
                   <div className="flex flex-col gap-3">
-                    <span className="text-sm text-muted-foreground">
-                      Subscribed Systems
-                    </span>
+                    <span className="text-sm text-muted-foreground">Subscribed Systems</span>
                     <div className="flex flex-wrap gap-2">
-                      {client.systems.map((system) => (
-                        <span
-                          key={system}
-                          className="px-3 py-1 text-xs rounded-full bg-blue-500/10 text-blue-500 border border-blue-500/20"
-                        >
-                          {system}
-                        </span>
-                      ))}
+                      {Array.isArray(client.systems) && client.systems.length > 0 ? (
+                        client.systems.map((system) => (
+                          <span
+                            key={system}
+                            className="px-3 py-1 text-xs rounded-full bg-blue-500/10 text-blue-500 border border-blue-500/20"
+                          >
+                            {system}
+                          </span>
+                        ))
+                      ) : (
+                        <span className="text-muted-foreground">None</span>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -307,7 +255,7 @@ const ClientDashboardPage: NextPage = () => {
           </h2>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {Object.entries(systemsConfig).map(([system, config]) => {
-              const isActive = client.systems.includes(system);
+              const isActive = Array.isArray(client.systems) && client.systems.includes(system);
               const IconComponent = config.icon;
 
               return (

@@ -1,0 +1,60 @@
+model OnboardingEvent {
+  id        String   @id @default(uuid())
+  userId    String
+  event     String
+  details   String?
+  timestamp DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+// Prisma schema for User management
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model User {
+  emailStatus   String?   // 'sent', 'failed', etc.
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  systems   UserSystem[]
+  // ...existing code...
+  setupToken   String?
+  verifyToken  String?
+  verified     Boolean   @default(false)
+  onboardingEvents OnboardingEvent[]
+
+  @@index([role])
+}
+enum Role {
+  admin
+  client
+  designer
+  videographer
+}
+
+
+model System {
+  id      String   @id @default(uuid())
+  name    String   @unique
+  users   UserSystem[]
+}
+
+model UserSystem {
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  system  System @relation(fields: [systemId], references: [id])
+  systemId String
+
+  @@id([userId, systemId])
+}

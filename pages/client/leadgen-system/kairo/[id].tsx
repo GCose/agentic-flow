@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// Removed unused eslint-disable directive
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";

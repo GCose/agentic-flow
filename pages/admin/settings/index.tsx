@@ -9,19 +9,19 @@ import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import { useAuth } from "@/contexts/auth-context";
 
-const ClientSettingsPage = () => {
-  const { user, updateProfile, updateUser } = useAuth();
+const AdminSettingsPage = () => {
+  const { user, updateUser } = useAuth();
+  // ...existing code...
   const [activeTab, setActiveTab] = useState("profile");
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
-  const [organizationName, setOrganizationName] = useState(user?.name || "");
+  const [adminName, setAdminName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [emailNotifications, setEmailNotifications] = useState(true);
   const [inAppNotifications, setInAppNotifications] = useState(true);
-  const [focusField, setFocusField] = useState<string | null>(null);
 
   const tabs = [
     { id: "profile", label: "Profile", icon: User },
@@ -37,20 +37,21 @@ const ClientSettingsPage = () => {
         // Require current password for email change
         if (email !== user?.email && !currentPassword) {
           setFeedback({ type: "error", message: "Current password required to change email." });
-          setFocusField("current-password");
-          setIsLoading(false);
           return;
         }
-        await updateProfile({ name: organizationName, email, currentPassword });
-        setFeedback({ type: "success", message: "Profile updated successfully." });
-        if (user) {
-          updateUser({
-            id: user.id,
-            name: organizationName,
-            email,
-            role: user.role,
-            avatar: user.avatar || "",
-          });
+        const res = await fetch("/api/admin/update-settings", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user?.id, email, name: adminName, currentPassword: email !== user?.email ? currentPassword : undefined }),
+        });
+        const result = await res.json();
+        if (res.ok) {
+          setFeedback({ type: "success", message: result.message || "Profile updated successfully." });
+          if (result.user) {
+            updateUser(result.user);
+          }
+        } else {
+          setFeedback({ type: "error", message: result.error || "Failed to update profile." });
         }
       }
       if (section === "security") {
@@ -58,21 +59,26 @@ const ClientSettingsPage = () => {
         const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
         if (!strongRegex.test(newPassword)) {
           setFeedback({ type: "error", message: "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol." });
-          setFocusField("new-password");
-          setIsLoading(false);
           return;
         }
         if (newPassword !== confirmPassword) {
           setFeedback({ type: "error", message: "Passwords do not match." });
-          setFocusField("confirm-password");
-          setIsLoading(false);
           return;
         }
-        await updateProfile({ password: newPassword, currentPassword });
-        setFeedback({ type: "success", message: "Password updated successfully." });
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
+        const res = await fetch("/api/admin/update-settings", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user?.id, currentPassword, newPassword }),
+        });
+        const result = await res.json();
+        if (res.ok) {
+          setFeedback({ type: "success", message: result.message || "Password updated successfully." });
+          setCurrentPassword("");
+          setNewPassword("");
+          setConfirmPassword("");
+        } else {
+          setFeedback({ type: "error", message: result.error || "Failed to update password." });
+        }
       }
     } catch (err: any) {
       setFeedback({ type: "error", message: err?.message || "Update failed." });
@@ -84,24 +90,21 @@ const ClientSettingsPage = () => {
     switch (activeTab) {
       case "profile":
         return (
-          <Card className="border-none bg-transparent" role="form" aria-label="Profile Settings">
+          <Card className="border-none bg-transparent" role="form" aria-label="Admin Profile Settings">
             <CardHeader>
-              <CardTitle className="text-xl text-white">Profile Settings</CardTitle>
-              <p className="text-slate-300">Manage your organization profile and account information.</p>
+              <CardTitle className="text-xl text-white">Admin Profile Settings</CardTitle>
+              <p className="text-slate-300">Manage your admin profile and account information.</p>
             </CardHeader>
             <CardContent className="space-y-8 pt-6">
-              {feedback && (
-                <div role="alert" aria-live="assertive" className={`mb-4 text-sm ${feedback.type === "error" ? "text-red-500" : "text-green-500"}`}>{feedback.message}</div>
-              )}
               <div className="space-y-2">
-                <Label htmlFor="org-name" className="text-white">Organization Name</Label>
+                <Label htmlFor="admin-name" className="text-white">Admin Name</Label>
                 <Input
-                  id="org-name"
-                  aria-label="Organization Name"
-                  value={organizationName}
-                  onChange={(e) => setOrganizationName(e.target.value)}
+                  id="admin-name"
+                  aria-label="Admin Name"
+                  value={adminName}
+                  onChange={(e) => setAdminName(e.target.value)}
                   className="bg-transparent border-blue-900/70 text-gray-50/70"
-                  placeholder="Enter your organization name"
+                  placeholder="Enter your name"
                   tabIndex={0}
                 />
               </div>
@@ -118,27 +121,11 @@ const ClientSettingsPage = () => {
                   tabIndex={0}
                 />
               </div>
-              {email !== user?.email && (
-                <div className="space-y-2">
-                  <Label htmlFor="current-password" className="text-white">Current Password</Label>
-                  <Input
-                    id="current-password"
-                    aria-label="Current Password"
-                    type="password"
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    className="bg-transparent border-blue-900/70 text-gray-50/70"
-                    placeholder="Enter current password to change email"
-                    autoFocus={focusField === "current-password"}
-                    tabIndex={0}
-                  />
-                </div>
-              )}
               <Button
                 onClick={() => handleSave("profile")}
-                disabled={isLoading || !organizationName || !email || (email !== user?.email && !currentPassword)}
+                disabled={isLoading}
                 className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
-                aria-disabled={isLoading || !organizationName || !email || (email !== user?.email && !currentPassword)}
+                aria-disabled={isLoading}
                 tabIndex={0}
               >
                 {isLoading ? (
@@ -165,9 +152,6 @@ const ClientSettingsPage = () => {
               <p className="text-slate-300">Update your password and security preferences.</p>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
-              {feedback && (
-                <div role="alert" aria-live="assertive" className={`mb-4 text-sm ${feedback.type === "error" ? "text-red-500" : "text-green-500"}`}>{feedback.message}</div>
-              )}
               <div className="space-y-2">
                 <Label htmlFor="current-password" className="text-white">Current Password</Label>
                 <Input
@@ -178,7 +162,6 @@ const ClientSettingsPage = () => {
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Enter current password"
-                  autoFocus={focusField === "current-password"}
                   tabIndex={0}
                 />
               </div>
@@ -192,7 +175,6 @@ const ClientSettingsPage = () => {
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Enter new password"
-                  autoFocus={focusField === "new-password"}
                   tabIndex={0}
                 />
               </div>
@@ -206,7 +188,6 @@ const ClientSettingsPage = () => {
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Confirm new password"
-                  autoFocus={focusField === "confirm-password"}
                   tabIndex={0}
                 />
               </div>
@@ -310,14 +291,26 @@ const ClientSettingsPage = () => {
 
   return (
     <DashboardLayout
-      role="client"
+      role="admin"
       meta={{
-        title: "Agentic Flow | Settings",
-        description: "Manage your account settings",
+        title: "Agentic Flow | Admin Settings",
+        description: "Manage your admin account settings",
       }}
     >
-      <DashboardHeader role="client" title="Settings" hasBackButton={false} />
-
+      <DashboardHeader role="admin" title="Admin Settings" hasBackButton={false} />
+      {feedback && (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className={`mb-4 px-4 py-2 rounded text-sm font-medium max-w-xl mx-auto ${
+            feedback.type === "success"
+              ? "bg-green-100 text-green-800 border border-green-300"
+              : "bg-red-100 text-red-800 border border-red-300"
+          }`}
+        >
+          {feedback.message}
+        </div>
+      )}
       <div className="flex flex-1 h-full py-8">
         {/*==================== Sidebar ====================*/}
         <div className="w-64 border-r border-blue-900/70 bg-transparent p-6">
@@ -351,4 +344,4 @@ const ClientSettingsPage = () => {
   );
 };
 
-export default ClientSettingsPage;
+export default AdminSettingsPage;

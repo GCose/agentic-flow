@@ -121,11 +121,11 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           href: "/admin",
           icon: LayoutDashboard,
         },
-        {
-          title: "Agent Management",
-          href: "/admin/agent-management",
-          icon: Users,
-        },
+        // {
+        //   title: "Agent Management",
+        //   href: "/admin/agent-management",
+        //   icon: Users,
+        // },
         {
           title: "Clients",
           href: "/admin/clients",

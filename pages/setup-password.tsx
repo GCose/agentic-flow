@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { Lock, CheckCircle, XCircle } from "lucide-react";
 
 export default function SetupPasswordPage() {
@@ -111,7 +112,7 @@ export default function SetupPasswordPage() {
           )}
         </button>
         <div className="mt-6 text-sm text-gray-500">
-          Already have an account? <a href="/auth" className="text-blue-600 underline">Log in</a>
+            Already have an account? <Link href="/auth" className="text-blue-600 underline">Log in</Link>
         </div>
       </form>
     </div>

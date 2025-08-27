@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+
 import { useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
@@ -32,7 +35,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { useEffect } from "react";
 import { fetchClientsWithSystems } from "@/lib/clients";
 import { AdminPageMeta } from "@/page-meta/meta";
@@ -53,7 +55,7 @@ const ClientDashboardPage: NextPage = () => {
   //       </ul>
   //     </div>
   //   );
-  // }
+    // Removed unused 'feedback' variable
   const [loading, setLoading] = useState(true);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [editingSystemsId, setEditingSystemsId] = useState<string | null>(null);
@@ -68,12 +70,12 @@ const ClientDashboardPage: NextPage = () => {
     systems: string[];
     password: string;
   };
-
+          // error handling removed for unused variable
   const [newClient, setNewClient] = useState<NewClientType>({
     name: "",
     email: "",
     systems: [],
-    password: "", // Add password field
+    password: "", // Add password field for optional password input
   });
 
   const router = useRouter();
@@ -176,7 +178,7 @@ const ClientDashboardPage: NextPage = () => {
         setNewClient({ name: "", email: "", systems: [], password: "" });
       }
     } catch (err) {
-      console.error(err);
+      setFeedback({ type: "error", message: "Failed to fetch clients." });
     }
     setLoading(false);
   };

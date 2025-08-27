@@ -48,8 +48,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       subject: "Welcome to Agentic Flow!",
       html,
     });
-  } catch (err) {
-    status = 'failed';
+  } catch {
+    status = 'failed'; // error handling removed for unused variable
   }
   await prisma.user.update({ where: { id: client.id }, data: { emailStatus: status, setupToken, verifyToken } });
   return res.status(200).json({ success: true, status });

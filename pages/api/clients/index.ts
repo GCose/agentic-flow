@@ -10,7 +10,7 @@ async function logOnboardingEvent(userId: string, event: string, details?: strin
   });
 }
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, User } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 // ...existing code...
@@ -108,10 +108,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === "POST") {
-    const { name, email, password, description, systems } = req.body;
-    if (!name || !email || !password) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
+      const { name, email, password, systems } = req.body;
+      if (!name || !email || !password) {
+        return res.status(400).json({ error: "Missing required fields" });
+      }
     try {
       // Generate secure tokens
       const setupToken = crypto.randomBytes(32).toString("hex");

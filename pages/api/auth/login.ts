@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -20,7 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!isValid) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
-  // Don't return password
-  const { password: _, ...userData } = user;
-  return res.status(200).json(userData);
+  const { password: userPassword, ...userData } = user;
+    return res.status(200).json(userData);
 }

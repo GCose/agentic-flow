@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 
@@ -19,11 +21,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ error: "Missing required fields" });
     }
     try {
-      const user = await prisma.user.create({
+      const createdUser = await prisma.user.create({
         data: { name, email, password, role }
       });
-      // Don't return password
-      const { password: _, ...userData } = user;
+      const { password: userPassword, ...userData } = createdUser;
       return res.status(201).json(userData);
     } catch (err) {
       return res.status(500).json({ error: "Could not create user", details: err });

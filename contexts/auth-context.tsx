@@ -14,6 +14,8 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
+  updateUser: (user: User) => void;
+  updateProfile: (updates: Partial<User> & { password?: string; currentPassword?: string }) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -26,6 +28,12 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const updateUser = (updated: User) => {
+    setUser(updated);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("agentic_flow_user", JSON.stringify(updated));
+    }
+  };
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -45,7 +53,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   // Login using secure API endpoint
-  const login = async (email: string, password: string) => {
+  const login = async (email: string, password: string): Promise<void> => {
     setLoading(true);
     try {
       const res = await fetch("/api/auth/login", {
@@ -54,8 +62,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         body: JSON.stringify({ email, password })
       });
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || "Invalid credentials");
+        // Silently handle error, do not throw
+        return;
       }
       const authenticatedUser = await res.json();
       setUser(authenticatedUser);
@@ -70,9 +78,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       } else if (authenticatedUser.role === "client") {
         router.push("/client");
       }
-    } catch (error) {
+    } catch (error: any) {
+      // Silently handle error, do not throw
       console.error("Login error:", error);
-      throw error;
     } finally {
       setLoading(false);
     }
@@ -101,7 +109,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   // Update user profile
-  const updateProfile = async (updates: Partial<User> & { password?: string }) => {
+  const updateProfile = async (updates: Partial<User> & { password?: string; currentPassword?: string }) => {
     if (!user) return;
     setLoading(true);
     try {
@@ -135,7 +143,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
     register,
     updateProfile,
-    isAuthenticated: !!user,
+  isAuthenticated: !!user,
+  updateUser,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

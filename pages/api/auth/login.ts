@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -12,7 +13,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(400).json({ error: "Missing email or password" });
   }
   const user = await prisma.user.findUnique({ where: { email } });
-  if (!user || user.password !== password) {
+  if (!user) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+  const isValid = await bcrypt.compare(password, user.password);
+  if (!isValid) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
   // Don't return password

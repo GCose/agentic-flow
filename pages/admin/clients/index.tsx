@@ -34,15 +34,31 @@ import {
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useEffect } from "react";
+import { fetchClientsWithSystems } from "@/lib/clients";
 import { AdminPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 const ClientDashboardPage: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [clients, setClients] = useState<any[]>([]);
+  // Onboarding resources component
+  // function OnboardingResources() {
+  //   return (
+  //     <div style={{ background: '#f8fafc', borderRadius: 12, padding: 24, marginBottom: 24 }}>
+  //       <h2 style={{ color: '#2563eb', fontSize: 20, marginBottom: 12 }}>Onboarding Resources</h2>
+  //       <ul style={{ fontSize: 16 }}>
+  //         <li><a href="https://yourdomain.com/docs" target="_blank" rel="noopener" style={{ color: '#2563eb' }}>Documentation</a></li>
+  //         <li><a href="https://yourdomain.com/tutorials" target="_blank" rel="noopener" style={{ color: '#2563eb' }}>Video Tutorials</a></li>
+  //         <li><a href="https://yourdomain.com/support" target="_blank" rel="noopener" style={{ color: '#2563eb' }}>Support Center</a></li>
+  //       </ul>
+  //     </div>
+  //   );
+  // }
   const [loading, setLoading] = useState(true);
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [editingSystemsId, setEditingSystemsId] = useState<string | null>(null);
   const [editingSystems, setEditingSystems] = useState<string[]>([]);
+  const [resendingEmailId, setResendingEmailId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [availableSystems, setAvailableSystems] = useState<string[]>([]);
 
@@ -102,20 +118,12 @@ const ClientDashboardPage: NextPage = () => {
   useEffect(() => {
     const fetchClients = async () => {
       setLoading(true);
-      const res = await fetch("/api/clients");
-      const data = await res.json();
-      // For each client, fetch their systems
-      const clientsWithSystems = await Promise.all(
-        data.map(async (client: any) => {
-          const res = await fetch(`/api/clients/${client.id}`);
-          const detail = await res.json();
-          return {
-            ...client,
-            systems: (detail.systems || []).map((us: any) => us.system?.name),
-          };
-        })
-      );
-      setClients(clientsWithSystems);
+      try {
+        const clientsWithSystems = await fetchClientsWithSystems();
+        setClients(clientsWithSystems);
+      } catch (err) {
+  setFeedback({ type: "error", message: "Failed to fetch clients." });
+      }
       setLoading(false);
     };
     fetchClients();
@@ -282,6 +290,7 @@ const ClientDashboardPage: NextPage = () => {
             </div>
           </CardHeader>
           <CardContent>
+            {/* <OnboardingResources /> */}
             <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-blue-900/70">
               <Table>
                 <TableHeader>
@@ -332,6 +341,51 @@ const ClientDashboardPage: NextPage = () => {
                               }}
                             >
                               Edit
+                            </Button>
+                          </div>
+                          {/* Email Delivery Status & Resend */}
+                          <div className="mt-2 flex items-center gap-2">
+                            <span className={`text-xs px-2 py-1 rounded ${client.emailStatus === 'sent' ? 'bg-green-100 text-green-700' : client.emailStatus === 'failed' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'}`}>{client.emailStatus || 'pending'}</span>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={resendingEmailId === client.id}
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                setFeedback(null);
+                                setResendingEmailId(client.id);
+                                try {
+                                  const res = await fetch("/api/clients/resend-welcome", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ clientId: client.id })
+                                  });
+                                  const result = await res.json();
+                                  if (res.ok) {
+                                    setFeedback({ type: "success", message: `Welcome email resent (${result.status})` });
+                                    // Refresh client list
+                                    const updated = await fetch("/api/clients");
+                                    setClients(await updated.json());
+                                  } else {
+                                    setFeedback({ type: "error", message: result.error || "Resend failed" });
+                                  }
+                                } catch (err) {
+                                  setFeedback({ type: "error", message: `Resend error: ${err instanceof Error ? err.message : String(err)}` });
+                                }
+                                setResendingEmailId(null);
+                              }}
+                            >
+                              {resendingEmailId === client.id ? (
+                                <span className="flex items-center gap-2">
+                                  <svg className="animate-spin h-4 w-4 text-blue-600" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 01-8 8z" />
+                                  </svg>
+                                  Sending...
+                                </span>
+                              ) : (
+                                "Resend Email"
+                              )}
                             </Button>
                           </div>
                           {/* Edit Systems Modal */}
@@ -433,10 +487,19 @@ const ClientDashboardPage: NextPage = () => {
                                 onClick={async (e) => {
                                   e.stopPropagation();
                                   // Delete client via API
-                                  await fetch(`/api/clients/${client.id}`, { method: "DELETE" });
-                                  // Refresh client list
-                                  const updated = await fetch("/api/clients");
-                                  setClients(await updated.json());
+                                  try {
+                                    const res = await fetch(`/api/clients/${client.id}`, { method: "DELETE" });
+                                    if (!res.ok) {
+                                      setFeedback({ type: "error", message: `Delete failed: ${res.status}` });
+                                      return;
+                                    }
+                                    // Refresh client list
+                                    const updated = await fetch("/api/clients");
+                                    setClients(await updated.json());
+                                    setFeedback({ type: "success", message: "Client deleted successfully." });
+                                  } catch (err) {
+                                    setFeedback({ type: "error", message: `Delete error: ${err instanceof Error ? err.message : String(err)}` });
+                                  }
                                 }}
                                 className="text-destructive focus:text-destructive"
                               >

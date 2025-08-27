@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -7,11 +8,12 @@ async function main() {
   const adminEmail = "admin@agenticflow.gm";
   const admin = await prisma.user.findUnique({ where: { email: adminEmail } });
   if (!admin) {
+    const hashedPassword = await bcrypt.hash("nextgen@123", 10);
     await prisma.user.create({
       data: {
         name: "NextGen Agency",
         email: adminEmail,
-        password: "nextgen@123", // Change this after first login
+        password: hashedPassword, // Change this after first login
         role: "admin"
       }
     });

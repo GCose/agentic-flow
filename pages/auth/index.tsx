@@ -43,13 +43,11 @@ const LoginPage: NextPage = () => {
     setIsLoading(true);
     setError("");
 
-    try {
-      await login(email, password);
-    } catch {
+    const success = await login(email, password);
+    if (!success) {
       setError("Invalid email or password");
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
   return (

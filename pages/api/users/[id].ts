@@ -21,11 +21,34 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === "PUT") {
     // Update user info
-    const { name, email, password } = req.body;
+    const { name, email, password, currentPassword } = req.body;
     try {
+      let updateData: any = {};
+      const bcrypt = require("bcryptjs");
+      // Require current password for email changes
+      if (email) {
+        if (!currentPassword) {
+          return res.status(400).json({ error: "Current password required to change email" });
+        }
+        const user = await prisma.user.findUnique({ where: { id } });
+        if (!user || !(await bcrypt.compare(currentPassword, user.password))) {
+          return res.status(401).json({ error: "Current password is incorrect" });
+        }
+        updateData.email = email;
+      }
+      if (name) updateData.name = name;
+      if (password) {
+        // Password strength validation
+        const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+        if (!strongRegex.test(password)) {
+          return res.status(400).json({ error: "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol" });
+        }
+        const hashed = await bcrypt.hash(password, 10);
+        updateData.password = hashed;
+      }
       const user = await prisma.user.update({
         where: { id },
-        data: { name, email, ...(password ? { password } : {}) }
+        data: updateData
       });
       const { password: _, ...userData } = user;
       return res.status(200).json(userData);

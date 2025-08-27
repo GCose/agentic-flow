@@ -1,3 +1,15 @@
+// Centralized API calls for clients
+export async function fetchClientsWithSystems(): Promise<any[]> {
+  try {
+    const res = await fetch("/api/clients");
+    if (!res.ok) throw new Error("Failed to fetch clients");
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error("Error in fetchClientsWithSystems:", err);
+    return [];
+  }
+}
 import { ClientData, SystemConfigs } from "@/types/clients";
 import { BarChart, FileText, Users, FileInput, Calendar, Clock, AlertCircle, ArrowLeft } from "lucide-react";
 

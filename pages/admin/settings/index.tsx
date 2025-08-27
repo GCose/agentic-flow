@@ -10,9 +10,11 @@ import DashboardHeader from "@/components/dashboard/dashboard-header";
 import { useAuth } from "@/contexts/auth-context";
 
 const AdminSettingsPage = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
+  // ...existing code...
   const [activeTab, setActiveTab] = useState("profile");
   const [isLoading, setIsLoading] = useState(false);
+  const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [adminName, setAdminName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [currentPassword, setCurrentPassword] = useState("");
@@ -29,56 +31,102 @@ const AdminSettingsPage = () => {
 
   const handleSave = async (section: string) => {
     setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setFeedback(null);
+    try {
+      if (section === "profile") {
+        // Require current password for email change
+        if (email !== user?.email && !currentPassword) {
+          setFeedback({ type: "error", message: "Current password required to change email." });
+          return;
+        }
+        const res = await fetch("/api/admin/update-settings", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user?.id, email, name: adminName, currentPassword: email !== user?.email ? currentPassword : undefined }),
+        });
+        const result = await res.json();
+        if (res.ok) {
+          setFeedback({ type: "success", message: result.message || "Profile updated successfully." });
+          if (result.user) {
+            updateUser(result.user);
+          }
+        } else {
+          setFeedback({ type: "error", message: result.error || "Failed to update profile." });
+        }
+      }
+      if (section === "security") {
+        // Password strength validation
+        const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+        if (!strongRegex.test(newPassword)) {
+          setFeedback({ type: "error", message: "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol." });
+          return;
+        }
+        if (newPassword !== confirmPassword) {
+          setFeedback({ type: "error", message: "Passwords do not match." });
+          return;
+        }
+        const res = await fetch("/api/admin/update-settings", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: user?.id, currentPassword, newPassword }),
+        });
+        const result = await res.json();
+        if (res.ok) {
+          setFeedback({ type: "success", message: result.message || "Password updated successfully." });
+          setCurrentPassword("");
+          setNewPassword("");
+          setConfirmPassword("");
+        } else {
+          setFeedback({ type: "error", message: result.error || "Failed to update password." });
+        }
+      }
+    } catch (err: any) {
+      setFeedback({ type: "error", message: err?.message || "Update failed." });
+    }
     setIsLoading(false);
-    console.log(`Saved ${section} settings`);
   };
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "profile":
         return (
-          <Card className="border-none bg-transparent">
+          <Card className="border-none bg-transparent" role="form" aria-label="Admin Profile Settings">
             <CardHeader>
-              <CardTitle className="text-xl text-white">
-                Admin Profile Settings
-              </CardTitle>
-              <p className="text-slate-300">
-                Manage your admin profile and account information.
-              </p>
+              <CardTitle className="text-xl text-white">Admin Profile Settings</CardTitle>
+              <p className="text-slate-300">Manage your admin profile and account information.</p>
             </CardHeader>
             <CardContent className="space-y-8 pt-6">
               <div className="space-y-2">
-                <Label htmlFor="admin-name" className="text-white">
-                  Admin Name
-                </Label>
+                <Label htmlFor="admin-name" className="text-white">Admin Name</Label>
                 <Input
                   id="admin-name"
+                  aria-label="Admin Name"
                   value={adminName}
                   onChange={(e) => setAdminName(e.target.value)}
                   className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Enter your name"
+                  tabIndex={0}
                 />
               </div>
-
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-white">
-                  Email Address
-                </Label>
+                <Label htmlFor="email" className="text-white">Email Address</Label>
                 <Input
                   id="email"
+                  aria-label="Email Address"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="your@email.com"
                   type="email"
+                  tabIndex={0}
                 />
               </div>
-
               <Button
                 onClick={() => handleSave("profile")}
                 disabled={isLoading}
                 className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                aria-disabled={isLoading}
+                tabIndex={0}
               >
                 {isLoading ? (
                   <>
@@ -98,72 +146,59 @@ const AdminSettingsPage = () => {
 
       case "security":
         return (
-          <Card className="border-none bg-transparent">
+          <Card className="border-none bg-transparent" role="form" aria-label="Security Settings">
             <CardHeader>
-              <CardTitle className="text-xl text-white">
-                Security Settings
-              </CardTitle>
-              <p className="text-slate-300">
-                Update your password and security preferences.
-              </p>
+              <CardTitle className="text-xl text-white">Security Settings</CardTitle>
+              <p className="text-slate-300">Update your password and security preferences.</p>
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
               <div className="space-y-2">
-                <Label htmlFor="current-password" className="text-white">
-                  Current Password
-                </Label>
+                <Label htmlFor="current-password" className="text-white">Current Password</Label>
                 <Input
                   id="current-password"
+                  aria-label="Current Password"
                   type="password"
                   value={currentPassword}
                   onChange={(e) => setCurrentPassword(e.target.value)}
                   className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Enter current password"
+                  tabIndex={0}
                 />
               </div>
-
               <div className="space-y-2">
-                <Label htmlFor="new-password" className="text-white">
-                  New Password
-                </Label>
+                <Label htmlFor="new-password" className="text-white">New Password</Label>
                 <Input
                   id="new-password"
+                  aria-label="New Password"
                   type="password"
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Enter new password"
+                  tabIndex={0}
                 />
               </div>
-
               <div className="space-y-2">
-                <Label htmlFor="confirm-password" className="text-white">
-                  Confirm New Password
-                </Label>
+                <Label htmlFor="confirm-password" className="text-white">Confirm New Password</Label>
                 <Input
                   id="confirm-password"
+                  aria-label="Confirm New Password"
                   type="password"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   className="bg-transparent border-blue-900/70 text-gray-50/70"
                   placeholder="Confirm new password"
+                  tabIndex={0}
                 />
               </div>
-
               <div className="pt-2">
-                <p className="text-sm text-slate-400 mb-4">
-                  Password must be at least 8 characters long and include
-                  uppercase, lowercase, and numbers.
-                </p>
+                <p className="text-sm text-slate-400 mb-4">Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.</p>
                 <Button
                   onClick={() => handleSave("security")}
-                  disabled={
-                    isLoading ||
-                    !currentPassword ||
-                    !newPassword ||
-                    newPassword !== confirmPassword
-                  }
+                  disabled={isLoading || !currentPassword || !newPassword || !confirmPassword}
                   className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                  aria-disabled={isLoading || !currentPassword || !newPassword || !confirmPassword}
+                  tabIndex={0}
                 >
                   {isLoading ? (
                     <>
@@ -263,7 +298,19 @@ const AdminSettingsPage = () => {
       }}
     >
       <DashboardHeader role="admin" title="Admin Settings" hasBackButton={false} />
-
+      {feedback && (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className={`mb-4 px-4 py-2 rounded text-sm font-medium max-w-xl mx-auto ${
+            feedback.type === "success"
+              ? "bg-green-100 text-green-800 border border-green-300"
+              : "bg-red-100 text-red-800 border border-red-300"
+          }`}
+        >
+          {feedback.message}
+        </div>
+      )}
       <div className="flex flex-1 h-full py-8">
         {/*==================== Sidebar ====================*/}
         <div className="w-64 border-r border-blue-900/70 bg-transparent p-6">

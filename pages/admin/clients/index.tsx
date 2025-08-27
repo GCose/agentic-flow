@@ -78,9 +78,13 @@ const ClientDashboardPage: NextPage = () => {
 
   const router = useRouter();
 
-  const filteredClients = clients.filter((client) =>
-    client.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredClients = clients
+    .filter((client) => client.name.toLowerCase().includes(searchTerm.toLowerCase()))
+    .sort((a, b) => {
+      // Sort by createdAt descending (newest first)
+      if (!a.createdAt || !b.createdAt) return 0;
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
 
   const navigateToClientDashboard = (clientId: string) => {
     router.push(`/admin/clients/${clientId}`);
@@ -157,21 +161,17 @@ const ClientDashboardPage: NextPage = () => {
         }),
       });
       if (res.ok) {
-        // Refresh client list
-        const updated = await fetch("/api/clients");
-        const data = await updated.json();
-        // Fetch systems for each client
-        const clientsWithSystems = await Promise.all(
-          data.map(async (client: any) => {
-            const res = await fetch(`/api/clients/${client.id}`);
-            const detail = await res.json();
-            return {
-              ...client,
-              systems: (detail.systems || []).map((us: any) => us.system?.name),
-            };
-          })
-        );
-        setClients(clientsWithSystems);
+        // Get the newly created client
+        const newClientData = await res.json();
+        // Fetch systems for the new client
+        const resDetail = await fetch(`/api/clients/${newClientData.id}`);
+        const detail = await resDetail.json();
+        const clientWithSystems = {
+          ...newClientData,
+          systems: (detail.systems || []).map((us: any) => us.system?.name),
+        };
+        // Prepend new client to the list
+        setClients((prev) => [clientWithSystems, ...prev]);
         setIsModalOpen(false);
         setNewClient({ name: "", email: "", systems: [], password: "" });
       }

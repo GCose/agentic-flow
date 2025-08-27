@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (lang === 'es') {
       html = `
         <div style="font-family:Arial,sans-serif;background:#f8fafc;padding:32px;border-radius:12px;max-width:600px;margin:auto;">
-          <img src='https://yourdomain.com/logo.png' alt='Agentic Flow Logo' style='height:48px;margin-bottom:16px;'>
+          <img src='https://yourdomain.com/images/icon.png' alt='Agentic Flow Logo' style='height:48px;margin-bottom:16px;'>
           <h1 style="color:#2563eb;">¡Bienvenido a Agentic Flow, ${name}!</h1>
           <p style="font-size:16px;">Estamos emocionados de tenerte. Aquí tienes cómo empezar:</p>
           <ol style="margin:16px 0 24px 24px;font-size:15px;">

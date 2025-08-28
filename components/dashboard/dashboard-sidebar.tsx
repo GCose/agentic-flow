@@ -131,6 +131,11 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           href: "/admin/clients",
           icon: Users,
         },
+         {
+          title: "Pending Accounts",
+          href: "/admin/pending-accounts",
+          icon: Users,
+        },
         ...commonItems,
       ];
 

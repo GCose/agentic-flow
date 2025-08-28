@@ -2,9 +2,10 @@
 
 
 import { useState } from "react";
+import { useAuth } from "@/contexts/auth-context";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { PlusCircle, MoreHorizontal, Check } from "lucide-react";
+import { PlusCircle, MoreHorizontal, Check, MailCheck, MailWarning, UserCog, UserCheck } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -43,6 +45,9 @@ import DashboardHeader from "@/components/dashboard/dashboard-header";
 const ClientDashboardPage: NextPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [clients, setClients] = useState<any[]>([]);
+  const [viewMode, setViewMode] = useState<'clients' | 'systems'>('clients');
+  const [selectedClient, setSelectedClient] = useState<any | null>(null);
+  const [navigatingClientId, setNavigatingClientId] = useState<string | null>(null);
   // Onboarding resources component
   // function OnboardingResources() {
   //   return (
@@ -60,6 +65,7 @@ const ClientDashboardPage: NextPage = () => {
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [editingSystemsId, setEditingSystemsId] = useState<string | null>(null);
   const [editingSystems, setEditingSystems] = useState<string[]>([]);
+  const [editingSystemsLoading, setEditingSystemsLoading] = useState(false);
   const [resendingEmailId, setResendingEmailId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [availableSystems, setAvailableSystems] = useState<string[]>([]);
@@ -183,343 +189,390 @@ const ClientDashboardPage: NextPage = () => {
     setLoading(false);
   };
 
+  const { impersonateClient, isImpersonating, stopImpersonation } = useAuth();
+
   return (
     <DashboardLayout meta={AdminPageMeta.clientsDashboardPage}>
+      {isImpersonating && (
+        <div className="mt-4 flex justify-end">
+          <Button size="sm" variant="destructive" onClick={stopImpersonation}>
+            Return to Admin View
+          </Button>
+        </div>
+      )}
       <DashboardHeader title="Clients" />
-
-      {/*==================== Client Content ====================*/}
-      <div className="flex-1 p-4 py-2 ">
-        <Card className="border-none bg-transparent  ">
-          <CardHeader className="flex flex-col gap-4 md:flex-row items-center justify-between">
-            <h2 className="font-medium">Clients using Agentic Flow</h2>
-            <div className="flex gap-4">
-              <Input
-                value={searchTerm}
-                placeholder="Search clients..."
-                className="w-full md:w-64 border-blue-900/70"
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-                <DialogTrigger asChild>
-                  <Button className="w-full md:w-auto">
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    New Client
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[500px]">
-                  <DialogHeader>
-                    <DialogTitle>Create New Client</DialogTitle>
-                    <DialogDescription>
-                      Add a new client to Agentic Flow. Fill in the details
-                      below.
-                    </DialogDescription>
-                  </DialogHeader>
-                  <div className="space-y-4 py-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Client Name</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder="Enter client name"
-                        value={newClient.name}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Client Email</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        placeholder="Enter client email"
-                        value={newClient.email}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
-                      <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="Password (leave blank for default)"
-                        value={newClient.password}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Systems</Label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {availableSystems.length > 0 ? (
-                          availableSystems.map((system) => (
-                            <div key={system} className="flex items-center space-x-2">
-                              <Button
-                                type="button"
-                                variant={
-                                  newClient.systems.includes(system)
-                                    ? "default"
-                                    : "outline"
-                                }
-                                size="sm"
-                                className="w-full justify-start"
-                                onClick={() => handleSystemToggle(system)}
-                              >
-                                {newClient.systems.includes(system) ? (
-                                  <Check className="mr-2 h-4 w-4" />
-                                ) : null}
-                                {system}
-                              </Button>
+  {/* Removed View Clients and View Systems buttons for cleaner UI */}
+      {viewMode === 'clients' ? (
+        <div className="flex-1 p-4 py-2 ">
+          <Card className="border-none bg-transparent  ">
+            <CardHeader className="flex flex-col gap-4 md:flex-row items-center justify-between">
+              <h2 className="font-medium">Clients using Agentic Flow</h2>
+              <div className="flex gap-4">
+                <Input
+                  value={searchTerm}
+                  placeholder="Search clients..."
+                  className="w-full md:w-64 border-blue-900/70"
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full md:w-auto">
+                      <PlusCircle className="mr-2 h-4 w-4" />
+                      New Client
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="sm:max-w-[500px]">
+                    <DialogHeader>
+                      <DialogTitle>Create New Client</DialogTitle>
+                      <DialogDescription>
+                        Add a new client to Agentic Flow. Fill in the details
+                        below.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="space-y-4 py-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Client Name</Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          placeholder="Enter client name"
+                          value={newClient.name}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="email">Client Email</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          placeholder="Enter client email"
+                          value={newClient.email}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="password">Password</Label>
+                        <Input
+                          id="password"
+                          name="password"
+                          type="password"
+                          placeholder="Password (leave blank for default)"
+                          value={newClient.password}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Systems</Label>
+                        <div className="grid grid-cols-2 gap-2">
+                          {availableSystems.length > 0 ? (
+                            availableSystems.map((system) => (
+                              <div key={system} className="flex items-center space-x-2">
+                                <Button
+                                  type="button"
+                                  variant={
+                                    newClient.systems.includes(system)
+                                      ? "default"
+                                      : "outline"
+                                  }
+                                  size="sm"
+                                  className="w-full justify-start"
+                                  onClick={() => handleSystemToggle(system)}
+                                >
+                                  {newClient.systems.includes(system) ? (
+                                    <Check className="mr-2 h-4 w-4" />
+                                  ) : null}
+                                  {system}
+                                </Button>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="text-muted-foreground col-span-2">
+                              No systems available. Please add systems in backend.
                             </div>
-                          ))
-                        ) : (
-                          <div className="text-muted-foreground col-span-2">
-                            No systems available. Please add systems in backend.
-                          </div>
-                        )}
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <DialogFooter>
-                    <Button
-                      variant="outline"
-                      onClick={() => setIsModalOpen(false)}
-                    >
-                      Cancel
-                    </Button>
-                    <Button onClick={handleCreateClient}>Create Client</Button>
-                  </DialogFooter>
-                </DialogContent>
-              </Dialog>
-            </div>
-          </CardHeader>
-          <CardContent>
-            {/* <OnboardingResources /> */}
-            <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-blue-900/70">
-              <Table>
-                <TableHeader>
-                  <TableRow className="border-b border-blue-900/70 hover:bg-transparent">
-                    <TableHead>Client</TableHead>
-                    <TableHead>Systems</TableHead>
-                    <TableHead className="hidden md:table-cell">
-                      Client Since
-                    </TableHead>
-                    <TableHead className="hidden md:table-cell">
-                      Subscriptions
-                    </TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {loading ? (
-                    <TableRow>
-                      <TableCell colSpan={5} className="text-center">Loading...</TableCell>
-                    </TableRow>
-                  ) : filteredClients.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={5} className="text-center">No clients found.</TableCell>
-                    </TableRow>
-                  ) : (
-                    filteredClients.map((client) => (
-                      <TableRow
-                        key={client.id}
-                        onClick={() => navigateToClientDashboard(client.id)}
-                        className="cursor-pointer border-b border-blue-900/70 hover:bg-blue-600/10 hover:rounded-md"
+                    <DialogFooter>
+                      <Button
+                        variant="outline"
+                        onClick={() => setIsModalOpen(false)}
                       >
-                        <TableCell className="font-medium">{client.name}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-1">
-                            {(client.systems || []).map((system: string) => (
-                              <div key={system} className="font-medium p-2 bg-blue-900/10 rounded-md">
-                                {system}
-                              </div>
-                            ))}
+                        Cancel
+                      </Button>
+                      <Button onClick={handleCreateClient}>Create Client</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-blue-900/70 relative">
+                {navigatingClientId && (
+                  <div className="absolute inset-0 z-20 flex items-center justify-center bg-gradient-to-r from-blue-900/10 to-blue-900/30 backdrop-blur-sm">
+                    <div className="flex flex-col items-center gap-2">
+                      <svg className="animate-spin h-8 w-8 text-blue-900" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                      </svg>
+                      <span className="text-blue-900 font-semibold text-lg">Loading client details...</span>
+                    </div>
+                  </div>
+                )}
+                <Table>
+                  <TableHeader>
+                    <TableRow className="border-b border-blue-900/70 hover:bg-transparent">
+                      <TableHead>Client</TableHead>
+                      <TableHead>Systems</TableHead>
+                      <TableHead className="hidden md:table-cell">Client Since</TableHead>
+                      <TableHead className="hidden md:table-cell">Subscriptions</TableHead>
+                      <TableHead>Email Status</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {loading ? (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center">Loading...</TableCell>
+                      </TableRow>
+                    ) : filteredClients.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center">No clients found.</TableCell>
+                      </TableRow>
+                    ) : (
+                      filteredClients.map((client) => (
+                        <TableRow
+                          key={client.id}
+                          onClick={() => {
+                            setNavigatingClientId(client.id);
+                            setTimeout(() => {
+                              router.push(`/admin/clients/${client.id}`);
+                            }, 400);
+                          }}
+                          className="cursor-pointer border-b border-blue-900/70 hover:bg-blue-600/10 hover:rounded-md"
+                        >
+                          <TableCell className="font-medium">{client.name}</TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-1">
+                              {(client.systems || []).map((system: string) => (
+                                <div key={system} className="font-medium p-2 bg-blue-900/10 rounded-md">
+                                  {system}
+                                </div>
+                              ))}
+                            </div>
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell font-medium">
+                            {client.createdAt ? client.createdAt.split("T")[0] : "-"}
+                          </TableCell>
+                          <TableCell className="hidden md:table-cell font-medium">
+                            {Array.isArray(client.systems) && client.systems.length > 0
+                              ? client.systems.join(", ")
+                              : "-"}
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {resendingEmailId === client.id && feedback ? (
+                              <span className={`flex items-center gap-1 text-sm font-medium ${feedback.type === "success" ? "text-green-600" : "text-red-600"}`}>
+                                {feedback.type === "success" ? <MailCheck className="w-4 h-4" /> : <MailWarning className="w-4 h-4" />}
+                                {feedback.message}
+                              </span>
+                            ) : client.emailStatus === 'sent' ? (
+                              <span className="flex items-center gap-1 text-green-700">
+                                <MailCheck className="w-4 h-4" />
+                                Welcome email sent
+                              </span>
+                            ) : client.emailStatus && client.emailStatus.startsWith('failed') ? (
+                              <span className="flex items-center gap-1 text-red-600">
+                                <MailWarning className="w-4 h-4" />
+                                Failed to send welcome email
+                              </span>
+                            ) : (
+                              <span className="flex items-center gap-1 text-muted-foreground">
+                                <MailCheck className="w-4 h-4 opacity-40" />
+                                No welcome email sent
+                              </span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-right flex gap-2 items-center">
                             <Button
                               size="sm"
                               variant="outline"
-                              className="ml-2"
-                              onClick={(e) => {
+                              onClick={async (e) => {
                                 e.stopPropagation();
                                 setEditingSystemsId(client.id);
                                 setEditingSystems(client.systems || []);
+                                setViewMode('systems');
+                                setSelectedClient(client);
+                                setEditingSystemsLoading(true);
+                                setTimeout(() => setEditingSystemsLoading(false), 500);
                               }}
                             >
-                              Edit
+                              <UserCog className="w-4 h-4 mr-1" /> Edit Systems
                             </Button>
-                          </div>
-                          {/* Email Delivery Status & Resend */}
-                          <div className="mt-2 flex items-center gap-2">
-                            <span className={`text-xs px-2 py-1 rounded ${client.emailStatus === 'sent' ? 'bg-green-100 text-green-700' : client.emailStatus === 'failed' ? 'bg-red-100 text-red-700' : 'bg-gray-100 text-gray-700'}`}>{client.emailStatus || 'pending'}</span>
                             <Button
                               size="sm"
-                              variant="outline"
+                              variant="default"
+                              onClick={async (e) => {
+                                e.stopPropagation();
+                                setNavigatingClientId(client.id);
+                                await new Promise(resolve => setTimeout(resolve, 1000));
+                                impersonateClient(client);
+                                setNavigatingClientId(null);
+                              }}
+                            >
+                              <UserCheck className="w-4 h-4 mr-1" /> Impersonate
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="secondary"
                               disabled={resendingEmailId === client.id}
                               onClick={async (e) => {
                                 e.stopPropagation();
-                                setFeedback(null);
                                 setResendingEmailId(client.id);
+                                setFeedback(null);
                                 try {
-                                  const res = await fetch("/api/clients/resend-welcome", {
+                                  const res = await fetch(`/api/clients/resend-welcome`, {
                                     method: "POST",
                                     headers: { "Content-Type": "application/json" },
                                     body: JSON.stringify({ clientId: client.id })
                                   });
-                                  const result = await res.json();
                                   if (res.ok) {
-                                    setFeedback({ type: "success", message: `Welcome email resent (${result.status})` });
-                                    // Refresh client list
-                                    const updated = await fetch("/api/clients");
-                                    setClients(await updated.json());
+                                    setFeedback({ type: "success", message: `Email sent to ${client.email}` });
                                   } else {
-                                    setFeedback({ type: "error", message: result.error || "Resend failed" });
+                                    setFeedback({ type: "error", message: `Failed to send email to ${client.email}` });
                                   }
-                                } catch (err) {
-                                  setFeedback({ type: "error", message: `Resend error: ${err instanceof Error ? err.message : String(err)}` });
+                                } catch {
+                                  setFeedback({ type: "error", message: `Failed to send email to ${client.email}` });
                                 }
-                                setResendingEmailId(null);
+                                setTimeout(() => setResendingEmailId(null), 2000);
                               }}
                             >
-                              {resendingEmailId === client.id ? (
-                                <span className="flex items-center gap-2">
-                                  <svg className="animate-spin h-4 w-4 text-blue-600" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 01-8 8z" />
-                                  </svg>
-                                  Sending...
-                                </span>
-                              ) : (
-                                "Resend Email"
-                              )}
+                              <MailCheck className="w-4 h-4 mr-1" />
+                              {resendingEmailId === client.id ? "Sending..." : "Resend Email"}
                             </Button>
-                          </div>
-                          {/* Edit Systems Modal */}
-                          {editingSystemsId === client.id && (
-                            <div className="fixed inset-0 z-50 flex items-center justify-center bg-blue-950/80 backdrop-blur-sm">
-                              <div className="bg-gradient-to-br from-blue-900/90 to-blue-950/95 border border-blue-900/40 rounded-2xl shadow-2xl p-8 w-full max-w-md text-white">
-                                <h3 className="text-xl font-bold mb-3 text-purple-400">Edit Client Systems</h3>
-                                <div className="mb-6">
-                                  {availableSystems.map((system) => (
-                                    <Button
-                                      key={system}
-                                      variant={editingSystems.includes(system) ? 'default' : 'outline'}
-                                      size="sm"
-                                      className="mr-2 mb-2"
-                                      onClick={() => {
-                                        setEditingSystems((prev) =>
-                                          prev.includes(system)
-                                            ? prev.filter((s) => s !== system)
-                                            : [...prev, system]
-                                        );
-                                      }}
-                                    >
-                                      {editingSystems.includes(system) ? <Check className="mr-2 h-4 w-4" /> : null}
-                                      {system}
-                                    </Button>
-                                  ))}
-                                </div>
-                                <div className="flex justify-end gap-3">
-                                  <Button variant="outline" onClick={() => setEditingSystemsId(null)}>
-                                    Cancel
-                                  </Button>
-                                  <Button
-                                    variant="default"
-                                    onClick={async () => {
-                                      await fetch(`/api/clients/${editingSystemsId}`, {
-                                        method: 'PUT',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify({ systems: editingSystems })
-                                      });
-                                      // Refresh client list
-                                      const res = await fetch("/api/clients");
-                                      const data = await res.json();
-                                      const clientsWithSystems = await Promise.all(
-                                        data.map(async (client: any) => {
-                                          const res = await fetch(`/api/clients/${client.id}`);
-                                          const detail = await res.json();
-                                          return {
-                                            ...client,
-                                            systems: (detail.systems || []).map((us: any) => us.system?.name),
-                                          };
-                                        })
-                                      );
-                                      setClients(clientsWithSystems);
-                                      setEditingSystemsId(null);
-                                    }}
-                                  >
-                                    Save
-                                  </Button>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell font-medium">
-                          {client.createdAt ? client.createdAt.split("T")[0] : "-"}
-                        </TableCell>
-                        <TableCell className="hidden md:table-cell font-medium">
-                          {Array.isArray(client.systems) && client.systems.length > 0
-                            ? client.systems.join(", ")
-                            : "-"}
-                        </TableCell>
-                          {/* <TableCell className="hidden md:table-cell font-medium">
-                            {client.subscriptionDuration || "-"}
-                          </TableCell> */}
-                        <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild onClick={(e) => e.stopPropagation()}>
-                              <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuLabel>Systems</DropdownMenuLabel>
-                              <DropdownMenuSeparator />
-                              {(client.systems || []).map((system: string) => (
-                                <DropdownMenuItem
-                                  key={system}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigateToClientSystem(client.id, system);
-                                  }}
-                                >
-                                  View {system}
-                                </DropdownMenuItem>
-                              ))}
-                              <DropdownMenuSeparator />
-                              <DropdownMenuItem
-                                onClick={async (e) => {
-                                  e.stopPropagation();
-                                  // Delete client via API
-                                  try {
-                                    const res = await fetch(`/api/clients/${client.id}`, { method: "DELETE" });
-                                    if (!res.ok) {
-                                      setFeedback({ type: "error", message: `Delete failed: ${res.status}` });
-                                      return;
-                                    }
-                                    // Refresh client list
-                                    const updated = await fetch("/api/clients");
-                                    setClients(await updated.json());
-                                    setFeedback({ type: "success", message: "Client deleted successfully." });
-                                  } catch (err) {
-                                    setFeedback({ type: "error", message: `Delete error: ${err instanceof Error ? err.message : String(err)}` });
-                                  }
-                                }}
-                                className="text-destructive focus:text-destructive"
-                              >
-                                Delete Client
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-      {/*==================== End of Client Content ====================*/}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      ) : (
+        <div className="flex-1 p-4 py-2">
+          <Card className="border-none bg-transparent">
+            <CardHeader>
+              <h2 className="font-medium flex items-center gap-2">
+                <UserCog className="w-5 h-5" /> Systems for {selectedClient?.name}
+              </h2>
+              <Button variant="outline" onClick={() => setViewMode('clients')}>Back to Clients</Button>
+            </CardHeader>
+            <CardContent>
+              {selectedClient ? (
+                <div className="space-y-4">
+                  <div>
+                    <strong>Email:</strong> {selectedClient.email}
+                  </div>
+                  <div>
+                    <strong>Systems:</strong>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {availableSystems.length > 0 ? (
+                        availableSystems.map((system) => (
+                          <Button
+                            key={system}
+                            type="button"
+                            variant={editingSystems.includes(system) ? "default" : "outline"}
+                            size="sm"
+                            className="min-w-[100px] justify-start"
+                            disabled={editingSystemsLoading}
+                            onClick={() => {
+                              setEditingSystems((prev) => {
+                                const exists = prev.includes(system);
+                                return exists
+                                  ? prev.filter((s) => s !== system)
+                                  : [...prev, system];
+                              });
+                            }}
+                          >
+                            {editingSystems.includes(system) ? <Check className="mr-2 h-4 w-4" /> : null}
+                            {system}
+                          </Button>
+                        ))
+                      ) : (
+                        <span className="text-muted-foreground">No systems available.</span>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <strong>Created At:</strong> {selectedClient.createdAt ? selectedClient.createdAt.split("T")[0] : "-"}
+                  </div>
+                  <div className="flex gap-2 mt-4">
+                    <Button
+                      variant="default"
+                      size="sm"
+                      disabled={editingSystemsLoading}
+                      onClick={async () => {
+                        setEditingSystemsLoading(true);
+                        setFeedback(null);
+                        try {
+                          await fetch(`/api/clients/${selectedClient.id}/systems`, {
+                            method: "PUT",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ systems: editingSystems }),
+                          });
+                          setClients((prev) =>
+                            prev.map((c) =>
+                              c.id === selectedClient.id
+                                ? { ...c, systems: [...editingSystems] }
+                                : c
+                            )
+                          );
+                          setFeedback({ type: "success", message: "Systems saved successfully!" });
+                        } catch {
+                          setFeedback({ type: "error", message: "Failed to save systems." });
+                        } finally {
+                          setTimeout(() => setEditingSystemsLoading(false), 800);
+                        }
+                      }}
+                    >
+                      {editingSystemsLoading ? (
+                        <span className="flex items-center gap-2">
+                          <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                          </svg>
+                          Saving...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          <Check className="mr-2 h-4 w-4" /> Save Systems
+                        </span>
+                      )}
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setEditingSystems(selectedClient.systems || []);
+                      }}
+                    >
+                      Reset
+                    </Button>
+                    {feedback && (
+                      <span className={`ml-4 font-medium text-sm ${feedback.type === "success" ? "text-green-600" : "text-red-600"}`}>
+                        {feedback.message}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              ) : (
+                <div>No client selected.</div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </DashboardLayout>
   );
 };

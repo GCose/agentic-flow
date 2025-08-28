@@ -32,6 +32,8 @@ model User {
   setupToken   String?
   verifyToken  String?
   verified     Boolean   @default(false)
+  resetToken        String?
+  resetTokenExpiry  DateTime?
   onboardingEvents OnboardingEvent[]
 
   @@index([role])

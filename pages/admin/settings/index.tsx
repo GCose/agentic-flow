@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import { User, Shield, Bell, Save } from "lucide-react";
+import { User, Shield, Save } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import { useAuth } from "@/contexts/auth-context";
 
 const AdminSettingsPage = () => {
   const { user, updateUser } = useAuth();
-  // ...existing code...
   const [activeTab, setActiveTab] = useState("profile");
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
@@ -20,13 +18,10 @@ const AdminSettingsPage = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [inAppNotifications, setInAppNotifications] = useState(true);
 
   const tabs = [
     { id: "profile", label: "Profile", icon: User },
     { id: "security", label: "Security", icon: Shield },
-    { id: "notifications", label: "Notifications", icon: Bell },
   ];
 
   const handleSave = async (section: string) => {
@@ -213,73 +208,6 @@ const AdminSettingsPage = () => {
                   )}
                 </Button>
               </div>
-            </CardContent>
-          </Card>
-        );
-
-      case "notifications":
-        return (
-          <Card className="border-none bg-transparent">
-            <CardHeader>
-              <CardTitle className="text-xl text-white">
-                Notification Settings
-              </CardTitle>
-              <p className="text-slate-300">
-                Control how you receive notifications from Agentic Flow.
-              </p>
-            </CardHeader>
-            <CardContent className="space-y-8">
-              <div className="space-y-6">
-                <div className="flex items-center justify-between py-4">
-                  <div className="space-y-1">
-                    <h4 className="text-white font-medium text-lg">
-                      Email Notifications
-                    </h4>
-                    <p className="text-sm text-slate-400">
-                      Receive notifications via email
-                    </p>
-                  </div>
-                  <Switch
-                    checked={emailNotifications}
-                    onCheckedChange={setEmailNotifications}
-                    className="data-[state=checked]:bg-blue-600"
-                  />
-                </div>
-
-                <div className="flex items-center justify-between py-4 border-t border-blue-900/70">
-                  <div className="space-y-1">
-                    <h4 className="text-white font-medium text-lg">
-                      In-App Notifications
-                    </h4>
-                    <p className="text-sm text-slate-400">
-                      Receive notifications within the application
-                    </p>
-                  </div>
-                  <Switch
-                    checked={inAppNotifications}
-                    onCheckedChange={setInAppNotifications}
-                    className="data-[state=checked]:bg-blue-600"
-                  />
-                </div>
-              </div>
-
-              <Button
-                onClick={() => handleSave("notifications")}
-                disabled={isLoading}
-                className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
-              >
-                {isLoading ? (
-                  <>
-                    <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Saving...
-                  </>
-                ) : (
-                  <>
-                    <Bell className="h-4 w-4 mr-2" />
-                    Save Preferences
-                  </>
-                )}
-              </Button>
             </CardContent>
           </Card>
         );

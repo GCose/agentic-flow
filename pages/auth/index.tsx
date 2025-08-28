@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useAuth } from "@/contexts/auth-context";
 import Image from "next/image";
@@ -168,6 +169,11 @@ const LoginPage: NextPage = () => {
                 >
                   {isLoading ? "Logging in..." : "Login"}
                 </Button>
+                <div className="text-center mt-2">
+                  <Link href="/forgot-password" className="text-blue-700 hover:underline text-sm">
+                    Forgot Password?
+                  </Link>
+                </div>
               </form>
             </CardContent>
           </Card>

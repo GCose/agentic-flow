@@ -10,7 +10,7 @@ import DashboardHeader from "@/components/dashboard/dashboard-header";
 import { useAuth } from "@/contexts/auth-context";
 
 const ClientSettingsPage = () => {
-  const { user, updateProfile, updateUser } = useAuth();
+  const { user, updateProfile, updateUser, isImpersonating, stopImpersonation } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
   const [isLoading, setIsLoading] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
@@ -316,6 +316,18 @@ const ClientSettingsPage = () => {
         description: "Manage your account settings",
       }}
     >
+      {isImpersonating && (
+        <div className="w-full flex justify-end pt-4 pb-2">
+          <Button
+            size="sm"
+            variant="destructive"
+            className="rounded-full px-6 py-2 font-semibold text-white bg-gradient-to-r from-blue-900 via-blue-700 to-indigo-500 shadow-lg hover:from-blue-800 hover:to-indigo-600 transition-all duration-200 border-0"
+            onClick={stopImpersonation}
+          >
+            Return to Admin View
+          </Button>
+        </div>
+      )}
       <DashboardHeader role="client" title="Settings" hasBackButton={false} />
 
       <div className="flex flex-1 h-full py-8">
@@ -344,7 +356,9 @@ const ClientSettingsPage = () => {
         {/*==================== End of Sidebar ====================*/}
 
         {/*==================== Main Content ====================*/}
-        <div className="flex-1 px-8">{renderTabContent()}</div>
+        <div className="flex-1 px-8">
+          {renderTabContent()}
+        </div>
         {/*==================== End of Main Content ====================*/}
       </div>
     </DashboardLayout>

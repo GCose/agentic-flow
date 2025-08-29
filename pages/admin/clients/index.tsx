@@ -306,17 +306,6 @@ const ClientDashboardPage: NextPage = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="password">Password</Label>
-                        <Input
-                          id="password"
-                          name="password"
-                          type="password"
-                          placeholder="Password (leave blank for default)"
-                          value={newClient.password}
-                          onChange={handleInputChange}
-                        />
-                      </div>
-                      <div className="space-y-2">
                         <Label>Systems</Label>
                         <div className="grid grid-cols-2 gap-2">
                           {availableSystems.length > 0 ? (

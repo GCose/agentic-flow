@@ -17,10 +17,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Get user by id (no password)
     const user = await prisma.user.findUnique({
       where: { id },
-      select: { id: true, name: true, email: true, role: true, createdAt: true, updatedAt: true }
+      include: { systems: { include: { system: true } } }
     });
     if (!user) return res.status(404).json({ error: "User not found" });
-    return res.status(200).json(user);
+    // Flatten systems for client
+    let systems: string[] | undefined = undefined;
+    if (user.role === "client") {
+      systems = Array.isArray(user.systems)
+        ? user.systems.map((us: any) => us.system?.name).filter(Boolean)
+        : [];
+    }
+    // Remove password and systems from user object
+    const { password, systems: _systems, ...userData } = user;
+    return res.status(200).json({ ...userData, systems });
   }
 
   if (req.method === "PUT") {

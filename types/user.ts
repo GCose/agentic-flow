@@ -13,6 +13,7 @@ export interface User {
   resetToken?: string | null;
   resetTokenExpiry?: string | null;
   emailStatus?: string | null;
+  systems?: string[];
 }
 
 export type UserRole = "admin" | "videographer" | "designer" | "client";

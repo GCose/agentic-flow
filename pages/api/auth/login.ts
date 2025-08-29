@@ -15,7 +15,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (!email || (!password && !setupToken)) {
     return res.status(400).json({ error: "Missing email or password/setup token" });
   }
-  const user = await prisma.user.findUnique({ where: { email } });
+  const user = await prisma.user.findUnique({
+    where: { email },
+    include: { systems: { include: { system: true } } }
+  });
   if (!user) {
     return res.status(401).json({ error: "Invalid credentials" });
   }
@@ -25,13 +28,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!isValid) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    const { password: userPassword, ...userData } = user;
-    return res.status(200).json(userData);
+    const { password: userPassword, systems, ...userData } = user;
+    // Flatten systems for client
+    const systemNames = Array.isArray(systems) ? systems.map((us: any) => us.system?.name) : [];
+    return res.status(200).json({ ...userData, systems: systemNames });
   }
   // If setupToken is provided, check setupToken for passwordless onboarding
   if (setupToken && user.setupToken && setupToken === user.setupToken) {
-    const { password: userPassword, ...userData } = user;
-    return res.status(200).json(userData);
+  const { password: userPassword, systems, ...userData } = user;
+  const systemNames = Array.isArray(systems) ? systems.map((us: any) => us.system?.name) : [];
+  return res.status(200).json({ ...userData, systems: systemNames });
   }
   return res.status(401).json({ error: "Invalid credentials" });
 }

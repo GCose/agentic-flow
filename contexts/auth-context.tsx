@@ -152,12 +152,21 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const impersonateClient = (client: User) => {
     setImpersonatedUser(user); // Save current admin user
-    setUser(client);
-    if (typeof window !== "undefined") {
-      localStorage.setItem("agentic_flow_user", JSON.stringify(client));
-      localStorage.setItem("agentic_flow_impersonated_user", JSON.stringify(user));
-    }
-    router.push("/client");
+    // Always fetch latest client object from backend to ensure systems array is present
+    fetch(`/api/users/${client.id}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error("Failed to fetch client for impersonation");
+        const latestClient = await res.json();
+        setUser(latestClient);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("agentic_flow_user", JSON.stringify(latestClient));
+          localStorage.setItem("agentic_flow_impersonated_user", JSON.stringify(user));
+        }
+        router.push("/client");
+      })
+      .catch((err) => {
+        console.error("Impersonation fetch error:", err);
+      });
   };
 
   const stopImpersonation = () => {

@@ -72,6 +72,24 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
     ];
 
     if (role === "client") {
+      // Only show systems the client is subscribed to
+      const systemMap: Record<string, { title: string; href: string; icon: LucideIcon }> = {
+        "Leadgen System": { title: "Leadgen System", href: "/client/leadgen-system", icon: Users },
+        "LeadGen": { title: "Leadgen System", href: "/client/leadgen-system", icon: Users },
+        "Sales System": { title: "Sales System", href: "/client/sales-system", icon: DollarSign },
+        "Sales": { title: "Sales System", href: "/client/sales-system", icon: DollarSign },
+        "Content System": { title: "Content System", href: "/client/content-system", icon: FileText },
+        "Content": { title: "Content System", href: "/client/content-system", icon: FileText },
+        // Add more systems and aliases here as needed
+      };
+      const normalizeSystem = (sys: string) => {
+        // Map known API names to sidebar keys
+        if (systemMap[sys]) return systemMap[sys];
+        // Fallback: try to match ignoring case and spaces
+        const key = Object.keys(systemMap).find(k => k.replace(/\s+/g, '').toLowerCase() === sys.replace(/\s+/g, '').toLowerCase());
+        return key ? systemMap[key] : undefined;
+      };
+      const subscribedSystems = (user?.systems || []).map(normalizeSystem).filter(Boolean);
       return {
         mainItems: [
           {
@@ -79,39 +97,10 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
             href: "/client",
             icon: LayoutDashboard,
           },
-          // {
-          //   title: "Content System",
-          //   href: "/client/content-system",
-          //   icon: FileText,
-          // },
-          {
-            title: "Leadgen System",
-            href: "/client/leadgen-system",
-            icon: Users,
-          },
-          {
-            title: "Sales System",
-            href: "/client/sales-system",
-            icon: DollarSign,
-          },
-          // {
-          //   title: "Onboarding System",
-          //   href: "/client/onboarding",
-          //   icon: Briefcase,
-          // },
-          // {
-          //   title: "Reports",
-          //   href: "/client/reporting",
-          //   icon: BarChart,
-          // },
-          // {
-          //   title: "Feedback & Optimization",
-          //   href: "/client/feedback",
-          //   icon: MessageSquare,
-          // },
+          ...subscribedSystems,
           ...commonItems,
         ] as NavItem[],
-        contentCreationItems: [], // No content creation items for clients
+        contentCreationItems: [],
       };
     }
 
@@ -123,11 +112,7 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           href: "/admin",
           icon: LayoutDashboard,
         },
-        // {
-        //   title: "Agent Management",
-        //   href: "/admin/agent-management",
-        //   icon: Users,
-        // },
+      
         {
           title: "Clients",
           href: "/admin/clients",

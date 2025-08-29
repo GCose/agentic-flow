@@ -629,7 +629,7 @@ const ClientDashboardPage: NextPage = () => {
                         setEditingSystemsLoading(true);
                         setFeedback(null);
                         try {
-                          await fetch(`/api/clients/${selectedClient.id}/systems`, {
+                          await fetch(`/api/clients/${selectedClient.id}`, {
                             method: "PUT",
                             headers: { "Content-Type": "application/json" },
                             body: JSON.stringify({ systems: editingSystems }),

@@ -1,3 +1,5 @@
+import { title } from "process";
+
 /**======================================================
  * Client Page Meta configuration for the application.
  ======================================================*/
@@ -34,6 +36,10 @@ export const AdminPageMeta = {
   onboardingPage: {
     title: "Agentic Flow | Onboarding",
     description: "Onboarding process for new clients",
+  },
+  systemsDashboardPage: {
+    title: "Agentic Flow | Systems Management",
+    description: "Create, edit, and manage systems available to clients."
   },
 
   // Videographer role

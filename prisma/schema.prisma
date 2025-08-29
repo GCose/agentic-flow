@@ -35,8 +35,36 @@ model User {
   resetToken        String?
   resetTokenExpiry  DateTime?
   onboardingEvents OnboardingEvent[]
+  notifications Notification[] @relation("UserNotifications")
+  notificationReads NotificationRead[]
+  notificationEnabled Boolean @default(true)
 
   @@index([role])
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  title       String
+  message     String
+  sendType    String
+  targetGroup String
+  schedule    DateTime?
+  status      String   // sent, scheduled, failed, delivered, opened
+  attachment  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[]   @relation("UserNotifications")
+  reads       NotificationRead[]
+}
+model NotificationRead {
+  id             String   @id @default(uuid())
+  userId         String
+  notificationId String
+  readAt         DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id])
+  notification   Notification @relation(fields: [notificationId], references: [id])
+
+  @@unique([userId, notificationId])
 }
 enum Role {
   admin

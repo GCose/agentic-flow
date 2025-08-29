@@ -43,11 +43,25 @@ import { AdminPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 const ClientDashboardPage: NextPage = () => {
+  const { user, isImpersonating, stopImpersonation, loading: authLoading, impersonateClient } = useAuth();
+  const router = useRouter();
+  // Guard: Only allow admins or impersonating admins
+  useEffect(() => {
+    if (!authLoading && user && user.role !== "admin" && !isImpersonating) {
+      router.replace("/client");
+    }
+  }, [user, authLoading, isImpersonating, router]);
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [clients, setClients] = useState<any[]>([]);
   const [viewMode, setViewMode] = useState<'clients' | 'systems'>('clients');
   const [selectedClient, setSelectedClient] = useState<any | null>(null);
   const [navigatingClientId, setNavigatingClientId] = useState<string | null>(null);
+  const [selectedClientIds, setSelectedClientIds] = useState<string[]>([]);
   // Onboarding resources component
   // function OnboardingResources() {
   //   return (
@@ -61,7 +75,7 @@ const ClientDashboardPage: NextPage = () => {
   //     </div>
   //   );
     // Removed unused 'feedback' variable
-  const [loading, setLoading] = useState(true);
+  const [pageLoading, setPageLoading] = useState(true);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [editingSystemsId, setEditingSystemsId] = useState<string | null>(null);
   const [editingSystems, setEditingSystems] = useState<string[]>([]);
@@ -76,15 +90,12 @@ const ClientDashboardPage: NextPage = () => {
     systems: string[];
     password: string;
   };
-          // error handling removed for unused variable
   const [newClient, setNewClient] = useState<NewClientType>({
     name: "",
     email: "",
     systems: [],
     password: "", // Add password field for optional password input
   });
-
-  const router = useRouter();
 
   const filteredClients = clients
     .filter((client) => client.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -93,6 +104,9 @@ const ClientDashboardPage: NextPage = () => {
       if (!a.createdAt || !b.createdAt) return 0;
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
+  const totalPages = Math.ceil(filteredClients.length / pageSize);
+
+  const paginatedClients = filteredClients.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   const navigateToClientDashboard = (clientId: string) => {
     router.push(`/admin/clients/${clientId}`);
@@ -129,14 +143,14 @@ const ClientDashboardPage: NextPage = () => {
   // Fetch clients from API
   useEffect(() => {
     const fetchClients = async () => {
-      setLoading(true);
+  setPageLoading(true);
       try {
         const clientsWithSystems = await fetchClientsWithSystems();
         setClients(clientsWithSystems);
       } catch (err) {
   setFeedback({ type: "error", message: "Failed to fetch clients." });
       }
-      setLoading(false);
+  setPageLoading(false);
     };
     fetchClients();
   }, []);
@@ -155,7 +169,7 @@ const ClientDashboardPage: NextPage = () => {
   // Create new client via API
   const handleCreateClient = async () => {
     if (!newClient.name || !newClient.email) return;
-    setLoading(true);
+    setPageLoading(true);
     try {
       const passwordToSend = newClient.password || "defaultPassword123";
       const res = await fetch("/api/clients", {
@@ -186,28 +200,69 @@ const ClientDashboardPage: NextPage = () => {
     } catch (err) {
       setFeedback({ type: "error", message: "Failed to fetch clients." });
     }
-    setLoading(false);
+    setPageLoading(false);
   };
 
-  const { impersonateClient, isImpersonating, stopImpersonation } = useAuth();
+  // useAuth already destructured at top
 
+  // Only show "Return to Admin View" if impersonating
   return (
     <DashboardLayout meta={AdminPageMeta.clientsDashboardPage}>
-      {isImpersonating && (
+      {isImpersonating && user && user.role === "client" && (
         <div className="mt-4 flex justify-end">
           <Button size="sm" variant="destructive" onClick={stopImpersonation}>
             Return to Admin View
           </Button>
         </div>
       )}
-      <DashboardHeader title="Clients" />
+      <DashboardHeader title="Clients" role="admin" />
   {/* Removed View Clients and View Systems buttons for cleaner UI */}
       {viewMode === 'clients' ? (
         <div className="flex-1 p-4 py-2 ">
           <Card className="border-none bg-transparent  ">
             <CardHeader className="flex flex-col gap-4 md:flex-row items-center justify-between">
               <h2 className="font-medium">Clients using Agentic Flow</h2>
-              <div className="flex gap-4">
+              <div className="flex gap-4 items-center">
+                {selectedClientIds.length > 0 && (
+                  <>
+                    <Button
+                      className="font-bold px-6 py-2 rounded-lg shadow-lg border border-red-700 bg-gradient-to-r from-red-600 to-red-700 text-white hover:from-red-700 hover:to-red-800 transition-all duration-150"
+                      variant="destructive"
+                      onClick={() => setShowDeleteModal(true)}
+                    >
+                      Delete Selected
+                    </Button>
+                    <Dialog open={showDeleteModal} onOpenChange={setShowDeleteModal}>
+                      <DialogContent className="max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>Confirm Bulk Delete</DialogTitle>
+                          <DialogDescription>
+                            Are you sure you want to delete <span className="font-bold text-red-600">{selectedClientIds.length}</span> selected client{selectedClientIds.length > 1 ? 's' : ''}? This action cannot be undone.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="flex justify-end gap-2 mt-6">
+                          <Button variant="outline" onClick={() => setShowDeleteModal(false)}>Cancel</Button>
+                          <Button
+                            variant="destructive"
+                            className="font-bold px-4"
+                            onClick={async () => {
+                              await fetch("/api/clients", {
+                                method: "DELETE",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ ids: selectedClientIds })
+                              });
+                              setClients(prev => prev.filter(c => !selectedClientIds.includes(c.id)));
+                              setSelectedClientIds([]);
+                              setShowDeleteModal(false);
+                            }}
+                          >
+                            Yes, Delete
+                          </Button>
+                        </div>
+                      </DialogContent>
+                    </Dialog>
+                  </>
+                )}
                 <Input
                   value={searchTerm}
                   placeholder="Search clients..."
@@ -322,6 +377,19 @@ const ClientDashboardPage: NextPage = () => {
                 <Table>
                   <TableHeader>
                     <TableRow className="border-b border-blue-900/70 hover:bg-transparent">
+                      <TableHead>
+                        <input
+                          type="checkbox"
+                          checked={selectedClientIds.length === filteredClients.length && filteredClients.length > 0}
+                          onChange={e => {
+                            if (e.target.checked) {
+                              setSelectedClientIds(filteredClients.map(c => c.id));
+                            } else {
+                              setSelectedClientIds([]);
+                            }
+                          }}
+                        />
+                      </TableHead>
                       <TableHead>Client</TableHead>
                       <TableHead>Systems</TableHead>
                       <TableHead className="hidden md:table-cell">Client Since</TableHead>
@@ -331,26 +399,47 @@ const ClientDashboardPage: NextPage = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {loading ? (
+                    {pageLoading ? (
                       <TableRow>
-                        <TableCell colSpan={5} className="text-center">Loading...</TableCell>
+                        <TableCell colSpan={7} className="text-center">Loading...</TableCell>
                       </TableRow>
                     ) : filteredClients.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={5} className="text-center">No clients found.</TableCell>
+                        <TableCell colSpan={7} className="text-center">No clients found.</TableCell>
                       </TableRow>
                     ) : (
-                      filteredClients.map((client) => (
+                      paginatedClients.map((client) => (
                         <TableRow
                           key={client.id}
-                          onClick={() => {
+                          className="cursor-pointer border-b border-blue-900/70 hover:bg-blue-600/10 hover:rounded-md"
+                          onClick={e => {
+                            // Only navigate if the click is NOT on a checkbox or its label
+                            if (
+                              e.target instanceof HTMLElement &&
+                              (e.target.tagName === "INPUT" || e.target.tagName === "LABEL")
+                            ) {
+                              return;
+                            }
                             setNavigatingClientId(client.id);
                             setTimeout(() => {
                               router.push(`/admin/clients/${client.id}`);
                             }, 400);
                           }}
-                          className="cursor-pointer border-b border-blue-900/70 hover:bg-blue-600/10 hover:rounded-md"
                         >
+                          <TableCell>
+                            <input
+                              type="checkbox"
+                              checked={selectedClientIds.includes(client.id)}
+                              onClick={e => e.stopPropagation()}
+                              onChange={e => {
+                                setSelectedClientIds(ids =>
+                                  e.target.checked
+                                    ? [...ids, client.id]
+                                    : ids.filter(id => id !== client.id)
+                                );
+                              }}
+                            />
+                          </TableCell>
                           <TableCell className="font-medium">{client.name}</TableCell>
                           <TableCell>
                             <div className="flex flex-wrap gap-1">
@@ -455,6 +544,30 @@ const ClientDashboardPage: NextPage = () => {
                     )}
                   </TableBody>
                 </Table>
+              {/* Pagination Controls */}
+              <div className="flex justify-between items-center mt-4">
+                <span className="m-4 text-sm text-muted-foreground">
+                  Page {currentPage} of {totalPages}
+                </span> 
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={currentPage === totalPages || totalPages === 0}
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                  >
+                    Next
+                  </Button>
+                </div>
+              </div>
               </div>
             </CardContent>
           </Card>

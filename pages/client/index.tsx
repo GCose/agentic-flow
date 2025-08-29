@@ -24,20 +24,17 @@ const DashboardPage = () => {
           </Button>
         </div>
       )}
-      <DashboardHeader title="Dashboard" />
+      <DashboardHeader title="Dashboard" role="client" />
       <div className="flex-1 p-8 ">
-        {/*==================== Stats Overview ====================*/}
         <div className="mb-10">
+          {/*==================== Stats Overview ====================*/}
           <DashboardStatCard stats={clientDashboardStats} />
+          {/*==================== SubSystem Component ====================*/}
+          <SubSystemComponent
+            title="Subscribed Systems"
+            systems={clientDashboardSystem}
+          />
         </div>
-        {/*==================== End of Stats Overview ====================*/}
-
-        {/*==================== SubSystem Component ====================*/}
-        <SubSystemComponent
-          title="Subscribed Systems"
-          systems={clientDashboardSystem}
-        />
-        {/*==================== End of SubSystem Component ====================*/}
       </div>
     </DashboardLayout>
   );

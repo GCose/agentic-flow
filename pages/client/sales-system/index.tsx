@@ -23,7 +23,7 @@ const SalesSystemPage = () => {
           </Button>
         </div>
       )}
-      <DashboardHeader title="Sales System" />
+      <DashboardHeader title="Sales System" role="client" />
       <div className="flex-1 space-y-6 px-8">
         {/*==================== SubSystem Component ====================*/}
         <SubSystemComponent

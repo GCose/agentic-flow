@@ -12,6 +12,8 @@ import {
   // MessageSquare,
   DollarSign,
   // Briefcase,
+  BellDot,
+  
 } from "lucide-react";
 import {
   Sidebar,
@@ -135,6 +137,11 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
           title: "Pending Accounts",
           href: "/admin/pending-accounts",
           icon: Users,
+        },
+         {
+          title: "Post Notifications",
+          href: "/admin/notifications",
+          icon: BellDot,
         },
         ...commonItems,
       ];

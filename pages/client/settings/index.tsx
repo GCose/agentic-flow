@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { User, Shield, Bell, Save } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,8 +19,16 @@ const ClientSettingsPage = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showSetupPassword, setShowSetupPassword] = useState(!user?.password);
+  const [setupEmailStatus, setSetupEmailStatus] = useState<string | null>(null);
   const [emailNotifications, setEmailNotifications] = useState(true);
-  const [inAppNotifications, setInAppNotifications] = useState(true);
+  const [notificationEnabled, setNotificationEnabled] = useState(user?.notificationEnabled ?? true);
+
+  useEffect(() => {
+    if (user) {
+      setNotificationEnabled(user.notificationEnabled ?? true);
+    }
+  }, [user]);
   const [focusField, setFocusField] = useState<string | null>(null);
 
   const tabs = [
@@ -32,7 +40,7 @@ const ClientSettingsPage = () => {
   const handleSave = async (section: string) => {
     setIsLoading(true);
     setFeedback(null);
-    try {
+  try {
       if (section === "profile") {
         // Require current password for email change
         if (email !== user?.email && !currentPassword) {
@@ -53,26 +61,74 @@ const ClientSettingsPage = () => {
           });
         }
       }
+      if (section === "notifications") {
+        // Save notificationEnabled to backend
+        await updateProfile({ notificationEnabled });
+        setFeedback({ type: "success", message: "Notification preferences updated." });
+        if (user) {
+          updateUser({
+            ...user,
+            notificationEnabled,
+          });
+        }
+      }
       if (section === "security") {
-        // Password strength validation
-        const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
-        if (!strongRegex.test(newPassword)) {
-          setFeedback({ type: "error", message: "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol." });
-          setFocusField("new-password");
+        if (showSetupPassword) {
+          // Setup password for first time
+          const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+          if (!strongRegex.test(newPassword)) {
+            setFeedback({ type: "error", message: "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol." });
+            setFocusField("new-password");
+            setIsLoading(false);
+            return;
+          }
+          if (newPassword !== confirmPassword) {
+            setFeedback({ type: "error", message: "Passwords do not match." });
+            setFocusField("confirm-password");
+            setIsLoading(false);
+            return;
+          }
+          // Call setup-password API
+          try {
+            const res = await fetch("/api/auth/setup-password", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ token: user?.setupToken, password: newPassword })
+            });
+            const result = await res.json();
+            if (res.ok) {
+              setFeedback({ type: "success", message: "Password set successfully!" });
+              setShowSetupPassword(false);
+            } else {
+              setFeedback({ type: "error", message: result.error || "Failed to set password." });
+            }
+          } catch (err) {
+            setFeedback({ type: "error", message: "Failed to set password." });
+            console.error(err);
+          }
           setIsLoading(false);
           return;
+        } else {
+          // Password change flow
+          const strongRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+          if (!strongRegex.test(newPassword)) {
+            setFeedback({ type: "error", message: "Password must be at least 8 characters and include uppercase, lowercase, number, and symbol." });
+            setFocusField("new-password");
+            setIsLoading(false);
+            return;
+          }
+          if (newPassword !== confirmPassword) {
+            setFeedback({ type: "error", message: "Passwords do not match." });
+            setFocusField("confirm-password");
+            setIsLoading(false);
+            return;
+          }
+          await updateProfile({ password: newPassword, currentPassword });
+          setFeedback({ type: "success", message: "Password updated successfully." });
+          setCurrentPassword("");
+          setNewPassword("");
+          setConfirmPassword("");
         }
-        if (newPassword !== confirmPassword) {
-          setFeedback({ type: "error", message: "Passwords do not match." });
-          setFocusField("confirm-password");
-          setIsLoading(false);
-          return;
-        }
-        await updateProfile({ password: newPassword, currentPassword });
-        setFeedback({ type: "success", message: "Password updated successfully." });
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
       }
     } catch (err: any) {
       setFeedback({ type: "error", message: err?.message || "Update failed." });
@@ -168,70 +224,154 @@ const ClientSettingsPage = () => {
               {feedback && (
                 <div role="alert" aria-live="assertive" className={`mb-4 text-sm ${feedback.type === "error" ? "text-red-500" : "text-green-500"}`}>{feedback.message}</div>
               )}
-              <div className="space-y-2">
-                <Label htmlFor="current-password" className="text-white">Current Password</Label>
-                <Input
-                  id="current-password"
-                  aria-label="Current Password"
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                  className="bg-transparent border-blue-900/70 text-gray-50/70"
-                  placeholder="Enter current password"
-                  autoFocus={focusField === "current-password"}
-                  tabIndex={0}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="new-password" className="text-white">New Password</Label>
-                <Input
-                  id="new-password"
-                  aria-label="New Password"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                  className="bg-transparent border-blue-900/70 text-gray-50/70"
-                  placeholder="Enter new password"
-                  autoFocus={focusField === "new-password"}
-                  tabIndex={0}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirm-password" className="text-white">Confirm New Password</Label>
-                <Input
-                  id="confirm-password"
-                  aria-label="Confirm New Password"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="bg-transparent border-blue-900/70 text-gray-50/70"
-                  placeholder="Confirm new password"
-                  autoFocus={focusField === "confirm-password"}
-                  tabIndex={0}
-                />
-              </div>
-              <div className="pt-2">
-                <p className="text-sm text-slate-400 mb-4">Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.</p>
-                <Button
-                  onClick={() => handleSave("security")}
-                  disabled={isLoading || !currentPassword || !newPassword || !confirmPassword}
-                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
-                  aria-disabled={isLoading || !currentPassword || !newPassword || !confirmPassword}
-                  tabIndex={0}
-                >
-                  {isLoading ? (
-                    <>
-                      <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
-                      Updating...
-                    </>
-                  ) : (
-                    <>
-                      <Shield className="h-4 w-4 mr-2" />
-                      Update Password
-                    </>
-                  )}
-                </Button>
-              </div>
+              {showSetupPassword ? (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="new-password" className="text-white">Set Password</Label>
+                    <Input
+                      id="new-password"
+                      aria-label="Set Password"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="bg-transparent border-blue-900/70 text-gray-50/70"
+                      placeholder="Enter new password"
+                      autoFocus={focusField === "new-password"}
+                      tabIndex={0}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirm-password" className="text-white">Confirm Password</Label>
+                    <Input
+                      id="confirm-password"
+                      aria-label="Confirm Password"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="bg-transparent border-blue-900/70 text-gray-50/70"
+                      placeholder="Confirm new password"
+                      autoFocus={focusField === "confirm-password"}
+                      tabIndex={0}
+                    />
+                  </div>
+                  <div className="pt-2">
+                    <p className="text-sm text-slate-400 mb-4">Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.</p>
+                    <Button
+                      onClick={() => handleSave("security")}
+                      disabled={isLoading || !newPassword || !confirmPassword}
+                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                      aria-disabled={isLoading || !newPassword || !confirmPassword}
+                      tabIndex={0}
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                          Setting Password...
+                        </>
+                      ) : (
+                        <>
+                          <Shield className="h-4 w-4 mr-2" />
+                          Set Password
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <div className="mt-4">
+                    <Button
+                      variant="outline"
+                      className="text-blue-700 border-blue-700"
+                      onClick={async () => {
+                        setSetupEmailStatus(null);
+                        try {
+                          const res = await fetch("/api/clients/resend-welcome", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ email: user?.email })
+                          });
+                          const result = await res.json();
+                          if (res.ok) {
+                            setSetupEmailStatus("Setup link resent to your email.");
+                          } else {
+                            setSetupEmailStatus(result.error || "Failed to resend setup link.");
+                          }
+                        } catch {
+                          setSetupEmailStatus("Failed to resend setup link.");
+                        }
+                      }}
+                    >Resend Setup Link</Button>
+                    {setupEmailStatus && (
+                      <div className="mt-2 text-sm text-blue-400">{setupEmailStatus}</div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="space-y-2">
+                    <Label htmlFor="current-password" className="text-white">Current Password</Label>
+                    <Input
+                      id="current-password"
+                      aria-label="Current Password"
+                      type="password"
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      className="bg-transparent border-blue-900/70 text-gray-50/70"
+                      placeholder="Enter current password"
+                      autoFocus={focusField === "current-password"}
+                      tabIndex={0}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="new-password" className="text-white">New Password</Label>
+                    <Input
+                      id="new-password"
+                      aria-label="New Password"
+                      type="password"
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className="bg-transparent border-blue-900/70 text-gray-50/70"
+                      placeholder="Enter new password"
+                      autoFocus={focusField === "new-password"}
+                      tabIndex={0}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirm-password" className="text-white">Confirm New Password</Label>
+                    <Input
+                      id="confirm-password"
+                      aria-label="Confirm New Password"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className="bg-transparent border-blue-900/70 text-gray-50/70"
+                      placeholder="Confirm new password"
+                      autoFocus={focusField === "confirm-password"}
+                      tabIndex={0}
+                    />
+                  </div>
+                  <div className="pt-2">
+                    <p className="text-sm text-slate-400 mb-4">Password must be at least 8 characters and include uppercase, lowercase, number, and symbol.</p>
+                    <Button
+                      onClick={() => handleSave("security")}
+                      disabled={isLoading || !currentPassword || !newPassword || !confirmPassword}
+                      className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800"
+                      aria-disabled={isLoading || !currentPassword || !newPassword || !confirmPassword}
+                      tabIndex={0}
+                    >
+                      {isLoading ? (
+                        <>
+                          <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"></div>
+                          Updating...
+                        </>
+                      ) : (
+                        <>
+                          <Shield className="h-4 w-4 mr-2" />
+                          Update Password
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
         );
@@ -240,23 +380,26 @@ const ClientSettingsPage = () => {
         return (
           <Card className="border-none bg-transparent">
             <CardHeader>
-              <CardTitle className="text-xl text-white">
-                Notification Settings
-              </CardTitle>
-              <p className="text-slate-300">
-                Control how you receive notifications from Agentic Flow.
-              </p>
+              <CardTitle className="text-xl text-white">Notification Settings</CardTitle>
+              <p className="text-slate-300">Control how you receive notifications from Agentic Flow.</p>
             </CardHeader>
             <CardContent className="space-y-8">
               <div className="space-y-6">
                 <div className="flex items-center justify-between py-4">
                   <div className="space-y-1">
-                    <h4 className="text-white font-medium text-lg">
-                      Email Notifications
-                    </h4>
-                    <p className="text-sm text-slate-400">
-                      Receive notifications via email
-                    </p>
+                    <h4 className="text-white font-medium text-lg">Enable In-App Notifications</h4>
+                    <p className="text-sm text-slate-400">Turn in-app notifications on or off for your account.</p>
+                  </div>
+                  <Switch
+                    checked={notificationEnabled}
+                    onCheckedChange={setNotificationEnabled}
+                    className="data-[state=checked]:bg-blue-600"
+                  />
+                </div>
+                <div className="flex items-center justify-between py-4">
+                  <div className="space-y-1">
+                    <h4 className="text-white font-medium text-lg">Enable Email Notifications</h4>
+                    <p className="text-sm text-slate-400">Receive notifications via email.</p>
                   </div>
                   <Switch
                     checked={emailNotifications}
@@ -264,24 +407,7 @@ const ClientSettingsPage = () => {
                     className="data-[state=checked]:bg-blue-600"
                   />
                 </div>
-
-                <div className="flex items-center justify-between py-4 border-t border-blue-900/70">
-                  <div className="space-y-1">
-                    <h4 className="text-white font-medium text-lg">
-                      In-App Notifications
-                    </h4>
-                    <p className="text-sm text-slate-400">
-                      Receive notifications within the application
-                    </p>
-                  </div>
-                  <Switch
-                    checked={inAppNotifications}
-                    onCheckedChange={setInAppNotifications}
-                    className="data-[state=checked]:bg-blue-600"
-                  />
-                </div>
               </div>
-
               <Button
                 onClick={() => handleSave("notifications")}
                 disabled={isLoading}

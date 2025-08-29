@@ -126,6 +126,7 @@ const ClientDashboardPage: NextPage = () => {
             <CardHeader>
               <CardTitle>{client.name.replace(" Details", "")}</CardTitle>
               <div className="text-xs text-muted-foreground mt-1">ID: {client.id}</div>
+              <div className="text-xs text-muted-foreground mt-1">Email: {client.email}</div>
               {client.description && (
                 <CardDescription>{client.description}</CardDescription>
               )}

@@ -89,7 +89,7 @@ const ContentSystemPage = () => {
           </Button>
         </div>
       )}
-      <DashboardHeader title="Content System" />
+  <DashboardHeader title="Content System" role="client" />
       <div className="flex-1 space-y-4 px-8 pb-6 ">
         <Tabs
           value={activeTab}

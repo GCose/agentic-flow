@@ -26,7 +26,12 @@ const DashboardHeader = ({
     } else if (pageId) {
       router.push(`/${role}/clients/${pageId}`);
     } else {
-      router.push(`/${role}/leadgen-system`);
+      // Only route to leadgen-system for clients, otherwise route to admin dashboard
+      if (role === "client") {
+        router.push("/client");
+      } else {
+        router.push("/admin");
+      }
     }
   };
 
@@ -46,11 +51,13 @@ const DashboardHeader = ({
           variant="outline"
           size="icon"
           className="relative rounded-full border border-blue-400/70"
+          onClick={() => router.push(role === "client" ? "/client/notifications" : "/admin/notifications")}
         >
           <Bell className="h-4 w-4" />
-          <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
+          {/* TODO: Replace with real unread count */}
+          {/* <span className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
             3
-          </span>
+          </span> */}
         </Button>
       </div>
     </header>

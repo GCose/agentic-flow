@@ -23,7 +23,7 @@ const ClientLeadGenSystemPage = () => {
           </Button>
         </div>
       )}
-      <DashboardHeader title="LeadGen System" />
+      <DashboardHeader title="LeadGen System" role="client" />
       <div className="flex-1 space-y-6 px-8">
         {/*==================== SubSystem Component ====================*/}
         <SubSystemComponent

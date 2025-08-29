@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -21,12 +21,20 @@ import { NextPage } from "next";
 const LoginPage: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [setupToken, setSetupToken] = useState("");
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const { login, isAuthenticated } = useAuth();
   const router = useRouter();
+
+  // Autofill setupToken from query param if present
+  useEffect(() => {
+    if (router.query.token && typeof router.query.token === "string") {
+      setSetupToken(router.query.token);
+    }
+  }, [router.query.token]);
 
   if (isAuthenticated) {
     router.push("/admin");
@@ -36,17 +44,45 @@ const LoginPage: NextPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password) {
-      setError("Please enter both email and password");
+    if (!email || (!password && !setupToken)) {
+      setError("Please enter your email and either password or setup token");
       return;
     }
 
     setIsLoading(true);
     setError("");
 
-    const result = await login(email, password);
-    // If login returns void, treat any result as failure
-    if (result === undefined) {
+    // Try password login first, then setupToken
+    let result;
+    if (password) {
+      result = await login(email, password);
+    } else if (setupToken) {
+      // Custom login for setupToken
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, setupToken })
+        });
+        if (!res.ok) {
+          setError("Invalid email or setup token");
+        } else {
+          const authenticatedUser = await res.json();
+          localStorage.setItem("agentic_flow_user", JSON.stringify(authenticatedUser));
+          if (authenticatedUser.role === "admin") {
+            router.push("/admin");
+          } else if (authenticatedUser.role === "client") {
+            router.push("/client");
+          } else {
+            router.push("/");
+          }
+        }
+      } catch (err) {
+        setError("Login failed");
+        console.error(err);
+      }
+    }
+    if (result === undefined && !setupToken) {
       setError("Invalid email or password");
     }
     setIsLoading(false);
@@ -129,7 +165,6 @@ const LoginPage: NextPage = () => {
                   </Label>
                   <div className="relative">
                     <Input
-                      required
                       id="password"
                       value={password}
                       placeholder="••••••••"
@@ -154,6 +189,19 @@ const LoginPage: NextPage = () => {
                       </span>
                     </Button>
                   </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="setupToken" className="text-gray-300">
+                    Setup Token (for passwordless login)
+                  </Label>
+                  <Input
+                    id="setupToken"
+                    value={setupToken}
+                    placeholder="Paste setup token from email link"
+                    onChange={(e) => setSetupToken(e.target.value)}
+                    className="border-t-0 border-r-0 border-l-0 border-b rounded-none border-blue-900/70"
+                  />
+                  <span className="text-xs text-gray-400">Leave password blank to use setup token for login.</span>
                 </div>
 
                 {error && (

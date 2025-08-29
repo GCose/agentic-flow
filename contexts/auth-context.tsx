@@ -16,6 +16,9 @@ interface AuthContextType {
   isAuthenticated: boolean;
   updateUser: (user: User) => void;
   updateProfile: (updates: Partial<User> & { password?: string; currentPassword?: string }) => Promise<void>;
+  impersonateClient: (client: User) => void;
+  isImpersonating: boolean;
+  stopImpersonation: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,6 +31,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
+  const [impersonatedUser, setImpersonatedUser] = useState<User | null>(null);
   const updateUser = (updated: User) => {
     setUser(updated);
     if (typeof window !== "undefined") {
@@ -47,6 +51,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       } catch (error) {
         console.error("Failed to parse stored user:", error);
         localStorage.removeItem("agentic_flow_user");
+      }
+    }
+    // Restore impersonation state
+    const storedImpersonated = localStorage.getItem("agentic_flow_impersonated_user");
+    if (storedImpersonated) {
+      try {
+        const parsedImpersonated = JSON.parse(storedImpersonated);
+        setImpersonatedUser(parsedImpersonated);
+      } catch (error) {
+        localStorage.removeItem("agentic_flow_impersonated_user");
       }
     }
     setLoading(false);
@@ -136,6 +150,39 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     router.push("/auth/");
   };
 
+  const impersonateClient = (client: User) => {
+    setImpersonatedUser(user); // Save current admin user
+    // Always fetch latest client object from backend to ensure systems array is present
+    fetch(`/api/users/${client.id}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error("Failed to fetch client for impersonation");
+        const latestClient = await res.json();
+        setUser(latestClient);
+        if (typeof window !== "undefined") {
+          localStorage.setItem("agentic_flow_user", JSON.stringify(latestClient));
+          localStorage.setItem("agentic_flow_impersonated_user", JSON.stringify(user));
+        }
+        router.push("/client");
+      })
+      .catch((err) => {
+        console.error("Impersonation fetch error:", err);
+      });
+  };
+
+  const stopImpersonation = () => {
+    if (impersonatedUser) {
+      setUser(impersonatedUser);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("agentic_flow_user", JSON.stringify(impersonatedUser));
+        localStorage.removeItem("agentic_flow_impersonated_user");
+      }
+      setImpersonatedUser(null);
+      router.push("/admin/clients");
+    }
+  };
+
+  const isImpersonating = !!impersonatedUser;
+
   const value = {
     user,
     loading,
@@ -143,8 +190,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     logout,
     register,
     updateProfile,
-  isAuthenticated: !!user,
-  updateUser,
+    isAuthenticated: !!user,
+    updateUser,
+    impersonateClient,
+    isImpersonating,
+    stopImpersonation,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -126,6 +126,7 @@ const ClientDashboardPage: NextPage = () => {
             <CardHeader>
               <CardTitle>{client.name.replace(" Details", "")}</CardTitle>
               <div className="text-xs text-muted-foreground mt-1">ID: {client.id}</div>
+              <div className="text-xs text-muted-foreground mt-1">Email: {client.email}</div>
               {client.description && (
                 <CardDescription>{client.description}</CardDescription>
               )}
@@ -278,7 +279,7 @@ const ClientDashboardPage: NextPage = () => {
                           }`}
                         />
                       </div>
-                      {!isActive && (
+                      {/* {!isActive && (
                         <Button
                           size="sm"
                           variant="outline"
@@ -286,7 +287,7 @@ const ClientDashboardPage: NextPage = () => {
                         >
                           Upgrade Plan
                         </Button>
-                      )}
+                      )} */}
                     </div>
                     <CardTitle
                       className={isActive ? "" : "text-muted-foreground"}
@@ -300,14 +301,14 @@ const ClientDashboardPage: NextPage = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    {isActive && (
-                      <Button
-                        variant="link"
-                        className="cursor-pointer flex items-center gap-1 text-primary hover:text-primary/80 p-0"
-                      >
-                        3 months left
-                      </Button>
-                    )}
+                      {/* {isActive && (
+                        <Button
+                          variant="link"
+                          className="cursor-pointer flex items-center gap-1 text-primary hover:text-primary/80 p-0"
+                        >
+                          3 months left
+                        </Button>
+                      )} */}
                     {!isActive && (
                       <Button
                         size="sm"

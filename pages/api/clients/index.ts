@@ -18,6 +18,48 @@ import crypto from "crypto";
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // DELETE: Remove one or more clients
+  if (req.method === "DELETE") {
+    let body = req.body;
+    // Next.js does not parse body for DELETE, so handle string case
+    if (typeof body === "string") {
+      try {
+        body = JSON.parse(body);
+      } catch {
+        return res.status(400).json({ error: "Invalid JSON body" });
+      }
+    }
+    const { id, ids } = body;
+    try {
+      if (Array.isArray(ids) && ids.length > 0) {
+        // Bulk delete: clean up related records first
+        await prisma.userSystem.deleteMany({ where: { userId: { in: ids } } });
+        await prisma.onboardingEvent.deleteMany({ where: { userId: { in: ids } } });
+        await prisma.notificationRead.deleteMany({ where: { userId: { in: ids } } });
+        // Delete users
+        await prisma.user.deleteMany({
+          where: {
+            id: { in: ids },
+            role: "client",
+          },
+        });
+        return res.status(200).json({ success: true, message: `Deleted ${ids.length} clients.` });
+      } else if (id) {
+        // Single delete: clean up related records first
+        await prisma.userSystem.deleteMany({ where: { userId: id } });
+        await prisma.onboardingEvent.deleteMany({ where: { userId: id } });
+        await prisma.notificationRead.deleteMany({ where: { userId: id } });
+        await prisma.user.delete({
+          where: { id },
+        });
+        return res.status(200).json({ success: true, message: "Client deleted." });
+      } else {
+        return res.status(400).json({ error: "Missing id or ids for deletion." });
+      }
+    } catch (err) {
+      return res.status(500).json({ error: "Could not delete client(s)", details: err });
+    }
+  }
   async function sendWelcomeEmail(email: string, name: string, setupToken: string, verifyToken: string) {
     let status = 'sent';
     let errorDetails = '';
@@ -57,24 +99,43 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       `;
     } else {
       html = `
-        <div style="font-family:Arial,sans-serif;background:#f8fafc;padding:32px;border-radius:12px;max-width:600px;margin:auto;">
-          <img src='https://yourdomain.com/logo.png' alt='Agentic Flow Logo' style='height:48px;margin-bottom:16px;'>
-          <h1 style="color:#2563eb;">Welcome to Agentic Flow, ${name}!</h1>
-          <p style="font-size:16px;">We're excited to have you onboard. Here’s how to get started:</p>
-          <ol style="margin:16px 0 24px 24px;font-size:15px;">
-            <li>Set your password: <a href="${process.env.APP_URL}/setup-password?token=${setupToken}" style="color:#2563eb;font-weight:bold;">Set Password</a></li>
-            <li>Verify your email: <a href="${process.env.APP_URL}/verify-email?token=${verifyToken}" style="color:#22c55e;font-weight:bold;">Verify Email</a></li>
-            <li>Login: <a href="${process.env.APP_URL}/login" style="color:#2563eb;font-weight:bold;">Agentic Flow Login</a></li>
-          </ol>
-          <hr style="margin:24px 0;">
-          <h2 style="color:#2563eb;font-size:18px;margin-bottom:8px;">Get Started Resources</h2>
-          <ul style="margin-bottom:16px;">
-            <li><a href="https://yourdomain.com/docs" style="color:#2563eb;">Documentation</a></li>
-            <li><a href="https://yourdomain.com/tutorials" style="color:#2563eb;">Video Tutorials</a></li>
-            <li><a href="https://yourdomain.com/support" style="color:#2563eb;">Support Center</a></li>
-          </ul>
-          <p style="margin-bottom:8px;">Need help? <a href="mailto:support@agenticflow.com" style="color:#2563eb;">Contact Support</a></p>
-          <p style="font-size:12px;color:#888;">If you did not request this account, please ignore this email.</p>
+        <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f8fafc; padding: 0; margin: 0;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;margin:auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px #0001;overflow:hidden;">
+            <tr>
+              <td style="background:#2563eb;padding:32px 24px 16px 24px;text-align:center;">
+                <img src='https://yourdomain.com/logo.png' alt='Agentic Flow Logo' style='height:48px;margin-bottom:12px;'>
+                <h1 style="color:#fff;font-size:2rem;margin:0 0 8px 0;">Welcome to Agentic Flow, ${name}!</h1>
+                <p style="color:#e0e7ff;font-size:1.1rem;margin:0;">We're excited to have you onboard.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:32px 24px 16px 24px;">
+                <p style="font-size:1.1rem;color:#222;margin-bottom:18px;">Here's how to get started:</p>
+                <div style="margin-bottom:24px;">
+                  <a href="${process.env.APP_URL}/setup-password?token=${setupToken}" style="display:inline-block;padding:14px 32px;background:#2563eb;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:1rem;margin-bottom:12px;">Set Your Password</a><br>
+                  <a href="${process.env.APP_URL}/verify-email?token=${verifyToken}" style="display:inline-block;padding:14px 32px;background:#22c55e;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:1rem;margin-bottom:12px;">Verify Email</a><br>
+                  <a href="${process.env.APP_URL}/login" style="display:inline-block;padding:14px 32px;background:#2563eb;color:#fff;border-radius:8px;text-decoration:none;font-weight:600;font-size:1rem;">Login to Agentic Flow</a>
+                </div>
+                <div style="background:#f1f5f9;padding:18px;border-radius:8px;margin-bottom:18px;">
+                  <h2 style="color:#2563eb;font-size:1.2rem;margin:0 0 8px 0;">Passwordless Login</h2>
+                  <p style="color:#222;font-size:1rem;margin:0;">You can also log in using your setup token from this email. Just paste it in the login form if you prefer passwordless access.</p>
+                  <div style="background:#e0e7ff;color:#2563eb;padding:8px 12px;border-radius:6px;margin-top:8px;font-size:0.95rem;word-break:break-all;">${setupToken}</div>
+                </div>
+                <hr style="margin:24px 0;">
+                <h2 style="color:#2563eb;font-size:1.1rem;margin-bottom:8px;">Get Started Resources</h2>
+                <ul style="margin-bottom:16px;padding-left:18px;">
+                  <li><a href="https://yourdomain.com/docs" style="color:#2563eb;">Documentation</a></li>
+                  <li><a href="https://yourdomain.com/tutorials" style="color:#2563eb;">Video Tutorials</a></li>
+                  <li><a href="https://yourdomain.com/support" style="color:#2563eb;">Support Center</a></li>
+                </ul>
+                <p style="margin-bottom:8px;color:#222;">Need help? <a href="mailto:support@agenticflow.com" style="color:#2563eb;">Contact Support</a></p>
+                <p style="font-size:12px;color:#888;">If you did not request this account, please ignore this email.</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="background:#f8fafc;padding:18px;text-align:center;font-size:12px;color:#888;border-radius:0 0 16px 16px;">&copy; ${new Date().getFullYear()} Agentic Flow. All rights reserved.</td>
+            </tr>
+          </table>
         </div>
       `;
     }
@@ -121,7 +182,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: {
           name,
           email,
-          password, // still hashed, but not sent via email
+          password: "", // password will be set via setup-password endpoint
           role: "client",
           setupToken,
           verifyToken,

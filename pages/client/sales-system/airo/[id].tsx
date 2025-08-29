@@ -243,6 +243,7 @@ const AiroLeadDetailsPage = () => {
     return (
       <DashboardLayout role="client" meta={meta}>
         <DashboardHeader
+          role="client"
           hasBackButton={true}
           title="Lead Not Found..."
           onBackClick={() => router.push("/client/leadgen-system/kairo")}

@@ -19,6 +19,7 @@ export interface ClientData {
   id: string;
   name: string;
   description: string;
+  email?: string;
   systems: string[];
   stats: ClientStats;
   activeTime: string;

@@ -66,6 +66,14 @@ model NotificationRead {
 
   @@unique([userId, notificationId])
 }
+// Persistent pending account requests
+model PendingAccount {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  systems   String[]
+  createdAt DateTime @default(now())
+}
 enum Role {
   admin
   client

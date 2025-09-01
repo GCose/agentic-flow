@@ -38,4 +38,12 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+# prisma generated files and local db
+prisma/dev.db
+prisma/*.sqlite
+prisma/migrations/*/migration.sql
+prisma/migrations/*/README.md
+prisma/migrations/*/steps.json
+prisma/migrations/*/schema.prisma
+prisma/migrations/*/migration_lock.toml
 next-env.d.ts

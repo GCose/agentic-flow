@@ -11,7 +11,7 @@ async function main() {
     const hashedPassword = await bcrypt.hash("nextgen@123", 10);
     await prisma.user.create({
       data: {
-        name: "NextGen Agency",
+        name: "AgenticFlow Admin",
         email: adminEmail,
         password: hashedPassword, // Change this after first login
         role: "admin"

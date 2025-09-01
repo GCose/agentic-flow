@@ -33,15 +33,16 @@ const PendingAccountsPage: NextPage = () => {
     setLoading(true);
     try {
       // Call your client creation API here
-      const res = await fetch("/api/clients", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: account.name,
-          email: account.email,
-          systems: account.systems,
-        }),
-      });
+        const res = await fetch("/api/clients", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: account.name,
+            email: account.email,
+            systems: account.systems,
+            password: "", // Send empty password for onboarding
+          }),
+        });
       if (res.ok) {
         // Optionally remove from pending list
         setPendingAccounts(prev => prev.filter(a => a.email !== account.email));
@@ -69,7 +70,7 @@ const PendingAccountsPage: NextPage = () => {
                 <div>No pending accounts.</div>
               ) : (
                 <div className="overflow-x-auto">
-                  <table className="min-w-full border rounded bg-blue-50">
+                  <table className="min-w-full border rounded text-white">
                     <thead>
                       <tr className="bg-blue-100">
                         <th className="px-4 py-2 text-left">Name</th>

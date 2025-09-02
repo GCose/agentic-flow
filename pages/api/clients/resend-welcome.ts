@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       <p style="font-size:12px;color:#888;">If you did not request this account, please ignore this email.</p>
     </div>`;
     await transporter.sendMail({
-      from: '"Agentic Flow" <no-reply@agenticflow.com>',
+      from: '"Agentic Flow" <francismariogomez@gmail.com>',
       to: client.email,
       subject: "Welcome to Agentic Flow!",
       html,

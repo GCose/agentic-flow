@@ -8,7 +8,7 @@ interface DashboardHeaderProps {
   hasBackButton?: boolean;
   onBackClick?: () => void;
   pageId?: string;
-  role?: "admin" | "client";
+  role?: "admin" | "client" | "ghl_admin" | "ai_developer";
 }
 
 const DashboardHeader = ({
@@ -51,7 +51,15 @@ const DashboardHeader = ({
           variant="outline"
           size="icon"
           className="relative rounded-full border border-blue-400/70"
-          onClick={() => router.push(role === "client" ? "/client/notifications" : "/admin/notifications")}
+          onClick={() => {
+            if (role === "ghl_admin") {
+              router.push("/ghl/notifications");
+            } else if (role === "client") {
+              router.push("/client/notifications");
+            } else {
+              router.push("/admin/notifications");
+            }
+          }}
         >
           <Bell className="h-4 w-4" />
           {/* TODO: Replace with real unread count */}

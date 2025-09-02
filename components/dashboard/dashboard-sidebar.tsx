@@ -57,6 +57,36 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
   };
 
   const getNavItems = (role: UserRole) => {
+    // AI Developer nav items
+    if (role === "ai_developer") {
+      return {
+        mainItems: [
+          {
+            title: "Dashboard",
+            href: "/ai-developer",
+            icon: LayoutDashboard,
+          },
+          {
+            title: "Notifications",
+            href: "/ai-developer/notifications",
+            icon: BellDot,
+          },
+          {
+            title: "Settings",
+            href: "/ai-developer/settings",
+            icon: Settings,
+          },
+          {
+            title: "Logout",
+            href: "/auth",
+            icon: LogOut,
+            onClick: () => logout?.(),
+          },
+        ],
+        contentCreationItems: [],
+      };
+    }
+    
     const commonItems = [
       {
         title: "Settings",
@@ -104,6 +134,37 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
       };
     }
 
+
+    // GHL admin nav items
+    if (role === "ghl_admin") {
+      return {
+        mainItems: [
+          {
+            title: "GHL Page",
+            href: "/ghl",
+            icon: Users,
+          },
+          {
+            title: "Notifications",
+            href: "/ghl/notifications",
+            icon: BellDot,
+          },
+          {
+            title: "Settings",
+            href: "/ghl/settings",
+            icon: Settings,
+          },
+          {
+            title: "Logout",
+            href: "/auth",
+            icon: LogOut,
+            onClick: () => logout?.(),
+          },
+        ],
+        contentCreationItems: [],
+      };
+    }
+
     // Admin nav items
     if (role === "admin") {
       const adminMainItems = [
@@ -115,6 +176,16 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
         {
           title: "Clients",
           href: "/admin/clients",
+          icon: Users,
+        },
+          {
+            title: "Impersonate User",
+            href: "/admin/impersonate",
+            icon: Users,
+          },
+        {
+          title: "Members",
+          href: "/admin/members",
           icon: Users,
         },
         {

@@ -16,4 +16,4 @@ export interface User {
   systems?: string[];
 }
 
-export type UserRole = "admin" | "videographer" | "designer" | "client";
+export type UserRole = "admin" | "videographer" | "designer" | "client" | "ghl_admin" | "ai_developer";

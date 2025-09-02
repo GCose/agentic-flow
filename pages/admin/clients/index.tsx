@@ -82,6 +82,8 @@ const ClientDashboardPage: NextPage = () => {
   const [editingSystemsLoading, setEditingSystemsLoading] = useState(false);
   const [resendingEmailId, setResendingEmailId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [createLoading, setCreateLoading] = useState(false);
+  const [createFeedback, setCreateFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [availableSystems, setAvailableSystems] = useState<string[]>([]);
 
   type NewClientType = {
@@ -169,7 +171,8 @@ const ClientDashboardPage: NextPage = () => {
   // Create new client via API
   const handleCreateClient = async () => {
     if (!newClient.name || !newClient.email) return;
-    setPageLoading(true);
+    setCreateLoading(true);
+    setCreateFeedback(null);
     try {
       const passwordToSend = newClient.password || "defaultPassword123";
       const res = await fetch("/api/clients", {
@@ -183,24 +186,25 @@ const ClientDashboardPage: NextPage = () => {
         }),
       });
       if (res.ok) {
-        // Get the newly created client
         const newClientData = await res.json();
-        // Fetch systems for the new client
         const resDetail = await fetch(`/api/clients/${newClientData.id}`);
         const detail = await resDetail.json();
         const clientWithSystems = {
           ...newClientData,
           systems: (detail.systems || []).map((us: any) => us.system?.name),
         };
-        // Prepend new client to the list
         setClients((prev) => [clientWithSystems, ...prev]);
         setIsModalOpen(false);
         setNewClient({ name: "", email: "", systems: [], password: "" });
+        setCreateFeedback({ type: "success", message: "Client created successfully!" });
+      } else {
+        const data = await res.json();
+        setCreateFeedback({ type: "error", message: data.error || "Failed to create client." });
       }
     } catch (err) {
-      setFeedback({ type: "error", message: "Failed to fetch clients." });
+      setCreateFeedback({ type: "error", message: "Network error. Failed to create client." });
     }
-    setPageLoading(false);
+    setCreateLoading(false);
   };
 
   // useAuth already destructured at top
@@ -341,11 +345,29 @@ const ClientDashboardPage: NextPage = () => {
                       <Button
                         variant="outline"
                         onClick={() => setIsModalOpen(false)}
+                        disabled={createLoading}
                       >
                         Cancel
                       </Button>
-                      <Button onClick={handleCreateClient}>Create Client</Button>
+                      <Button onClick={handleCreateClient} disabled={createLoading}>
+                        {createLoading ? (
+                          <span className="flex items-center gap-2">
+                            <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                            </svg>
+                            Creating...
+                          </span>
+                        ) : (
+                          "Create Client"
+                        )}
+                      </Button>
                     </DialogFooter>
+                    {createFeedback && (
+                      <div className={`mt-2 text-sm font-medium ${createFeedback.type === "success" ? "text-green-600" : "text-red-600"}`}>
+                        {createFeedback.message}
+                      </div>
+                    )}
                   </DialogContent>
                 </Dialog>
               </div>

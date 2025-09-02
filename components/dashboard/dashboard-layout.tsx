@@ -33,10 +33,11 @@ const DashboardLayout = ({ children, role, meta }: DashboardLayoutProps) => {
       role !== "admin"
     ) {
       if (user?.role === "admin") return;
-      else if (user?.role === "videographer")
-        router.push("/admin/videographer");
+      else if (user?.role === "videographer") router.push("/admin/videographer");
       else if (user?.role === "designer") router.push("/admin/designer");
       else if (user?.role === "client") router.push("/client");
+      else if (user?.role === "ghl_admin") router.push("/ghl");
+      else if (user?.role === "ai_developer") router.push("/ai-developer");
     }
   }, [loading, isAuthenticated, user, router, role]);
 

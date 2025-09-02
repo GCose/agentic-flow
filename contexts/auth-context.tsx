@@ -16,7 +16,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   updateUser: (user: User) => void;
   updateProfile: (updates: Partial<User> & { password?: string; currentPassword?: string }) => Promise<void>;
-  impersonateClient: (client: User) => void;
+  impersonateUser: (target: User) => void;
   isImpersonating: boolean;
   stopImpersonation: () => void;
 }
@@ -91,6 +91,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         router.push("/admin/role/designer");
       } else if (authenticatedUser.role === "client") {
         router.push("/client");
+      } else if (authenticatedUser.role === "ai_developer") {
+        router.push("/ai-developer");
       }
     } catch (error: any) {
       // Silently handle error, do not throw
@@ -150,19 +152,40 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     router.push("/auth/");
   };
 
-  const impersonateClient = (client: User) => {
+  const impersonateUser = (target: User) => {
     setImpersonatedUser(user); // Save current admin user
-    // Always fetch latest client object from backend to ensure systems array is present
-    fetch(`/api/users/${client.id}`)
+    fetch(`/api/users/${target.id}`)
       .then(async (res) => {
-        if (!res.ok) throw new Error("Failed to fetch client for impersonation");
-        const latestClient = await res.json();
-        setUser(latestClient);
+        if (!res.ok) throw new Error("Failed to fetch user for impersonation");
+        const latestUser = await res.json();
+        setUser(latestUser);
         if (typeof window !== "undefined") {
-          localStorage.setItem("agentic_flow_user", JSON.stringify(latestClient));
+          localStorage.setItem("agentic_flow_user", JSON.stringify(latestUser));
           localStorage.setItem("agentic_flow_impersonated_user", JSON.stringify(user));
         }
-        router.push("/client");
+        // Route based on role
+        switch (latestUser.role) {
+          case "admin":
+            router.push("/admin");
+            break;
+          case "client":
+            router.push("/client");
+            break;
+          case "videographer":
+            router.push("/admin/role/videographer");
+            break;
+          case "designer":
+            router.push("/admin/role/designer");
+            break;
+          case "ghl_admin":
+            router.push("/ghl");
+            break;
+          case "ai_developer":
+            router.push("/ai-developer");
+            break;
+          default:
+            router.push("/admin");
+        }
       })
       .catch((err) => {
         console.error("Impersonation fetch error:", err);
@@ -192,7 +215,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     updateProfile,
     isAuthenticated: !!user,
     updateUser,
-    impersonateClient,
+  impersonateUser,
     isImpersonating,
     stopImpersonation,
   };

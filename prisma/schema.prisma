@@ -38,6 +38,7 @@ model User {
   notifications Notification[] @relation("UserNotifications")
   notificationReads NotificationRead[]
   notificationEnabled Boolean @default(true)
+  knowledgeBases KnowledgeBase[]
 
   @@index([role])
 }
@@ -48,6 +49,7 @@ model Notification {
   message     String
   sendType    String
   targetGroup String
+  type        String?  // e.g. 'ghl', 'admin', etc.
   schedule    DateTime?
   status      String   // sent, scheduled, failed, delivered, opened
   attachment  String?
@@ -79,6 +81,8 @@ enum Role {
   client
   designer
   videographer
+  ghl_admin
+  ai_developer
 }
 
 
@@ -86,6 +90,7 @@ model System {
   id      String   @id @default(uuid())
   name    String   @unique
   users   UserSystem[]
+  knowledgeBases KnowledgeBase[]
 }
 
 model UserSystem {
@@ -95,4 +100,16 @@ model UserSystem {
   systemId String
 
   @@id([userId, systemId])
+}
+
+model KnowledgeBase {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  system    System   @relation(fields: [systemId], references: [id], onDelete: Cascade)
+  systemId  String
+  data      String   // Editable knowledge base text
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, systemId])
 }

@@ -9,7 +9,11 @@ import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 import { useAuth } from "@/contexts/auth-context";
 
-const ClientSettingsPage = () => {
+interface ClientSettingsPageProps {
+  role?: "client" | "ghl_admin" | "ai_developer";
+}
+
+const ClientSettingsPage = ({ role = "client" }: ClientSettingsPageProps) => {
   const { user, updateProfile, updateUser, isImpersonating, stopImpersonation } = useAuth();
   const [activeTab, setActiveTab] = useState("profile");
   const [isLoading, setIsLoading] = useState(false);
@@ -436,7 +440,7 @@ const ClientSettingsPage = () => {
 
   return (
     <DashboardLayout
-      role="client"
+      role={role}
       meta={{
         title: "Agentic Flow | Settings",
         description: "Manage your account settings",
@@ -454,7 +458,7 @@ const ClientSettingsPage = () => {
           </Button>
         </div>
       )}
-      <DashboardHeader role="client" title="Settings" hasBackButton={false} />
+      <DashboardHeader role={role} title="Settings" hasBackButton={false} />
 
       <div className="flex flex-1 h-full py-8">
         {/*==================== Sidebar ====================*/}

@@ -202,7 +202,7 @@ const AdminNotificationsPage = () => {
               </div>
               {showConfirm && (
                 <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full">
+                  <div className="bg-purple-400 rounded-lg shadow-lg p-8 max-w-sm w-full">
                     <h2 className="text-lg font-bold mb-4">Confirm Send</h2>
                     <p className="mb-6">Are you sure you want to send this notification?</p>
                     <div className="flex gap-4 justify-end">

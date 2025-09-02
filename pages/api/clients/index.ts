@@ -13,7 +13,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient } from "@prisma/client";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
-// ...existing code...
 
 const prisma = new PrismaClient();
 
@@ -78,7 +77,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (lang === 'es') {
       html = `
         <div style="font-family:Arial,sans-serif;background:#f8fafc;padding:32px;border-radius:12px;max-width:600px;margin:auto;">
-          <img src='https://yourdomain.com/images/icon.png' alt='Agentic Flow Logo' style='height:48px;margin-bottom:16px;'>
+          <img src='${process.env.APP_URL}/images/icon.png' alt='Agentic Flow Logo' style='height:48px;margin-bottom:16px;'>
           <h1 style="color:#2563eb;">¡Bienvenido a Agentic Flow, ${name}!</h1>
           <p style="font-size:16px;">Estamos emocionados de tenerte. Aquí tienes cómo empezar:</p>
           <ol style="margin:16px 0 24px 24px;font-size:15px;">
@@ -89,9 +88,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           <hr style="margin:24px 0;">
           <h2 style="color:#2563eb;font-size:18px;margin-bottom:8px;">Recursos para empezar</h2>
           <ul style="margin-bottom:16px;">
-            <li><a href="https://yourdomain.com/docs" style="color:#2563eb;">Documentación</a></li>
-            <li><a href="https://yourdomain.com/tutorials" style="color:#2563eb;">Tutoriales en video</a></li>
-            <li><a href="https://yourdomain.com/support" style="color:#2563eb;">Centro de soporte</a></li>
+            <li><a href="${process.env.APP_URL}/docs" style="color:#2563eb;">Documentación</a></li>
+            <li><a href="${process.env.APP_URL}/tutorials" style="color:#2563eb;">Tutoriales en video</a></li>
+            <li><a href="${process.env.APP_URL}/support" style="color:#2563eb;">Centro de soporte</a></li>
           </ul>
           <p style="margin-bottom:8px;">¿Necesitas ayuda? <a href="mailto:support@agenticflow.com" style="color:#2563eb;">Contactar soporte</a></p>
           <p style="font-size:12px;color:#888;">Si no solicitaste esta cuenta, ignora este correo.</p>
@@ -103,7 +102,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;margin:auto;background:#fff;border-radius:16px;box-shadow:0 2px 12px #0001;overflow:hidden;">
             <tr>
               <td style="background:#2563eb;padding:32px 24px 16px 24px;text-align:center;">
-                <img src='https://yourdomain.com/logo.png' alt='Agentic Flow Logo' style='height:48px;margin-bottom:12px;'>
+                <img src='https:${process.env.APP_URL}/logo.png' alt='Agentic Flow Logo' style='height:48px;margin-bottom:12px;'>
                 <h1 style="color:#fff;font-size:2rem;margin:0 0 8px 0;">Welcome to Agentic Flow, ${name}!</h1>
                 <p style="color:#e0e7ff;font-size:1.1rem;margin:0;">We're excited to have you onboard.</p>
               </td>
@@ -124,9 +123,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 <hr style="margin:24px 0;">
                 <h2 style="color:#2563eb;font-size:1.1rem;margin-bottom:8px;">Get Started Resources</h2>
                 <ul style="margin-bottom:16px;padding-left:18px;">
-                  <li><a href="https://yourdomain.com/docs" style="color:#2563eb;">Documentation</a></li>
-                  <li><a href="https://yourdomain.com/tutorials" style="color:#2563eb;">Video Tutorials</a></li>
-                  <li><a href="https://yourdomain.com/support" style="color:#2563eb;">Support Center</a></li>
+                  <li><a href="${process.env.APP_URL}/docs" style="color:#2563eb;">Documentation</a></li>
+                  <li><a href="${process.env.APP_URL}/tutorials" style="color:#2563eb;">Video Tutorials</a></li>
+                  <li><a href="${process.env.APP_URL}/support" style="color:#2563eb;">Support Center</a></li>
                 </ul>
                 <p style="margin-bottom:8px;color:#222;">Need help? <a href="mailto:support@agenticflow.com" style="color:#2563eb;">Contact Support</a></p>
                 <p style="font-size:12px;color:#888;">If you did not request this account, please ignore this email.</p>
@@ -141,7 +140,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
     try {
       await transporter.sendMail({
-        from: '"Agentic Flow" <no-reply@agenticflow.com>',
+        from: '"Agentic Flow" <francismariogomez@gmail.com>',
         to: email,
         subject: lang === 'es' ? "¡Bienvenido a Agentic Flow!" : "Welcome to Agentic Flow!",
         html,

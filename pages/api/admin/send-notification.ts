@@ -141,7 +141,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     for (const user of users) {
       if (user.email) {
         await transporter.sendMail({
-          from: 'no-reply@agenticflow.com',
+          from: '"Agentic Flow" <francismariogomez@gmail.com>',
           to: user.email,
           subject: `[Agentic Flow] ${title}`,
           html: `<div style="font-family:Arial,sans-serif;background:#f8fafc;padding:32px;border-radius:12px;max-width:600px;margin:auto;"><h2 style="color:#2563eb;">${title}</h2><p>${message}</p></div>`

@@ -73,6 +73,8 @@ const LoginPage: NextPage = () => {
             router.push("/admin");
           } else if (authenticatedUser.role === "client") {
             router.push("/client");
+          } else if (authenticatedUser.role === "ai_developer") {
+            router.push("/ai-developer");
           } else {
             router.push("/");
           }

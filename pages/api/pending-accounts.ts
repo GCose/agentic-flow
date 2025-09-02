@@ -37,5 +37,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
   }
 
+  if (req.method === "DELETE") {
+    const email = req.query.email as string;
+    if (!email) {
+      return res.status(400).json({ error: "Missing email query parameter" });
+    }
+    try {
+      await prisma.pendingAccount.deleteMany({ where: { email } });
+      return res.status(200).json({ success: true });
+    } catch (error) {
+      console.error("Error deleting pending account:", error);
+      return res.status(500).json({ error: "Failed to delete pending account" });
+    }
+  }
+
   return res.status(405).json({ error: "Method not allowed" });
 }

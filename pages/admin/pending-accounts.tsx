@@ -20,7 +20,10 @@ const PendingAccountsPage: NextPage = () => {
 
   // Fetch pending accounts on mount
   useEffect(() => {
-    let interval: NodeJS.Timeout;
+  const interval: NodeJS.Timeout = setInterval(() => {
+    fetchPending();
+  }, 5000); // Poll every 5 seconds
+
     const fetchPending = async () => {
       const res = await fetch("/api/pending-accounts");
       if (res.ok) {
@@ -28,7 +31,6 @@ const PendingAccountsPage: NextPage = () => {
       }
     };
     fetchPending();
-    interval = setInterval(fetchPending, 5000); // Poll every 5 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -63,6 +65,7 @@ const PendingAccountsPage: NextPage = () => {
         setError(data.error || "Unknown error");
       }
     } catch (err) {
+      console.error(err);
       setError("Network error");
     } finally {
       setLoading(false);

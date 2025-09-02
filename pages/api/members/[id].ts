@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           data: { name, email, role },
         });
         return res.status(200).json(updated);
-      } catch (err) {
+      } catch {
         return res.status(500).json({ error: "Failed to update member" });
       }
     }
@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
         await prisma.user.delete({ where: { id } });
         return res.status(204).end();
-      } catch (err) {
+      } catch {
         return res.status(500).json({ error: "Failed to delete member" });
       }
     }

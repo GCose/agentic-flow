@@ -4,6 +4,7 @@ import DashboardHeader from "@/components/dashboard/dashboard-header";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 interface Client {
@@ -45,9 +46,9 @@ export default function GHLAdminPage() {
             Return to Admin View
           </Button>
         ) : (
-          <a href="/admin">
-            <button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white">Return to Admin View</button>
-          </a>
+          <Link href="/admin" legacyBehavior>
+            <a><button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white">Return to Admin View</button></a>
+          </Link>
         )}
       </div>
       <div className="flex-1 p-4 py-2">

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import { AdminPageMeta } from "@/page-meta/meta";
 import { useAuth } from "@/contexts/auth-context";
+import Link from "next/link";
 
 const DesignerDashboard: NextPage = () => {
   const { isImpersonating, stopImpersonation } = useAuth();
@@ -32,9 +33,9 @@ const DesignerDashboard: NextPage = () => {
           {isImpersonating ? (
             <button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white" onClick={stopImpersonation}>Return to Admin View</button>
           ) : (
-            <a href="/admin">
-              <button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white">Return to Admin View</button>
-            </a>
+            <Link href="/admin" legacyBehavior>
+              <a><button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white">Return to Admin View</button></a>
+            </Link>
           )}
         </div>
         <div className="flex-1 space-y-4 p-8 pt-6">
@@ -102,9 +103,9 @@ const DesignerDashboard: NextPage = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-2">
-                  <a href="/admin/role/designer/upload" className="text-blue-600 hover:underline">Upload Asset</a>
-                  <a href="/admin/role/designer/content" className="text-blue-600 hover:underline">Manage Content</a>
-                  <a href="/admin/role/designer/tasks" className="text-blue-600 hover:underline">View Tasks</a>
+                  <Link href="/admin/role/designer/upload" className="text-blue-600 hover:underline">Upload Asset</Link>
+                  <Link href="/admin/role/designer/content" className="text-blue-600 hover:underline">Manage Content</Link>
+                  <Link href="/admin/role/designer/tasks" className="text-blue-600 hover:underline">View Tasks</Link>
                 </div>
               </CardContent>
             </Card>

@@ -16,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         create: { userId, systemId, data },
       });
       return res.status(200).json(kb);
-    } catch (error) {
+    } catch {
       return res.status(500).json({ error: "Failed to update knowledge base." });
     }
   }
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         where: { userId_systemId: { userId, systemId } },
       });
       return res.status(200).json({ success: true });
-    } catch (error) {
+    } catch {
       return res.status(500).json({ error: "Failed to delete knowledge base." });
     }
   }

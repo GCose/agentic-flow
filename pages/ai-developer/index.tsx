@@ -1,6 +1,7 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useAuth } from "@/contexts/auth-context";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/router";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
@@ -118,7 +119,7 @@ const AiDeveloperPage = () => {
 
   // Recent activity (last 5 knowledge edits)
   const recentEdits = useMemo(() => {
-    let edits: { client: string; system: string; updated: string }[] = [];
+  const edits: { client: string; system: string; updated: string }[] = [];
     clients.forEach(c => {
       Object.entries(c.knowledge).forEach(([system, value]) => {
         // Assume value contains a lastUpdated ISO string at the end, e.g. "...\n\nLast updated: 2025-09-02T12:34:56Z"
@@ -286,9 +287,9 @@ const AiDeveloperPage = () => {
             Return to Admin View
           </Button>
         ) : (
-          <a href="/admin">
-            <button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white">Return to Admin View</button>
-          </a>
+          <Link href="/admin" legacyBehavior>
+            <a><button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white">Return to Admin View</button></a>
+          </Link>
         )}
       </div>
       {mainContent}

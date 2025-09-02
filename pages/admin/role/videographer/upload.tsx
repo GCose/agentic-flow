@@ -6,6 +6,7 @@ import Head from "next/head";
 import VideographerHeader from "./videographer-header";
 import { AdminPageMeta } from "@/page-meta/meta";
 import { useAuth } from "@/contexts/auth-context";
+import Link from "next/link";
 const UploadVideosPage: NextPage = () => {
   const { isImpersonating, stopImpersonation } = useAuth();
     // Example notifications, stats, and recent activity
@@ -34,9 +35,9 @@ const UploadVideosPage: NextPage = () => {
             {isImpersonating ? (
               <button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white" onClick={stopImpersonation}>Return to Admin View</button>
             ) : (
-              <a href="/admin">
-                <button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white">Return to Admin View</button>
-              </a>
+              <Link href="/admin" legacyBehavior>
+                <a><button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white">Return to Admin View</button></a>
+              </Link>
             )}
           </div>
           <div className="flex-1 space-y-4 p-8 pt-6">
@@ -91,9 +92,9 @@ const UploadVideosPage: NextPage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-col gap-2">
-                    <a href="/admin/role/videographer/upload" className="text-blue-600 hover:underline">Upload Video</a>
-                    <a href="/admin/role/videographer/content" className="text-blue-600 hover:underline">Manage Content</a>
-                    <a href="/admin/role/videographer/tasks" className="text-blue-600 hover:underline">View Tasks</a>
+                    <Link href="/admin/role/videographer/upload" className="text-blue-600 hover:underline">Upload Video</Link>
+                    <Link href="/admin/role/videographer/content" className="text-blue-600 hover:underline">Manage Content</Link>
+                    <Link href="/admin/role/videographer/tasks" className="text-blue-600 hover:underline">View Tasks</Link>
                   </div>
                 </CardContent>
               </Card>

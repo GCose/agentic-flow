@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { PlusCircle, MoreHorizontal, Check, MailCheck, MailWarning, UserCog, UserCheck } from "lucide-react";
+import { PlusCircle, Check, MailCheck, MailWarning, UserCog, UserCheck } from "lucide-react";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,16 +17,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { Input } from "@/components/ui/input";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   Dialog,
   DialogContent,
@@ -43,7 +35,7 @@ import { AdminPageMeta } from "@/page-meta/meta";
 import DashboardHeader from "@/components/dashboard/dashboard-header";
 
 const ClientDashboardPage: NextPage = () => {
-  const { user, isImpersonating, stopImpersonation, loading: authLoading, impersonateClient } = useAuth();
+  const { user, isImpersonating, stopImpersonation, loading: authLoading, impersonateUser } = useAuth();
   const router = useRouter();
   // Guard: Only allow admins or impersonating admins
   useEffect(() => {
@@ -77,7 +69,7 @@ const ClientDashboardPage: NextPage = () => {
     // Removed unused 'feedback' variable
   const [pageLoading, setPageLoading] = useState(true);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
-  const [editingSystemsId, setEditingSystemsId] = useState<string | null>(null);
+  const [, setEditingSystemsId] = useState<string | null>(null);
   const [editingSystems, setEditingSystems] = useState<string[]>([]);
   const [editingSystemsLoading, setEditingSystemsLoading] = useState(false);
   const [resendingEmailId, setResendingEmailId] = useState<string | null>(null);
@@ -515,7 +507,7 @@ const ClientDashboardPage: NextPage = () => {
                                 e.stopPropagation();
                                 setNavigatingClientId(client.id);
                                 await new Promise(resolve => setTimeout(resolve, 1000));
-                                impersonateClient(client);
+                                impersonateUser(client);
                                 setNavigatingClientId(null);
                               }}
                             >

@@ -7,14 +7,14 @@ async function main() {
   // Create overall admin if not exists
   // Seed sample systems
   const leadgenSystem = await prisma.system.upsert({
-    where: { name: "leadgen-system" },
+    where: { name: "Leadgen" },
     update: {},
-    create: { name: "leadgen-system" }
+    create: { name: "Leadgen" }
   });
   const contentSystem = await prisma.system.upsert({
-    where: { name: "content-system" },
+    where: { name: "Sales" },
     update: {},
-    create: { name: "content-system" }
+    create: { name: "Sales  " }
   });
 
   // Seed sample clients

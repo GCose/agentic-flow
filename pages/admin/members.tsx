@@ -18,16 +18,6 @@ interface Member {
 const MembersPage = () => {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
-
-  useEffect(() => {
-    if (user?.role === "ghl_admin") {
-      router.replace("/ghl");
-    } else if (!authLoading && (!user || user.role !== "admin")) {
-      router.replace("/auth");
-    }
-  }, [user, authLoading, router]);
-  if (user?.role === "ghl_admin") return null;
-
   const [members, setMembers] = useState<Member[]>([]);
   const [loading, setLoading] = useState(false);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
@@ -39,6 +29,24 @@ const MembersPage = () => {
   const [showCreate, setShowCreate] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
 
+  // Always call hooks before any return
+  useEffect(() => {
+    if (user?.role === "ghl_admin") {
+      router.replace("/ghl");
+    } else if (!authLoading && (!user || user.role !== "admin")) {
+      router.replace("/auth");
+    }
+  }, [user, authLoading, router]);
+
+  useEffect(() => {
+    fetchMembers();
+  }, []);
+
+  if (user?.role === "ghl_admin") {
+    // Prevent rendering if redirecting
+    return null;
+  }
+
   const fetchMembers = () => {
     setLoading(true);
     fetch("/api/members")
@@ -49,10 +57,6 @@ const MembersPage = () => {
       })
       .catch(() => setLoading(false));
   };
-
-  useEffect(() => {
-    fetchMembers();
-  }, []);
 
   return ( 
     <DashboardLayout meta={{ title: "Members Management" }} role="admin">

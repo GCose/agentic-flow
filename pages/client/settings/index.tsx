@@ -447,16 +447,24 @@ const ClientSettingsPage = ({ role = "client" }: ClientSettingsPageProps) => {
       }}
     >
       {isImpersonating && (
-        <div className="w-full flex justify-end pt-4 pb-2">
-          <Button
-            size="sm"
-            variant="destructive"
-            className="rounded-full px-6 py-2 font-semibold text-white bg-gradient-to-r from-blue-900 via-blue-700 to-indigo-500 shadow-lg hover:from-blue-800 hover:to-indigo-600 transition-all duration-200 border-0"
-            onClick={stopImpersonation}
-          >
-            Return to Admin View
-          </Button>
-        </div>
+        <>
+          <div className="w-full flex justify-end pt-4 pb-2">
+            <Button
+              size="sm"
+              variant="destructive"
+              className="rounded-full px-6 py-2 font-semibold text-white bg-gradient-to-r from-blue-900 via-blue-700 to-indigo-500 shadow-lg hover:from-blue-800 hover:to-indigo-600 transition-all duration-200 border-0"
+              onClick={stopImpersonation}
+            >
+              Return to Admin View
+            </Button>
+          </div>
+          <div className="w-full mb-4">
+            <div className="bg-blue-900/80 border border-blue-700 text-blue-100 rounded-lg px-6 py-3 shadow flex items-center gap-3">
+              <svg className="h-5 w-5 text-blue-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20h.01M12 4h.01" /></svg>
+              <span className="font-medium">You are impersonating this user as an admin. Any changes you make will affect their account.</span>
+            </div>
+          </div>
+        </>
       )}
       <DashboardHeader role={role} title="Settings" hasBackButton={false} />
 

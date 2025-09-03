@@ -39,6 +39,14 @@ const DesignerDashboard: NextPage = () => {
           )}
         </div>
         <div className="flex-1 space-y-4 p-8 pt-6">
+          {isImpersonating && (
+            <button
+              className="mb-4 px-4 py-2 text-sm rounded border border-blue-700 text-blue-900 bg-white hover:bg-blue-50 font-medium shadow"
+              onClick={stopImpersonation}
+            >
+              Return to Admin View
+            </button>
+          )}
           <div className="flex items-center justify-between">
             <h2 className="text-3xl font-bold tracking-tight">Designer Dashboard</h2>
           </div>

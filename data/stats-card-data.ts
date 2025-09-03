@@ -21,32 +21,116 @@ import {
  ===========================================*/
 export const adminDashboardStats: StatCardData[] = [
   {
-    value: "14",
-    icon: Grid2X2,
+    value: "--", // Replace with live data
+    icon: CalendarClock,
     color: "blue",
-    title: "Total Leads",
-    change: "Warm and Cold Leads",
+    title: "Recent Logins",
+    change: "Users logged in today",
   },
   {
-    value: "20",
+    value: "--", // Replace with live data
+    icon: Clock,
+    color: "cyan",
+    title: "Active Sessions",
+    change: "Users currently online",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: ShieldCheck,
+    color: "orange",
+    title: "Failed Login Attempts",
+    change: "Security metric",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: Handshake,
+    color: "purple",
+    title: "Impersonation Events",
+    change: "Admin impersonations this week",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: Zap,
+    color: "green",
+    title: "System Health",
+    change: "API/server uptime",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: FileText,
+    color: "blue",
+    title: "Notifications Sent",
+    change: "System/user notifications",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: TrendingUp,
+    color: "orange",
+    title: "Content Created",
+    change: "Reports/files generated",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: Users,
+    color: "blue",
+    title: "Total Users",
+    change: "All users in the system",
+  },
+  {
+    value: "--", // Replace with live data
     icon: Users2Icon,
     color: "purple",
     title: "Total Clients",
-    change: "Clients using Agentic Flow",
+    change: "Registered client accounts",
   },
   {
-    value: "100%",
+    value: "--", // Replace with live data
+    icon: UserCheck,
     color: "green",
-    icon: Zap,
-    title: "AI-driven",
-    change: "Intelligent by design, scalable by nature",
+    title: "Verified Users",
+    change: "Users with verified accounts",
   },
   {
-    value: "24/7",
-    icon: Clock,
+    value: "--", // Replace with live data
+    icon: ShieldCheck,
+    color: "orange",
+    title: "Unverified Users",
+    change: "Users pending verification",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: FileText,
+    color: "orange",
+    title: "Pending Accounts",
+    change: "Accounts awaiting approval",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: ShieldCheck,
     color: "cyan",
-    title: "Operation",
-    change: "Proactive monitoring and execution",
+    title: "Admin Accounts",
+    change: "Total admin users",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: Handshake,
+    color: "cyan",
+    title: "Designer Accounts",
+    change: "Total designer users",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: Thermometer,
+    color: "green",
+    title: "Videographer Accounts",
+    change: "Total videographer users",
+  },
+  {
+    value: "--", // Replace with live data
+    icon: Snowflake,
+    color: "blue",
+    title: "AI Developer Accounts",
+    change: "Total AI developer users",
   },
 ];
 

@@ -90,34 +90,35 @@ const AdminSystemsPage = () => {
   return (
     <DashboardLayout meta={AdminPageMeta.systemsDashboardPage}>
       <DashboardHeader title="Manage Systems" role="admin" />
-      <div className="flex-1 p-4 py-2">
-        <Card className="border border-blue-900/70 rounded-xl shadow-sm ">
-          <CardHeader className="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-blue-900/20 pb-4">
-            <h2 className="font-semibold text-lg text-white">Systems</h2>
+      <div className="flex-1 p-8 pt-6 min-h-screen ">
+        <Card className="border-none shadow-lg rounded-xl">
+          <CardHeader className="flex flex-col md:flex-row items-center justify-between gap-4 border-b border-blue-800 pb-4">
+            <h2 className="font-bold text-2xl text-white">Systems</h2>
             <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
               <DialogTrigger asChild>
-                <Button className="w-full md:w-auto bg-blue-900 text-white hover:bg-blue-800">Add System</Button>
+                <Button variant="default" className="w-full md:w-auto text-white font-semibold shadow hover:bg-blue-800">+ Add System</Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[400px]">
+              <DialogContent className="sm:max-w-[400px] bg-blue-900 text-white border-blue-700">
                 <DialogHeader>
                   <DialogTitle className="text-white">Add New System</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 py-4">
                   <div className="space-y-2">
-                    <Label htmlFor="system-name">System Name</Label>
+                    <Label htmlFor="system-name" className="text-white">System Name</Label>
                     <Input
                       id="system-name"
                       placeholder="Enter system name"
                       value={newSystem}
                       onChange={(e) => setNewSystem(e.target.value)}
+                      className="bg-blue-900 text-white border-blue-700"
                     />
                   </div>
                 </div>
                 <DialogFooter>
-                  <Button variant="outline" onClick={() => setIsModalOpen(false)}>
+                  <Button variant="outline" className="border-blue-700 text-white" onClick={() => setIsModalOpen(false)}>
                     Cancel
                   </Button>
-                  <Button onClick={handleCreateSystem} disabled={loading} className="bg-blue-900 text-white hover:bg-blue-800">
+                  <Button onClick={handleCreateSystem} disabled={loading} className="bg-blue-700 text-white font-semibold shadow hover:bg-blue-800">
                     Add System
                   </Button>
                 </DialogFooter>
@@ -126,33 +127,33 @@ const AdminSystemsPage = () => {
           </CardHeader>
           <CardContent>
             {feedback && (
-              <div className={`mb-4 font-medium ${feedback.includes('deleted') ? 'text-green-600' : 'text-red-600'}`}>{feedback}</div>
+              <div className={`mb-4 font-medium ${feedback.includes('deleted') ? 'text-green-400' : 'text-red-400'}`}>{feedback}</div>
             )}
             <Table className="rounded-lg overflow-hidden">
               <TableHeader>
-                <TableRow className="bg-blue-900/10">
-                  <TableHead className="font-semibold text-white">System Name</TableHead>
-                  <TableHead className="font-semibold text-white text-right">Actions</TableHead>
+                <TableRow className="bg-blue-800">
+                  <TableHead className="font-bold text-white py-3">System Name</TableHead>
+                  <TableHead className="font-bold text-white py-3 text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {loading ? (
                   <TableRow>
-                    <TableCell colSpan={2} className="text-center">Loading...</TableCell>
+                    <TableCell colSpan={2} className="text-center text-white">Loading...</TableCell>
                   </TableRow>
                 ) : systems.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={2} className="text-center">No systems found.</TableCell>
+                    <TableCell colSpan={2} className="text-center text-white">No systems found.</TableCell>
                   </TableRow>
                 ) : (
                   systems.map((system) => (
-                    <TableRow key={system}>
-                      <TableCell className="font-medium text-white">{system}</TableCell>
-                      <TableCell className="text-right">
+                    <TableRow key={system} className="hover:bg-blue-900/40 transition-all">
+                      <TableCell className="font-medium text-blue-100 py-3">{system}</TableCell>
+                      <TableCell className="text-right py-3">
                         <Button
                           size="sm"
                           variant="destructive"
-                          className="bg-red-600 text-white hover:bg-red-700"
+                          className="bg-red-600 text-white font-semibold shadow hover:bg-red-700"
                           onClick={() => setDeleteSystemName(system)}
                         >
                           Delete
@@ -164,20 +165,20 @@ const AdminSystemsPage = () => {
               </TableBody>
             </Table>
             <Dialog open={!!deleteSystemName} onOpenChange={(open) => !open && setDeleteSystemName(null)}>
-              <DialogContent className="sm:max-w-[400px]">
+              <DialogContent className="sm:max-w-[400px] bg-blue-950 text-white border-blue-700">
                 <DialogHeader>
-                  <DialogTitle className="text-red-700">Delete System</DialogTitle>
+                  <DialogTitle className="text-red-400">Delete System</DialogTitle>
                 </DialogHeader>
                 <div className="py-4">
-                  Are you sure you want to delete <span className="font-bold text-red-700">{deleteSystemName}</span>? This action cannot be undone.
+                  Are you sure you want to delete <span className="font-bold text-red-400">{deleteSystemName}</span>? This action cannot be undone.
                 </div>
                 <DialogFooter>
-                  <Button variant="outline" onClick={() => setDeleteSystemName(null)}>
+                  <Button variant="outline" className="border-blue-700 text-white" onClick={() => setDeleteSystemName(null)}>
                     Cancel
                   </Button>
                   <Button
                     variant="destructive"
-                    className="bg-red-600 text-white hover:bg-red-700"
+                    className="bg-red-600 text-white font-semibold shadow hover:bg-red-700"
                     onClick={() => handleDeleteSystem(deleteSystemName!)}
                     disabled={deleteLoading}
                   >

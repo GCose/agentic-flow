@@ -5,8 +5,11 @@ import VideographerHeader from "./videographer-header";
 import { Brain } from "lucide-react";
 import SystemCards from "@/components/cards/system-cards";
 import { AdminPageMeta } from "@/page-meta/meta";
+import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/auth-context";
 
 const VideographerDashboard: NextPage = () => {
+  const { isImpersonating, stopImpersonation } = useAuth();
   return (
     <>
       <Head>
@@ -22,6 +25,15 @@ const VideographerDashboard: NextPage = () => {
       >
         <VideographerHeader />
         <div className="flex-1 p-8 pt-6">
+          {isImpersonating && (
+            <Button
+              variant="outline"
+              className="mb-4 border-blue-700 text-blue-900 hover:bg-blue-50"
+              onClick={stopImpersonation}
+            >
+              Return to Admin View
+            </Button>
+          )}
           {/*==================== Welcome Section ====================*/}
           <div className="relative mb-10 py-12 px-8 rounded-2xl overflow-hidden bg-slate-800/30 ">
             <div className="flex flex-col sm:flex-row items-center gap-6 mb-6">
@@ -79,3 +91,4 @@ const VideographerDashboard: NextPage = () => {
 };
 
 export default VideographerDashboard;
+

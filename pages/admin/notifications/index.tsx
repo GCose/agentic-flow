@@ -72,7 +72,7 @@ const AdminNotificationsPage = () => {
       <div className="flex flex-1 h-full py-8 ">
         <div className="w-full px-4 md:px-12 lg:px-24 grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Notification Composer */}
-          <Card className="border-none bg-blue-900/80 shadow-xl rounded-xl col-span-1">
+          <Card className="border-none bg-transparent shadow-xl rounded-xl col-span-1">
             <CardHeader>
               <CardTitle className="text-2xl text-white font-bold flex items-center gap-2"><Bell className="w-6 h-6" /> Send Custom Notification</CardTitle>
               <p className="text-slate-200">Write and send a custom notification to users who have notifications enabled.</p>
@@ -125,9 +125,9 @@ const AdminNotificationsPage = () => {
                       value={clientSearch}
                       onChange={e => setClientSearch(e.target.value)}
                       placeholder="Search clients by name or email..."
-                      className="mb-3 bg-blue-950/60 border-blue-800 text-white placeholder:text-blue-200"
+                      className="mb-3 border-blue-800 text-white placeholder:text-blue-200"
                     />
-                    <div className="bg-blue-950/60 border border-blue-800 rounded p-2 max-h-64 overflow-y-auto">
+                    <div className=" rounded p-2 max-h-64 overflow-y-auto">
                       {clientOptions
                         .filter((client: any) =>
                           client.name.toLowerCase().includes(clientSearch.toLowerCase()) ||
@@ -213,13 +213,13 @@ const AdminNotificationsPage = () => {
                 </div>
               )}
               {showPreview && (
-                <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full">
+                <div className="fixed inset-0 bg-transparent flex items-center justify-center z-50">
+                  <div className="bg-blue-900 rounded-lg shadow-lg p-8 max-w-sm w-full">
                     <h2 className="text-lg font-bold mb-4">Notification Preview</h2>
                     <div className="mb-4">
                       <div className="font-bold text-lg">{title}</div>
-                      <div className="text-base whitespace-pre-line mb-2">{message}</div>
-                      <div className="text-xs text-blue-700">Type: {sendType} | Group: {targetGroup} {mandatory && "| Mandatory"}</div>
+                      <div className="text-white whitespace-pre-line mb-2">{message}</div>
+                      <div className="text-xs text-white">Type: {sendType} | Group: {targetGroup} {mandatory && "| Mandatory"}</div>
                     </div>
                     <div className="flex gap-4 justify-end">
                       <Button variant="outline" onClick={() => setShowPreview(false)} className="bg-gray-200 text-gray-800">Close</Button>
@@ -237,7 +237,7 @@ const AdminNotificationsPage = () => {
           </Card>
           {/* Summary & Recent Notifications */}
           <div className="flex flex-col gap-8 col-span-1">
-            <Card className="border-none bg-blue-900/60 shadow-lg rounded-xl">
+            <Card className="border-none bg-transparent  shadow-lg rounded-xl">
               <CardHeader>
                 <CardTitle className="text-lg text-white font-bold flex items-center gap-2"><Eye className="w-5 h-5" /> Target Summary</CardTitle>
               </CardHeader>
@@ -252,7 +252,7 @@ const AdminNotificationsPage = () => {
                 <div className="text-blue-200 text-sm">Message: <span className="font-bold text-white">{message ? message.slice(0, 60) + (message.length > 60 ? "..." : "") : "-"}</span></div>
               </CardContent>
             </Card>
-            <Card className="border-none bg-blue-900/60 shadow-lg rounded-xl">
+            <Card className="border-none bg-transparent shadow-lg rounded-xl">
               <CardHeader>
                 <CardTitle className="text-lg text-white font-bold flex items-center gap-2"><Bell className="w-5 h-5" /> Recent Notifications</CardTitle>
               </CardHeader>
@@ -261,7 +261,7 @@ const AdminNotificationsPage = () => {
                   <div className="text-blue-200">No notifications sent yet.</div>
                 ) : (
                   recentNotifications.map((notif, idx) => (
-                    <div key={idx} className={`bg-blue-950/60 rounded p-3 text-white border border-blue-800 flex flex-col gap-1 ${notif.mandatory ? "border-red-500" : ""}`}>
+                    <div key={idx} className={`bg-blue-800 rounded p-3 text-white border border-blue-800 flex flex-col gap-1 ${notif.mandatory ? "border-red-500" : ""}`}>
                       <div className="flex items-center gap-2">
                         <span className="font-bold">{notif.title}</span>
                         {notif.mandatory ? <AlertCircle className="w-4 h-4 text-red-500" /> : <CheckCircle className="w-4 h-4 text-green-500" />}

@@ -210,12 +210,12 @@ const DashboardSidebar = ({ role = "admin" }: DashboardSidebarProps) => {
       const contentCreationItems = [
         {
           title: "Videographer",
-          href: "/admin/videographer",
+          href: "/admin/role/ videographer",
           icon: Video,
         },
         {
           title: "Graphics Designer",
-          href: "/admin/designer",
+          href: "/admin/role/ designer",
           icon: Brush,
         },
       ];

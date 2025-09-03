@@ -9,27 +9,38 @@ const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
+  console.log("[Impersonation API] Incoming request for user id:", id);
   if (!id || typeof id !== "string") {
+    console.error("[Impersonation API] Invalid user id:", id);
     return res.status(400).json({ error: "Invalid user id" });
   }
 
   if (req.method === "GET") {
     // Get user by id (no password)
-    const user = await prisma.user.findUnique({
-      where: { id },
-      include: { systems: { include: { system: true } } }
-    });
-    if (!user) return res.status(404).json({ error: "User not found" });
-    // Flatten systems for client
-    let systems: string[] | undefined = undefined;
-    if (user.role === "client") {
-      systems = Array.isArray(user.systems)
-        ? user.systems.map((us: any) => us.system?.name).filter(Boolean)
-        : [];
+    try {
+      const user = await prisma.user.findUnique({
+        where: { id },
+        include: { systems: { include: { system: true } } }
+      });
+      if (!user) {
+        console.error(`[Impersonation API] User not found for id: ${id}`);
+        return res.status(404).json({ error: "User not found" });
+      }
+      // Flatten systems for client
+      let systems: string[] | undefined = undefined;
+      if (user.role === "client") {
+        systems = Array.isArray(user.systems)
+          ? user.systems.map((us: any) => us.system?.name).filter(Boolean)
+          : [];
+      }
+      // Remove password and systems from user object
+      const { password, systems: _systems, ...userData } = user;
+      console.log(`[Impersonation API] Returning user for id: ${id}`, userData);
+      return res.status(200).json({ ...userData, systems });
+    } catch (err) {
+      console.error(`[Impersonation API] Error fetching user for id: ${id}`, err);
+      return res.status(500).json({ error: "Internal server error" });
     }
-    // Remove password and systems from user object
-    const { password, systems: _systems, ...userData } = user;
-    return res.status(200).json({ ...userData, systems });
   }
 
   if (req.method === "PUT") {

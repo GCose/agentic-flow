@@ -35,35 +35,35 @@ export default function AdminImpersonatePage() {
   return (
     <DashboardLayout meta={{ title: "Impersonate User" }} role="admin">
       <DashboardHeader title="Impersonate Any User" />
-      <div className="p-8">
-        <div className="mb-6 flex items-center gap-2">
+      <div className="p-8 min-h-screen ">
+        <div className="mb-8 flex items-center gap-4 justify-center">
           <Input
             type="text"
             placeholder="Search by name, email, or role..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="max-w-md"
+            className="max-w-md text-white border-blue-700 placeholder-blue-300 shadow"
           />
         </div>
         {loading ? (
-          <div>Loading users...</div>
+          <div className="text-blue-200 text-lg font-semibold text-center py-12">Loading users...</div>
         ) : filteredUsers.length === 0 ? (
-          <div>No users found.</div>
+          <div className="text-blue-200 text-lg font-semibold text-center py-12">No users found.</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredUsers.map(u => (
-              <Card key={u.id} className="shadow">
+              <Card key={u.id} className="shadow-lg bg-blue-800 border-blue-800 rounded-xl">
                 <CardHeader>
-                  <div className="flex items-center gap-2">
-                    <span className="font-bold text-lg">{u.name}</span>
-                    <span className="text-xs px-2 py-1 rounded bg-blue-900 text-white ml-2">{u.role}</span>
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="font-bold text-xl text-blue-200">{u.name}</span>
+                    <span className="text-xs px-2 py-1 rounded bg-blue-700 text-white ml-2 font-semibold uppercase tracking-wide">{u.role}</span>
                   </div>
-                  <div className="text-sm text-muted-foreground">{u.email}</div>
+                  <div className="text-sm text-blue-300">{u.email}</div>
                 </CardHeader>
                 <CardContent>
                   <Button
-                    variant="outline"
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 text-white"
+                    variant="default"
+                    className={`w-full py-2 font-semibold rounded bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow ${user?.id === u.id ? "opacity-60 cursor-not-allowed" : "hover:from-blue-700 hover:to-blue-800"}`}
                     onClick={() => impersonateUser(u)}
                     disabled={user?.id === u.id}
                   >

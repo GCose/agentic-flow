@@ -54,19 +54,7 @@ const ClientDashboardPage: NextPage = () => {
   const [selectedClient, setSelectedClient] = useState<any | null>(null);
   const [navigatingClientId, setNavigatingClientId] = useState<string | null>(null);
   const [selectedClientIds, setSelectedClientIds] = useState<string[]>([]);
-  // Onboarding resources component
-  // function OnboardingResources() {
-  //   return (
-  //     <div style={{ background: '#f8fafc', borderRadius: 12, padding: 24, marginBottom: 24 }}>
-  //       <h2 style={{ color: '#2563eb', fontSize: 20, marginBottom: 12 }}>Onboarding Resources</h2>
-  //       <ul style={{ fontSize: 16 }}>
-  //         <li><a href="https://yourdomain.com/docs" target="_blank" rel="noopener" style={{ color: '#2563eb' }}>Documentation</a></li>
-  //         <li><a href="https://yourdomain.com/tutorials" target="_blank" rel="noopener" style={{ color: '#2563eb' }}>Video Tutorials</a></li>
-  //         <li><a href="https://yourdomain.com/support" target="_blank" rel="noopener" style={{ color: '#2563eb' }}>Support Center</a></li>
-  //       </ul>
-  //     </div>
-  //   );
-    // Removed unused 'feedback' variable
+ 
   const [pageLoading, setPageLoading] = useState(true);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
   const [, setEditingSystemsId] = useState<string | null>(null);
@@ -365,7 +353,7 @@ const ClientDashboardPage: NextPage = () => {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-blue-900/70 relative">
+              <div className="overflow-x-auto border rounded-xl px-4 pt-2 border-blue-900/70 relative bg-gradient-to-br from-blue-950 via-blue-900 to-blue-800 shadow-lg">
                 {navigatingClientId && (
                   <div className="absolute inset-0 z-20 flex items-center justify-center bg-gradient-to-r from-blue-900/10 to-blue-900/30 backdrop-blur-sm">
                     <div className="flex flex-col items-center gap-2">
@@ -377,10 +365,10 @@ const ClientDashboardPage: NextPage = () => {
                     </div>
                   </div>
                 )}
-                <Table>
-                  <TableHeader>
+                <Table className="rounded-lg overflow-hidden">
+                  <TableHeader className="bg-blue-800">
                     <TableRow className="border-b border-blue-900/70 hover:bg-transparent">
-                      <TableHead>
+                      <TableHead className="bg-blue-900 text-blue-200 font-semibold py-3">
                         <input
                           type="checkbox"
                           checked={selectedClientIds.length === filteredClients.length && filteredClients.length > 0}
@@ -393,28 +381,28 @@ const ClientDashboardPage: NextPage = () => {
                           }}
                         />
                       </TableHead>
-                      <TableHead>Client</TableHead>
-                      <TableHead>Systems</TableHead>
-                      <TableHead className="hidden md:table-cell">Client Since</TableHead>
-                      <TableHead className="hidden md:table-cell">Subscriptions</TableHead>
-                      <TableHead>Email Status</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead className="bg-blue-900 text-blue-200 font-semibold py-3">Client</TableHead>
+                      <TableHead className="bg-blue-900 text-blue-200 font-semibold py-3">Systems</TableHead>
+                      <TableHead className="hidden md:table-cell bg-blue-900 text-blue-200 font-semibold py-3">Client Since</TableHead>
+                      <TableHead className="hidden md:table-cell bg-blue-900 text-blue-200 font-semibold py-3">Subscriptions</TableHead>
+                      <TableHead className="bg-blue-900 text-blue-200 font-semibold py-3">Email Status</TableHead>
+                      <TableHead className="text-right bg-blue-900 text-blue-200 font-semibold py-3">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {pageLoading ? (
                       <TableRow>
-                        <TableCell colSpan={7} className="text-center">Loading...</TableCell>
+                        <TableCell colSpan={7} className="text-center text-blue-200">Loading...</TableCell>
                       </TableRow>
                     ) : filteredClients.length === 0 ? (
                       <TableRow>
-                        <TableCell colSpan={7} className="text-center">No clients found.</TableCell>
+                        <TableCell colSpan={7} className="text-center text-blue-200">No clients found.</TableCell>
                       </TableRow>
                     ) : (
                       paginatedClients.map((client) => (
                         <TableRow
                           key={client.id}
-                          className="cursor-pointer border-b border-blue-900/70 hover:bg-blue-600/10 hover:rounded-md"
+                          className="cursor-pointer border-b border-blue-900/70 hover:bg-blue-900/30 hover:rounded-md transition-all"
                           onClick={e => {
                             // Only navigate if the click is NOT on a checkbox or its label
                             if (
@@ -443,42 +431,42 @@ const ClientDashboardPage: NextPage = () => {
                               }}
                             />
                           </TableCell>
-                          <TableCell className="font-medium">{client.name}</TableCell>
+                          <TableCell className="font-medium text-blue-100">{client.name}</TableCell>
                           <TableCell>
                             <div className="flex flex-wrap gap-1">
                               {(client.systems || []).map((system: string) => (
-                                <div key={system} className="font-medium p-2 bg-blue-900/10 rounded-md">
+                                <div key={system} className="font-medium p-2 bg-blue-900/30 rounded-md text-blue-200">
                                   {system}
                                 </div>
                               ))}
                             </div>
                           </TableCell>
-                          <TableCell className="hidden md:table-cell font-medium">
+                          <TableCell className="hidden md:table-cell font-medium text-blue-100">
                             {client.createdAt ? client.createdAt.split("T")[0] : "-"}
                           </TableCell>
-                          <TableCell className="hidden md:table-cell font-medium">
+                          <TableCell className="hidden md:table-cell font-medium text-blue-100">
                             {Array.isArray(client.systems) && client.systems.length > 0
                               ? client.systems.join(", ")
                               : "-"}
                           </TableCell>
                           <TableCell className="font-medium">
                             {resendingEmailId === client.id && feedback ? (
-                              <span className={`flex items-center gap-1 text-sm font-medium ${feedback.type === "success" ? "text-green-600" : "text-red-600"}`}>
+                              <span className={`flex items-center gap-1 text-sm font-medium ${feedback.type === "success" ? "text-green-400" : "text-red-400"}`}>
                                 {feedback.type === "success" ? <MailCheck className="w-4 h-4" /> : <MailWarning className="w-4 h-4" />}
                                 {feedback.message}
                               </span>
                             ) : client.emailStatus === 'sent' ? (
-                              <span className="flex items-center gap-1 text-green-700">
+                              <span className="flex items-center gap-1 text-green-400">
                                 <MailCheck className="w-4 h-4" />
                                 Welcome email sent
                               </span>
                             ) : client.emailStatus && client.emailStatus.startsWith('failed') ? (
-                              <span className="flex items-center gap-1 text-red-600">
+                              <span className="flex items-center gap-1 text-red-400">
                                 <MailWarning className="w-4 h-4" />
                                 Failed to send welcome email
                               </span>
                             ) : (
-                              <span className="flex items-center gap-1 text-muted-foreground">
+                              <span className="flex items-center gap-1 text-blue-300">
                                 <MailCheck className="w-4 h-4 opacity-40" />
                                 No welcome email sent
                               </span>
@@ -488,6 +476,7 @@ const ClientDashboardPage: NextPage = () => {
                             <Button
                               size="sm"
                               variant="outline"
+                              className="border-blue-700 text-blue-300"
                               onClick={async (e) => {
                                 e.stopPropagation();
                                 setEditingSystemsId(client.id);
@@ -503,6 +492,7 @@ const ClientDashboardPage: NextPage = () => {
                             <Button
                               size="sm"
                               variant="default"
+                              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold"
                               onClick={async (e) => {
                                 e.stopPropagation();
                                 setNavigatingClientId(client.id);
@@ -516,6 +506,7 @@ const ClientDashboardPage: NextPage = () => {
                             <Button
                               size="sm"
                               variant="secondary"
+                              className="bg-blue-900 text-blue-200 border-blue-700"
                               disabled={resendingEmailId === client.id}
                               onClick={async (e) => {
                                 e.stopPropagation();

@@ -1,7 +1,6 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useAuth } from "@/contexts/auth-context";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/router";
 import DashboardLayout from "@/components/dashboard/dashboard-layout";
@@ -282,14 +281,10 @@ const AiDeveloperPage = () => {
     <DashboardLayout meta={{ title: "AI Developer Dashboard" }} role="ai_developer">
       <DashboardHeader title="AI Developer Dashboard" />
       <div className="mt-4 flex justify-end">
-        {isImpersonating ? (
+        {isImpersonating && (
           <Button size="sm" variant="destructive" onClick={stopImpersonation}>
             Return to Admin View
           </Button>
-        ) : (
-          <Link href="/admin" legacyBehavior>
-            <a><button className="px-4 py-2 text-sm rounded bg-red-600 hover:bg-red-700 text-white">Return to Admin View</button></a>
-          </Link>
         )}
       </div>
       {mainContent}
